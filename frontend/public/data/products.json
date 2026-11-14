@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1,
+        "name": "Teclado Mecánico",
+        "description": "Teclado mecánico con retroiluminación RGB y switches de alta calidad.",
+        "brand": "Logitech",
+        "category": "Teclados",
+        "price": 79.99,
+        "specs": {
+            "switch_type": "Cherry MX Red",
+            "connectivity": "USB",
+            "backlighting": true
+        }
+    },
+    {
+        "id": 2,
+        "name": "Mouse Gamer",
+        "description": "Mouse gamer con sensor de alta precisión y múltiples botones programables.",
+        "brand": "Razer",
+        "category": "Mouses",
+        "price": 59.99,
+        "specs": {
+            "maximum_dpi": 16000,
+            "connectivity": "USB",
+            "programmable_buttons": 7
+        }
+    },
+    {
+        "id": 3,
+        "name": "Auriculares Inalámbricos",
+        "description": "Auriculares inalámbricos con cancelación de ruido y sonido envolvente.",
+        "brand": "Sony",
+        "category": "Auriculares",
+        "price": 199.99,
+        "specs": {
+            "connectivity": "Bluetooth",
+            "noise_cancellation": true,
+            "battery_life_hours": 30
+        }
+    }
+]
