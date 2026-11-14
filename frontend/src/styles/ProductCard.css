@@ -1,0 +1,16 @@
+.product-card {
+  border-color: #dee2e6;
+  border-radius: 0.75rem;
+}
+
+.product-card-image {
+  height: 140px;
+  margin: 0.75rem 0.75rem 0;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #e3e8f0, #cfd6e1);
+  color: #6c757d;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

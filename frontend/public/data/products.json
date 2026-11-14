@@ -1,41 +1,567 @@
 [
-    {
-        "id": 1,
-        "name": "Teclado Mecánico",
-        "description": "Teclado mecánico con retroiluminación RGB y switches de alta calidad.",
-        "brand": "Logitech",
-        "category": "Teclados",
-        "price": 79.99,
-        "specs": {
-            "switch_type": "Cherry MX Red",
-            "connectivity": "USB",
-            "backlighting": true
-        }
-    },
-    {
-        "id": 2,
-        "name": "Mouse Gamer",
-        "description": "Mouse gamer con sensor de alta precisión y múltiples botones programables.",
-        "brand": "Razer",
-        "category": "Mouses",
-        "price": 59.99,
-        "specs": {
-            "maximum_dpi": 16000,
-            "connectivity": "USB",
-            "programmable_buttons": 7
-        }
-    },
-    {
-        "id": 3,
-        "name": "Auriculares Inalámbricos",
-        "description": "Auriculares inalámbricos con cancelación de ruido y sonido envolvente.",
-        "brand": "Sony",
-        "category": "Auriculares",
-        "price": 199.99,
-        "specs": {
-            "connectivity": "Bluetooth",
-            "noise_cancellation": true,
-            "battery_life_hours": 30
-        }
-    }
+  {
+    "id": 1,
+    "name": "Logitech G Pro X Superlight 2",
+    "description": "Mouse inalámbrico ultraliviano pensado para competición.",
+    "brand": "Logitech",
+    "category": "Mouses",
+    "price": 239900,
+    "stock": 14,
+    "image": "/images/products/logitech-g-pro-x-superlight-2.jpg",
+    "specs": { "max_dpi": 32000, "weight_g": 60, "connectivity": "Inalámbrico", "programmable_buttons": 5 }
+  },
+  {
+    "id": 2,
+    "name": "Logitech G502 X",
+    "description": "Mouse con cable, muchos botones y rueda de desplazamiento rápido.",
+    "brand": "Logitech",
+    "category": "Mouses",
+    "price": 119900,
+    "stock": 22,
+    "image": "/images/products/logitech-g502-x.jpg",
+    "specs": { "max_dpi": 25600, "weight_g": 89, "connectivity": "Cableado", "programmable_buttons": 13 }
+  },
+  {
+    "id": 3,
+    "name": "Logitech G305 Lightspeed",
+    "description": "Mouse inalámbrico económico con muy buena autonomía.",
+    "brand": "Logitech",
+    "category": "Mouses",
+    "price": 59900,
+    "stock": 35,
+    "image": "/images/products/logitech-g305-lightspeed.jpg",
+    "specs": { "max_dpi": 12000, "weight_g": 99, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
+  },
+  {
+    "id": 4,
+    "name": "Razer DeathAdder V3",
+    "description": "Mouse ergonómico con cable, liviano y preciso.",
+    "brand": "Razer",
+    "category": "Mouses",
+    "price": 134900,
+    "stock": 18,
+    "image": "/images/products/razer-deathadder-v3.jpg",
+    "specs": { "max_dpi": 30000, "weight_g": 59, "connectivity": "Cableado", "programmable_buttons": 5 }
+  },
+  {
+    "id": 5,
+    "name": "Razer Viper V3 Pro",
+    "description": "Mouse inalámbrico simétrico de gama alta para esports.",
+    "brand": "Razer",
+    "category": "Mouses",
+    "price": 239900,
+    "stock": 6,
+    "image": "/images/products/razer-viper-v3-pro.jpg",
+    "specs": { "max_dpi": 35000, "weight_g": 54, "connectivity": "Inalámbrico", "programmable_buttons": 5 }
+  },
+  {
+    "id": 6,
+    "name": "Razer Basilisk V3",
+    "description": "Mouse con cable personalizable con iluminación RGB.",
+    "brand": "Razer",
+    "category": "Mouses",
+    "price": 104900,
+    "stock": 12,
+    "image": "/images/products/razer-basilisk-v3.jpg",
+    "specs": { "max_dpi": 26000, "weight_g": 101, "connectivity": "Cableado", "programmable_buttons": 11 }
+  },
+  {
+    "id": 7,
+    "name": "Razer Orochi V2",
+    "description": "Mouse inalámbrico compacto, ideal para llevar con la notebook.",
+    "brand": "Razer",
+    "category": "Mouses",
+    "price": 104900,
+    "stock": 3,
+    "image": "/images/products/razer-orochi-v2.jpg",
+    "specs": { "max_dpi": 18000, "weight_g": 60, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
+  },
+  {
+    "id": 8,
+    "name": "HyperX Pulsefire Haste 2",
+    "description": "Mouse con cable ultraliviano y cable flexible.",
+    "brand": "HyperX",
+    "category": "Mouses",
+    "price": 89900,
+    "stock": 20,
+    "image": "/images/products/hyperx-pulsefire-haste-2.jpg",
+    "specs": { "max_dpi": 26000, "weight_g": 53, "connectivity": "Cableado", "programmable_buttons": 6 }
+  },
+  {
+    "id": 9,
+    "name": "HyperX Pulsefire Haste 2 Wireless",
+    "description": "Versión inalámbrica del Haste 2, con hasta 100 horas de batería.",
+    "brand": "HyperX",
+    "category": "Mouses",
+    "price": 134900,
+    "stock": 9,
+    "image": "/images/products/hyperx-pulsefire-haste-2-wireless.jpg",
+    "specs": { "max_dpi": 26000, "weight_g": 61, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
+  },
+  {
+    "id": 10,
+    "name": "SteelSeries Rival 3",
+    "description": "Mouse con cable de entrada, resistente y con buen sensor.",
+    "brand": "SteelSeries",
+    "category": "Mouses",
+    "price": 44900,
+    "stock": 40,
+    "image": "/images/products/steelseries-rival-3.jpg",
+    "specs": { "max_dpi": 8500, "weight_g": 77, "connectivity": "Cableado", "programmable_buttons": 6 }
+  },
+  {
+    "id": 11,
+    "name": "SteelSeries Aerox 3 Wireless",
+    "description": "Mouse inalámbrico con carcasa perforada y resistencia al agua.",
+    "brand": "SteelSeries",
+    "category": "Mouses",
+    "price": 149900,
+    "stock": 0,
+    "image": "/images/products/steelseries-aerox-3-wireless.jpg",
+    "specs": { "max_dpi": 18000, "weight_g": 68, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
+  },
+  {
+    "id": 12,
+    "name": "Corsair M65 RGB Ultra",
+    "description": "Mouse con cable de cuerpo de aluminio y pesos ajustables.",
+    "brand": "Corsair",
+    "category": "Mouses",
+    "price": 119900,
+    "stock": 7,
+    "image": "/images/products/corsair-m65-rgb-ultra.jpg",
+    "specs": { "max_dpi": 26000, "weight_g": 97, "connectivity": "Cableado", "programmable_buttons": 8 }
+  },
+  {
+    "id": 13,
+    "name": "Logitech MX Master 3S",
+    "description": "Mouse inalámbrico de productividad con clics silenciosos.",
+    "brand": "Logitech",
+    "category": "Mouses",
+    "price": 149900,
+    "stock": 16,
+    "image": "/images/products/logitech-mx-master-3s.jpg",
+    "specs": { "max_dpi": 8000, "weight_g": 141, "connectivity": "Inalámbrico", "programmable_buttons": 7 }
+  },
+
+
+
+
+
+  {
+    "id": 14,
+    "name": "Logitech G Pro X TKL",
+    "description": "Teclado mecánico inalámbrico sin pad numérico.",
+    "brand": "Logitech",
+    "category": "Teclados",
+    "price": 299900,
+    "stock": 8,
+    "image": "/images/products/logitech-g-pro-x-tkl.jpg",
+    "specs": { "switch_type": "GX Brown", "layout": "TKL", "connectivity": "Inalámbrico", "backlighting": true }
+  },
+  {
+    "id": 15,
+    "name": "Logitech G213 Prodigy",
+    "description": "Teclado de membrana con iluminación RGB y teclas multimedia.",
+    "brand": "Logitech",
+    "category": "Teclados",
+    "price": 74900,
+    "stock": 30,
+    "image": "/images/products/logitech-g213-prodigy.jpg",
+    "specs": { "switch_type": "Membrana", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 16,
+    "name": "Logitech MX Keys S",
+    "description": "Teclado inalámbrico de perfil bajo para oficina.",
+    "brand": "Logitech",
+    "category": "Teclados",
+    "price": 164900,
+    "stock": 15,
+    "image": "/images/products/logitech-mx-keys-s.jpg",
+    "specs": { "switch_type": "Tijera", "layout": "100%", "connectivity": "Inalámbrico", "backlighting": true }
+  },
+  {
+    "id": 17,
+    "name": "Logitech K120",
+    "description": "Teclado básico con cable, silencioso y resistente a salpicaduras.",
+    "brand": "Logitech",
+    "category": "Teclados",
+    "price": 29900,
+    "stock": 60,
+    "image": "/images/products/logitech-k120.jpg",
+    "specs": { "switch_type": "Membrana", "layout": "100%", "connectivity": "Cableado", "backlighting": false }
+  },
+  {
+    "id": 18,
+    "name": "Razer BlackWidow V4",
+    "description": "Teclado mecánico completo con switches clicky y teclas macro.",
+    "brand": "Razer",
+    "category": "Teclados",
+    "price": 254900,
+    "stock": 10,
+    "image": "/images/products/razer-blackwidow-v4.jpg",
+    "specs": { "switch_type": "Razer Green", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 19,
+    "name": "Razer Huntsman Mini",
+    "description": "Teclado 60% con switches ópticos de respuesta instantánea.",
+    "brand": "Razer",
+    "category": "Teclados",
+    "price": 179900,
+    "stock": 12,
+    "image": "/images/products/razer-huntsman-mini.jpg",
+    "specs": { "switch_type": "Razer Optical Red", "layout": "60%", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 20,
+    "name": "HyperX Alloy Origins Core",
+    "description": "Teclado mecánico TKL con cuerpo de aluminio.",
+    "brand": "HyperX",
+    "category": "Teclados",
+    "price": 134900,
+    "stock": 14,
+    "image": "/images/products/hyperx-alloy-origins-core.jpg",
+    "specs": { "switch_type": "HyperX Red", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 21,
+    "name": "HyperX Alloy Origins 65",
+    "description": "Teclado mecánico compacto 65% con flechas.",
+    "brand": "HyperX",
+    "category": "Teclados",
+    "price": 149900,
+    "stock": 4,
+    "image": "/images/products/hyperx-alloy-origins-65.jpg",
+    "specs": { "switch_type": "HyperX Aqua", "layout": "65%", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 22,
+    "name": "Corsair K70 RGB Pro",
+    "description": "Teclado mecánico completo con switches Cherry y reposamuñecas.",
+    "brand": "Corsair",
+    "category": "Teclados",
+    "price": 254900,
+    "stock": 9,
+    "image": "/images/products/corsair-k70-rgb-pro.jpg",
+    "specs": { "switch_type": "Cherry MX Red", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 23,
+    "name": "Corsair K65 Plus Wireless",
+    "description": "Teclado mecánico inalámbrico 75% con switches intercambiables.",
+    "brand": "Corsair",
+    "category": "Teclados",
+    "price": 239900,
+    "stock": 6,
+    "image": "/images/products/corsair-k65-plus-wireless.jpg",
+    "specs": { "switch_type": "Corsair MLX Red", "layout": "75%", "connectivity": "Inalámbrico", "backlighting": true }
+  },
+  {
+    "id": 24,
+    "name": "SteelSeries Apex Pro TKL",
+    "description": "Teclado con switches magnéticos de punto de activación ajustable.",
+    "brand": "SteelSeries",
+    "category": "Teclados",
+    "price": 284900,
+    "stock": 5,
+    "image": "/images/products/steelseries-apex-pro-tkl.jpg",
+    "specs": { "switch_type": "OmniPoint 2.0", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
+  },
+  {
+    "id": 25,
+    "name": "Keychron K2 Pro",
+    "description": "Teclado mecánico 75% inalámbrico, compatible con Mac y Windows.",
+    "brand": "Keychron",
+    "category": "Teclados",
+    "price": 164900,
+    "stock": 11,
+    "image": "/images/products/keychron-k2-pro.jpg",
+    "specs": { "switch_type": "Gateron Brown", "layout": "75%", "connectivity": "Inalámbrico", "backlighting": true }
+  },
+  {
+    "id": 26,
+    "name": "Redragon Kumara K552",
+    "description": "Teclado mecánico TKL económico con switches clicky.",
+    "brand": "Redragon",
+    "category": "Teclados",
+    "price": 59900,
+    "stock": 45,
+    "image": "/images/products/redragon-kumara-k552.jpg",
+    "specs": { "switch_type": "Outemu Blue", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
+  },
+
+
+
+
+
+  {
+    "id": 27,
+    "name": "Sony WH-1000XM5",
+    "description": "Auriculares inalámbricos con cancelación de ruido líder.",
+    "brand": "Sony",
+    "category": "Auriculares",
+    "price": 599900,
+    "stock": 10,
+    "image": "/images/products/sony-wh-1000xm5.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": true, "battery_life_hours": 30, "driver_mm": 30, "microphone": true }
+  },
+  {
+    "id": 28,
+    "name": "Sony WH-CH520",
+    "description": "Auriculares inalámbricos livianos con gran autonomía.",
+    "brand": "Sony",
+    "category": "Auriculares",
+    "price": 89900,
+    "stock": 28,
+    "image": "/images/products/sony-wh-ch520.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 30, "microphone": true }
+  },
+  {
+    "id": 29,
+    "name": "HyperX Cloud II",
+    "description": "Auriculares gamer con cable, cómodos y con sonido envolvente 7.1.",
+    "brand": "HyperX",
+    "category": "Auriculares",
+    "price": 149900,
+    "stock": 20,
+    "image": "/images/products/hyperx-cloud-ii.jpg",
+    "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 53, "microphone": true }
+  },
+  {
+    "id": 30,
+    "name": "HyperX Cloud III Wireless",
+    "description": "Auriculares gamer inalámbricos con batería de muy larga duración.",
+    "brand": "HyperX",
+    "category": "Auriculares",
+    "price": 254900,
+    "stock": 7,
+    "image": "/images/products/hyperx-cloud-iii-wireless.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 120, "driver_mm": 53, "microphone": true }
+  },
+  {
+    "id": 31,
+    "name": "Logitech G Pro X 2 Lightspeed",
+    "description": "Auriculares inalámbricos de gama alta para competición.",
+    "brand": "Logitech",
+    "category": "Auriculares",
+    "price": 374900,
+    "stock": 5,
+    "image": "/images/products/logitech-g-pro-x-2-lightspeed.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 50, "microphone": true }
+  },
+  {
+    "id": 32,
+    "name": "Logitech G435",
+    "description": "Auriculares inalámbricos muy livianos y con colores vivos.",
+    "brand": "Logitech",
+    "category": "Auriculares",
+    "price": 119900,
+    "stock": 19,
+    "image": "/images/products/logitech-g435.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 18, "driver_mm": 40, "microphone": true }
+  },
+  {
+    "id": 33,
+    "name": "Razer BlackShark V2 X",
+    "description": "Auriculares gamer con cable, livianos y económicos.",
+    "brand": "Razer",
+    "category": "Auriculares",
+    "price": 89900,
+    "stock": 24,
+    "image": "/images/products/razer-blackshark-v2-x.jpg",
+    "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 50, "microphone": true }
+  },
+  {
+    "id": 34,
+    "name": "Razer Barracuda X",
+    "description": "Auriculares inalámbricos para PC, consola y celular.",
+    "brand": "Razer",
+    "category": "Auriculares",
+    "price": 149900,
+    "stock": 2,
+    "image": "/images/products/razer-barracuda-x.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 40, "microphone": true }
+  },
+  {
+    "id": 35,
+    "name": "SteelSeries Arctis Nova 7",
+    "description": "Auriculares inalámbricos con conexión simultánea 2.4 GHz y Bluetooth.",
+    "brand": "SteelSeries",
+    "category": "Auriculares",
+    "price": 269900,
+    "stock": 8,
+    "image": "/images/products/steelseries-arctis-nova-7.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 38, "driver_mm": 40, "microphone": true }
+  },
+  {
+    "id": 36,
+    "name": "SteelSeries Arctis Nova Pro Wireless",
+    "description": "Auriculares premium con cancelación de ruido y baterías intercambiables.",
+    "brand": "SteelSeries",
+    "category": "Auriculares",
+    "price": 524900,
+    "stock": 3,
+    "image": "/images/products/steelseries-arctis-nova-pro-wireless.jpg",
+    "specs": { "connectivity": "Inalámbrico", "noise_cancellation": true, "battery_life_hours": 22, "driver_mm": 40, "microphone": true }
+  },
+  {
+    "id": 37,
+    "name": "Corsair HS55 Stereo",
+    "description": "Auriculares con cable, livianos y compatibles con múltiples plataformas.",
+    "brand": "Corsair",
+    "category": "Auriculares",
+    "price": 89900,
+    "stock": 17,
+    "image": "/images/products/corsair-hs55-stereo.jpg",
+    "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 50, "microphone": true }
+  },
+  {
+    "id": 38,
+    "name": "JBL Quantum 100",
+    "description": "Auriculares gamer con cable de entrada, con micrófono desmontable.",
+    "brand": "JBL",
+    "category": "Auriculares",
+    "price": 44900,
+    "stock": 33,
+    "image": "/images/products/jbl-quantum-100.jpg",
+    "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 40, "microphone": true }
+  },
+
+
+
+
+
+  {
+    "id": 39,
+    "name": "Samsung Odyssey G5 27\"",
+    "description": "Monitor curvo QHD de alta tasa de refresco.",
+    "brand": "Samsung",
+    "category": "Monitores",
+    "price": 449900,
+    "stock": 9,
+    "image": "/images/products/samsung-odyssey-g5-27.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 165, "panel": "VA", "response_time_ms": 1 }
+  },
+  {
+    "id": 40,
+    "name": "Samsung Odyssey OLED G6",
+    "description": "Monitor OLED QHD de 360 Hz para juego competitivo.",
+    "brand": "Samsung",
+    "category": "Monitores",
+    "price": 1049900,
+    "stock": 4,
+    "image": "/images/products/samsung-odyssey-oled-g6.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 360, "panel": "OLED", "response_time_ms": 0.03 }
+  },
+  {
+    "id": 41,
+    "name": "LG UltraGear 27GP850",
+    "description": "Monitor IPS QHD rápido con muy buenos colores.",
+    "brand": "LG",
+    "category": "Monitores",
+    "price": 599900,
+    "stock": 11,
+    "image": "/images/products/lg-ultragear-27gp850.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 180, "panel": "IPS", "response_time_ms": 1 }
+  },
+  {
+    "id": 42,
+    "name": "LG UltraGear 24GN60R",
+    "description": "Monitor Full HD de 144 Hz con buena relación precio-calidad.",
+    "brand": "LG",
+    "category": "Monitores",
+    "price": 269900,
+    "stock": 21,
+    "image": "/images/products/lg-ultragear-24gn60r.jpg",
+    "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 144, "panel": "IPS", "response_time_ms": 1 }
+  },
+  {
+    "id": 43,
+    "name": "LG 27UP850 4K",
+    "description": "Monitor 4K para diseño y productividad, con USB-C.",
+    "brand": "LG",
+    "category": "Monitores",
+    "price": 674900,
+    "stock": 6,
+    "image": "/images/products/lg-27up850-4k.jpg",
+    "specs": { "size_in": 27, "resolution": "3840x2160", "refresh_rate_hz": 60, "panel": "IPS", "response_time_ms": 5 }
+  },
+  {
+    "id": 44,
+    "name": "ASUS TUF Gaming VG249Q3A",
+    "description": "Monitor Full HD de 180 Hz pensado para gaming.",
+    "brand": "ASUS",
+    "category": "Monitores",
+    "price": 239900,
+    "stock": 18,
+    "image": "/images/products/asus-tuf-gaming-vg249q3a.jpg",
+    "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 180, "panel": "IPS", "response_time_ms": 1 }
+  },
+  {
+    "id": 45,
+    "name": "ASUS ROG Swift PG27AQDM",
+    "description": "Monitor OLED QHD de 240 Hz de gama alta.",
+    "brand": "ASUS",
+    "category": "Monitores",
+    "price": 1349900,
+    "stock": 2,
+    "image": "/images/products/asus-rog-swift-pg27aqdm.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 240, "panel": "OLED", "response_time_ms": 0.03 }
+  },
+  {
+    "id": 46,
+    "name": "AOC 24G2SP",
+    "description": "Monitor Full HD de 165 Hz económico.",
+    "brand": "AOC",
+    "category": "Monitores",
+    "price": 254900,
+    "stock": 26,
+    "image": "/images/products/aoc-24g2sp.jpg",
+    "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 165, "panel": "IPS", "response_time_ms": 1 }
+  },
+  {
+    "id": 47,
+    "name": "Dell S2721DGF",
+    "description": "Monitor QHD de 165 Hz con soporte ajustable en altura.",
+    "brand": "Dell",
+    "category": "Monitores",
+    "price": 524900,
+    "stock": 8,
+    "image": "/images/products/dell-s2721dgf.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 165, "panel": "IPS", "response_time_ms": 1 }
+  },
+  {
+    "id": 48,
+    "name": "BenQ Zowie XL2546K",
+    "description": "Monitor de esports de 240 Hz con tecnología de nitidez en movimiento.",
+    "brand": "BenQ",
+    "category": "Monitores",
+    "price": 749900,
+    "stock": 5,
+    "image": "/images/products/benq-zowie-xl2546k.jpg",
+    "specs": { "size_in": 24.5, "resolution": "1920x1080", "refresh_rate_hz": 240, "panel": "TN", "response_time_ms": 1 }
+  },
+  {
+    "id": 49,
+    "name": "Gigabyte M27Q",
+    "description": "Monitor QHD de 170 Hz con switch KVM integrado.",
+    "brand": "Gigabyte",
+    "category": "Monitores",
+    "price": 419900,
+    "stock": 12,
+    "image": "/images/products/gigabyte-m27q.jpg",
+    "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 170, "panel": "IPS", "response_time_ms": 0.5 }
+  },
+  {
+    "id": 50,
+    "name": "ViewSonic VA2432-H",
+    "description": "Monitor Full HD de oficina, sin bordes y con 100 Hz.",
+    "brand": "ViewSonic",
+    "category": "Monitores",
+    "price": 149900,
+    "stock": 30,
+    "image": "/images/products/viewsonic-va2432-h.jpg",
+    "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 100, "panel": "IPS", "response_time_ms": 4 }
+  }
 ]
