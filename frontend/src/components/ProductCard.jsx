@@ -51,7 +51,7 @@ export function ProductCard({ name, price, specs, specsDefinitions }) {
 
         {/* -------------------- Check y Boton -------------------- */}
         <div className="d-flex justify-content-between align-items-center mt-auto">
-          <label className="d-flex align-items-center gap-2 small mb-0">
+          <label className="d-flex align-items-center gap-2 small mb-0 product-card-compare">
             <input type="checkbox" className="form-check-input m-0" />
             Comparar
           </label>
