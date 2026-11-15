@@ -1,0 +1,28 @@
+{
+  "Mouses": {
+    "max_dpi": { "label": "DPI máximo", "unit": "DPI", "featured": true, "rule": "higher" },
+    "weight_g": { "label": "Peso", "unit": "g", "featured": true, "rule": "lower" },
+    "connectivity": { "label": "Conectividad", "featured": false },
+    "programmable_buttons": { "label": "Botones programables", "featured": false, "rule": "higher" }
+  },
+  "Teclados": {
+    "switch_type": { "label": "Switch", "featured": true },
+    "layout": { "label": "Formato", "featured": true },
+    "connectivity": { "label": "Conectividad", "featured": false },
+    "backlighting": { "label": "Retroiluminación", "featured": false }
+  },
+  "Auriculares": {
+    "connectivity": { "label": "Conectividad", "featured": true },
+    "battery_life_hours": { "label": "Batería", "unit": "h", "featured": true, "rule": "higher" },
+    "noise_cancellation": { "label": "Cancelación de ruido", "featured": false },
+    "driver_mm": { "label": "Driver", "unit": "mm", "featured": false },
+    "microphone": { "label": "Micrófono", "featured": false }
+  },
+  "Monitores": {
+    "size_in": { "label": "Tamaño", "unit": "\"", "featured": true },
+    "refresh_rate_hz": { "label": "Tasa de refresco", "unit": "Hz", "featured": true, "rule": "higher" },
+    "resolution": { "label": "Resolución", "featured": false },
+    "panel": { "label": "Panel", "featured": false },
+    "response_time_ms": { "label": "Tiempo de respuesta", "unit": "ms", "featured": false, "rule": "lower" }
+  }
+}
