@@ -13,11 +13,22 @@ export function Catalog() {
   const [sort, setSort] = useState(SORT_OPTIONS[0].value);
   const [brands, setBrands] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProducts({ category, sort, brands: selectedBrands }).then((data) =>
-      setProducts(data),
-    );
+    getProducts({ category, sort, brands: selectedBrands })
+      .then((data) => {
+        setProducts(data);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Error al obtener los productos:", err);
+        setError(
+          "Error al obtener los productos. Por favor, inténtalo de nuevo.",
+        );
+      })
+      .finally(() => setLoading(false));
   }, [category, sort, selectedBrands]);
   useEffect(() => {
     getBrands({ category }).then((data) => setBrands(data));
@@ -27,11 +38,17 @@ export function Catalog() {
   }, []);
 
   function toggleBrand(brand) {
+    setLoading(true);
     setSelectedBrands((prevSelectedBrands) => {
       if (prevSelectedBrands.includes(brand))
         return prevSelectedBrands.filter((b) => b !== brand);
       return [...prevSelectedBrands, brand];
     });
+  }
+
+  function changeSort(value) {
+    setLoading(true);
+    setSort(value);
   }
 
   return (
@@ -56,6 +73,7 @@ export function Catalog() {
                 type="button"
                 className={`btn btn-sm ${cat === category ? "btn-primary" : "btn-outline-primary"}`}
                 onClick={() => {
+                  setLoading(true);
                   setCategory(cat);
                   setSelectedBrands([]);
                 }}
@@ -73,22 +91,44 @@ export function Catalog() {
               {products.length === 1 ? "resultado" : "resultados"}
             </h2>
 
-            <SortDropdown sort={sort} onChange={setSort} />
+            <SortDropdown sort={sort} onChange={changeSort} />
           </div>
 
           {/* Cards de productos */}
-          <div className="row g-3">
-            {products.map((product) => (
-              <div key={product.id} className="col-sm-6 col-lg-4">
-                <ProductCard
-                  name={product.name}
-                  price={product.price}
-                  specs={product.specs}
-                  specsDefinitions={specsDefinitions[product.category]}
-                />
+          {loading && (
+            <div className="d-flex justify-content-center my-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Cargando...</span>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && products.length === 0 && (
+            <p className="text-secondary text-center my-5">
+              No hay productos que coincidan con los filtros elegidos.
+            </p>
+          )}
+
+          {!loading && !error && (
+            <div className="row g-3">
+              {products.map((product) => (
+                <div key={product.id} className="col-sm-6 col-lg-4">
+                  <ProductCard
+                    name={product.name}
+                    price={product.price}
+                    specs={product.specs}
+                    specsDefinitions={specsDefinitions[product.category]}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>
