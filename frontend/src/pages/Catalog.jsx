@@ -1,5 +1,6 @@
 import { ProductCard } from "../components/ProductCard";
 import { FilterPanel } from "../components/FilterPanel";
+import { SortDropdown } from "../components/SortDropdown";
 import { getProducts, SORT_OPTIONS } from "../api/products";
 import { getSpecsDefinitions } from "../api/specsDefinitions";
 import { getBrands } from "../api/brands";
@@ -12,7 +13,6 @@ export function Catalog() {
   const [sort, setSort] = useState(SORT_OPTIONS[0].value);
   const [brands, setBrands] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const sortLabel = SORT_OPTIONS.find((option) => option.value === sort).label;
 
   useEffect(() => {
     getProducts({ category, sort, brands: selectedBrands }).then((data) =>
@@ -73,30 +73,7 @@ export function Catalog() {
               {products.length === 1 ? "resultado" : "resultados"}
             </h2>
 
-            {/* Ordenar */}
-            <div className="dropdown">
-              <button
-                type="button"
-                className="btn btn-sm btn-link text-secondary text-decoration-none dropdown-toggle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Ordenar por: {sortLabel}
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow-sm">
-                {SORT_OPTIONS.map((option) => (
-                  <li key={option.value}>
-                    <button
-                      type="button"
-                      className={`dropdown-item small ${option.value === sort ? "active" : ""}`}
-                      onClick={() => setSort(option.value)}
-                    >
-                      {option.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SortDropdown sort={sort} onChange={setSort} />
           </div>
 
           {/* Cards de productos */}
