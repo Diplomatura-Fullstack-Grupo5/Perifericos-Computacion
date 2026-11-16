@@ -5,7 +5,7 @@ export const SORT_OPTIONS = [
   { value: "name_desc", label: "Nombre (Z-A)" },
 ];
 
-export async function getProducts({ category, sort } = {}) {
+export async function getProducts({ category, sort, brands } = {}) {
   const response = await fetch("/data/products.json");
 
   if (!response.ok) {
@@ -16,6 +16,7 @@ export async function getProducts({ category, sort } = {}) {
 
   return data
     .filter((product) => !category || product.category === category)
+    .filter((product) => !brands?.length || brands.includes(product.brand))
     .sort((a, b) => {
       switch (sort) {
         case "price_asc":
