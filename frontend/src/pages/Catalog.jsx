@@ -27,36 +27,44 @@ export function Catalog() {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [specOptions, setSpecOptions] = useState({});
   const [selectedSpecs, setSelectedSpecs] = useState({});
+  const [specRanges, setSpecRanges] = useState({});
+  const [priceRange, setPriceRange] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignoreResponse = false;
-    getProducts({
-      category,
-      sort,
-      brands: selectedBrands,
-      specs: selectedSpecs,
-    })
-      .then((data) => {
-        if (ignoreResponse) return;
-        setProducts(data);
-        setError(null);
+    const timer = setTimeout(() => {
+      getProducts({
+        category,
+        sort,
+        brands: selectedBrands,
+        specs: selectedSpecs,
+        ranges: specRanges,
+        price: priceRange,
       })
-      .catch((err) => {
-        if (ignoreResponse) return;
-        console.error("Error al obtener los productos:", err);
-        setError(
-          "Error al obtener los productos. Por favor, inténtalo de nuevo.",
-        );
-      })
-      .finally(() => {
-        if (!ignoreResponse) setLoading(false);
-      });
+        .then((data) => {
+          if (ignoreResponse) return;
+          setProducts(data);
+          setError(null);
+        })
+        .catch((err) => {
+          if (ignoreResponse) return;
+          console.error("Error al obtener los productos:", err);
+          setError(
+            "Error al obtener los productos. Por favor, inténtalo de nuevo.",
+          );
+        })
+        .finally(() => {
+          if (!ignoreResponse) setLoading(false);
+        });
+    }, 300);
+
     return () => {
       ignoreResponse = true;
+      clearTimeout(timer);
     };
-  }, [category, sort, selectedBrands, selectedSpecs]);
+  }, [category, sort, selectedBrands, selectedSpecs, specRanges, priceRange]);
 
   useEffect(() => {
     let ignoreResponse = false;
@@ -88,6 +96,16 @@ export function Catalog() {
     }));
   }
 
+  function changeSpecRange(key, range) {
+    setLoading(true);
+    setSpecRanges((prev) => ({ ...prev, [key]: range }));
+  }
+
+  function changePriceRange(range) {
+    setLoading(true);
+    setPriceRange(range);
+  }
+
   function changeSort(value) {
     setLoading(true);
     setSort(value);
@@ -106,6 +124,10 @@ export function Catalog() {
             specOptions={specOptions}
             selectedSpecs={selectedSpecs}
             onToggleSpec={toggleSpec}
+            specRanges={specRanges}
+            onChangeSpecRange={changeSpecRange}
+            priceRange={priceRange}
+            onChangePriceRange={changePriceRange}
           />
         </aside>
 
@@ -123,6 +145,8 @@ export function Catalog() {
                   setCategory(cat);
                   setSelectedBrands([]);
                   setSelectedSpecs({});
+                  setSpecRanges({});
+                  setPriceRange({});
                 }}
               >
                 {cat}

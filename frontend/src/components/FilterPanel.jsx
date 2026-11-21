@@ -1,8 +1,10 @@
 import { CheckboxFilter } from "./CheckboxFilter";
+import { RangeFilter } from "./RangeFilter";
 import { formatSpecValue } from "../utils/formatSpecValue";
 
 /**
- * Panel de filtros del catálogo: marca y las specs con `"filter": "checkbox"` en su definición.
+ * Panel de filtros del catálogo: marca, las specs con `filter` en su definición
+ * (checkbox o rango, en el orden del JSON) y precio.
  */
 export function FilterPanel({
   brands,
@@ -12,9 +14,13 @@ export function FilterPanel({
   specOptions,
   selectedSpecs,
   onToggleSpec,
+  specRanges,
+  onChangeSpecRange,
+  priceRange,
+  onChangePriceRange,
 }) {
-  const checkboxSpecs = Object.entries(specsDefinitions ?? {}).filter(
-    ([, definition]) => definition.filter === "checkbox",
+  const filterableSpecs = Object.entries(specsDefinitions ?? {}).filter(
+    ([, definition]) => definition.filter,
   );
 
   return (
@@ -28,16 +34,33 @@ export function FilterPanel({
         onToggle={onToggleBrand}
       />
 
-      {checkboxSpecs.map(([key, definition]) => (
-        <CheckboxFilter
-          key={key}
-          title={definition.label}
-          options={specOptions[key] ?? []}
-          selected={selectedSpecs[key] ?? []}
-          onToggle={(value) => onToggleSpec(key, value)}
-          formatOption={(value) => formatSpecValue(value, definition.unit)}
-        />
-      ))}
+      {filterableSpecs.map(([key, definition]) =>
+        definition.filter === "range" ? (
+          <RangeFilter
+            key={key}
+            title={definition.label}
+            unit={definition.unit}
+            value={specRanges[key]}
+            onChange={(range) => onChangeSpecRange(key, range)}
+          />
+        ) : (
+          <CheckboxFilter
+            key={key}
+            title={definition.label}
+            options={specOptions[key] ?? []}
+            selected={selectedSpecs[key] ?? []}
+            onToggle={(value) => onToggleSpec(key, value)}
+            formatOption={(value) => formatSpecValue(value, definition.unit)}
+          />
+        ),
+      )}
+
+      <RangeFilter
+        title="Precio"
+        unit="$"
+        value={priceRange}
+        onChange={onChangePriceRange}
+      />
     </div>
   );
 }
