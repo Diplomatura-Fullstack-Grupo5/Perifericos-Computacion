@@ -212,6 +212,7 @@ export function Catalog() {
                   <ProductCard
                     name={product.name}
                     price={product.price}
+                    image={product.image}
                     specs={product.specs}
                     specsDefinitions={specsDefinitions[product.category]}
                   />

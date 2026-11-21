@@ -1,12 +1,28 @@
+import { useState } from "react";
 import "../styles/ProductCard.css";
 import { formatSpecValue } from "../utils/formatSpecValue";
 
-export function ProductCard({ name, price, specs, specsDefinitions }) {
+export function ProductCard({ name, price, image, specs, specsDefinitions }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const showImage = image && !imageFailed;
+
   return (
     <div className="card h-100 product-card">
       {/* -------------------- Imagen -------------------- */}
-      {/* Temporal: recuadro gris hasta que los productos tengan imagen */}
-      <div className="product-card-image">imagen</div>
+      <div
+        className={`product-card-image ${showImage ? "" : "product-card-image-empty"}`}
+      >
+        {showImage ? (
+          <img
+            src={image}
+            alt={name}
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          "Sin imagen"
+        )}
+      </div>
 
       {/* -------------------- Nombre -------------------- */}
       <div className="card-body d-flex flex-column p-3">
