@@ -5,7 +5,16 @@ export const SORT_OPTIONS = [
   { value: "name_desc", label: "Nombre (Z-A)" },
 ];
 
-export async function getProducts({ category, sort, brands } = {}) {
+/**
+ * Obtiene los productos filtrados y ordenados.
+ * @param {object} [filters]
+ * @param {string} [filters.category] Categoría (ej. "Mouses").
+ * @param {string} [filters.sort] Uno de los `value` de SORT_OPTIONS.
+ * @param {string[]} [filters.brands] Marcas elegidas. Vacío = todas.
+ * @param {Object<string, Array>} [filters.specs] Valores elegidos por spec, ej. `{ connectivity: ["Inalámbrico"] }`.
+ * @returns {Promise<object[]>}
+ */
+export async function getProducts({ category, sort, brands, specs = {} } = {}) {
   const response = await fetch("/data/products.json");
 
   if (!response.ok) {
@@ -17,6 +26,11 @@ export async function getProducts({ category, sort, brands } = {}) {
   return data
     .filter((product) => !category || product.category === category)
     .filter((product) => !brands?.length || brands.includes(product.brand))
+    .filter((product) =>
+      Object.entries(specs).every(
+        ([key, values]) => !values.length || values.includes(product.specs[key]),
+      ),
+    )
     .sort((a, b) => {
       switch (sort) {
         case "price_asc":

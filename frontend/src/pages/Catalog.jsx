@@ -4,7 +4,19 @@ import { SortDropdown } from "../components/SortDropdown";
 import { getProducts, SORT_OPTIONS } from "../api/products";
 import { getSpecsDefinitions } from "../api/specsDefinitions";
 import { getBrands } from "../api/brands";
+import { getSpecOptions } from "../api/specOptions";
 import { useEffect, useState } from "react";
+
+/**
+ * Agrega el valor si no está en la lista, o lo quita si ya estaba.
+ * @param {Array} list
+ * @param {*} value
+ * @returns {Array} Una lista nueva (no modifica la original).
+ */
+function toggleInList(list, value) {
+  if (list.includes(value)) return list.filter((item) => item !== value);
+  return [...list, value];
+}
 
 export function Catalog() {
   const [category, setCategory] = useState("Mouses"); //! Temporal hasta el navbar
@@ -13,12 +25,19 @@ export function Catalog() {
   const [sort, setSort] = useState(SORT_OPTIONS[0].value);
   const [brands, setBrands] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [specOptions, setSpecOptions] = useState({});
+  const [selectedSpecs, setSelectedSpecs] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignoreResponse = false;
-    getProducts({ category, sort, brands: selectedBrands })
+    getProducts({
+      category,
+      sort,
+      brands: selectedBrands,
+      specs: selectedSpecs,
+    })
       .then((data) => {
         if (ignoreResponse) return;
         setProducts(data);
@@ -37,12 +56,15 @@ export function Catalog() {
     return () => {
       ignoreResponse = true;
     };
-  }, [category, sort, selectedBrands]);
+  }, [category, sort, selectedBrands, selectedSpecs]);
 
   useEffect(() => {
     let ignoreResponse = false;
     getBrands({ category }).then((data) => {
       if (!ignoreResponse) setBrands(data);
+    });
+    getSpecOptions({ category }).then((data) => {
+      if (!ignoreResponse) setSpecOptions(data);
     });
 
     return () => {
@@ -55,11 +77,15 @@ export function Catalog() {
 
   function toggleBrand(brand) {
     setLoading(true);
-    setSelectedBrands((prevSelectedBrands) => {
-      if (prevSelectedBrands.includes(brand))
-        return prevSelectedBrands.filter((b) => b !== brand);
-      return [...prevSelectedBrands, brand];
-    });
+    setSelectedBrands((prev) => toggleInList(prev, brand));
+  }
+
+  function toggleSpec(key, value) {
+    setLoading(true);
+    setSelectedSpecs((prev) => ({
+      ...prev,
+      [key]: toggleInList(prev[key] ?? [], value),
+    }));
   }
 
   function changeSort(value) {
@@ -76,6 +102,10 @@ export function Catalog() {
             brands={brands}
             selectedBrands={selectedBrands}
             onToggleBrand={toggleBrand}
+            specsDefinitions={specsDefinitions[category]}
+            specOptions={specOptions}
+            selectedSpecs={selectedSpecs}
+            onToggleSpec={toggleSpec}
           />
         </aside>
 
@@ -92,6 +122,7 @@ export function Catalog() {
                   setLoading(true);
                   setCategory(cat);
                   setSelectedBrands([]);
+                  setSelectedSpecs({});
                 }}
               >
                 {cat}
