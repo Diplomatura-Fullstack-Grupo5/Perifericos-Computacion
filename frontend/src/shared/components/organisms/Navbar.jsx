@@ -8,7 +8,7 @@ export function Navbar() {
   const cartCount = 0;
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark app-navbar">
+    <nav className="navbar navbar-expand-lg navbar-dark app-navbar">
       <div className="container">
         {/* -------------------- Marca -------------------- */}
         <img className="navbar-brand" src="/icon.svg" alt="TechPerifa" />
@@ -66,7 +66,7 @@ export function Navbar() {
 
           {/* -------------------- Buscador (solo visual) -------------------- */}
           <form
-            className="flex-grow-1 my-2 my-md-0"
+            className="flex-grow-1 my-2 my-lg-0"
             role="search"
             onSubmit={(e) => e.preventDefault()}
           >
@@ -79,7 +79,7 @@ export function Navbar() {
           </form>
 
           {/* -------------------- Comparar y carrito (solo visual) -------------------- */}
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">
             <button type="button" className="btn btn-sm app-navbar-btn">
               ⇄ Comparar ({compareCount})
             </button>
