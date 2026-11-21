@@ -17,21 +17,37 @@ export function Catalog() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let ignoreResponse = false;
     getProducts({ category, sort, brands: selectedBrands })
       .then((data) => {
+        if (ignoreResponse) return;
         setProducts(data);
         setError(null);
       })
       .catch((err) => {
+        if (ignoreResponse) return;
         console.error("Error al obtener los productos:", err);
         setError(
           "Error al obtener los productos. Por favor, inténtalo de nuevo.",
         );
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!ignoreResponse) setLoading(false);
+      });
+    return () => {
+      ignoreResponse = true;
+    };
   }, [category, sort, selectedBrands]);
+
   useEffect(() => {
-    getBrands({ category }).then((data) => setBrands(data));
+    let ignoreResponse = false;
+    getBrands({ category }).then((data) => {
+      if (!ignoreResponse) setBrands(data);
+    });
+
+    return () => {
+      ignoreResponse = true;
+    };
   }, [category]);
   useEffect(() => {
     getSpecsDefinitions().then((data) => setSpecsDefinitions(data));
