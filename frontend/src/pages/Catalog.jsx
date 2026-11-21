@@ -111,24 +111,46 @@ export function Catalog() {
     setSort(value);
   }
 
+  function clearFilters() {
+    setLoading(true);
+    setSelectedBrands([]);
+    setSelectedSpecs({});
+    setSpecRanges({});
+    setPriceRange({});
+  }
+
   return (
     <div className="container py-3">
       <div className="row g-3">
         {/* -------------------- Columna izquierda: Filtrado -------------------- */}
         <aside className="col-md-3">
-          <FilterPanel
-            brands={brands}
-            selectedBrands={selectedBrands}
-            onToggleBrand={toggleBrand}
-            specsDefinitions={specsDefinitions[category]}
-            specOptions={specOptions}
-            selectedSpecs={selectedSpecs}
-            onToggleSpec={toggleSpec}
-            specRanges={specRanges}
-            onChangeSpecRange={changeSpecRange}
-            priceRange={priceRange}
-            onChangePriceRange={changePriceRange}
-          />
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-sm w-100 mb-2 d-md-none"
+            data-bs-toggle="collapse"
+            data-bs-target="#filter-panel"
+            aria-controls="filter-panel"
+            aria-expanded="false"
+          >
+            Filtros
+          </button>
+
+          <div className="collapse d-md-block" id="filter-panel">
+            <FilterPanel
+              brands={brands}
+              selectedBrands={selectedBrands}
+              onToggleBrand={toggleBrand}
+              specsDefinitions={specsDefinitions[category]}
+              specOptions={specOptions}
+              selectedSpecs={selectedSpecs}
+              onToggleSpec={toggleSpec}
+              specRanges={specRanges}
+              onChangeSpecRange={changeSpecRange}
+              priceRange={priceRange}
+              onChangePriceRange={changePriceRange}
+              onClearFilters={clearFilters}
+            />
+          </div>
         </aside>
 
         {/* -------------------- Columna derecha: Grilla de productos -------------------- */}
@@ -141,12 +163,8 @@ export function Catalog() {
                 type="button"
                 className={`btn btn-sm ${cat === category ? "btn-primary" : "btn-outline-primary"}`}
                 onClick={() => {
-                  setLoading(true);
                   setCategory(cat);
-                  setSelectedBrands([]);
-                  setSelectedSpecs({});
-                  setSpecRanges({});
-                  setPriceRange({});
+                  clearFilters();
                 }}
               >
                 {cat}
