@@ -1,5 +1,10 @@
+import { useState } from "react";
+
+const VISIBLE_OPTIONS = 5;
+
 /**
  * Filtro genérico con un título y una lista de checkboxes.
+ * Si hay más de 5 opciones, muestra las primeras (y las marcadas) con un botón "Ver más".
  * @param {object} props
  * @param {string} props.title Título del filtro (ej. "Marca").
  * @param {Array} props.options Opciones a mostrar.
@@ -14,11 +19,20 @@ export function CheckboxFilter({
   onToggle,
   formatOption = (option) => option,
 }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const visibleOptions = expanded
+    ? options
+    : options.filter(
+        (option, index) => index < VISIBLE_OPTIONS || selected.includes(option),
+      );
+  const hiddenCount = options.length - visibleOptions.length;
+
   return (
     <div className="mb-3">
       <h3 className="small text-secondary fw-normal mb-1">{title}</h3>
 
-      {options.map((option) => (
+      {visibleOptions.map((option) => (
         <label
           key={String(option)}
           className="d-flex align-items-center gap-2 mb-1"
@@ -33,6 +47,16 @@ export function CheckboxFilter({
           {formatOption(option)}
         </label>
       ))}
+
+      {(expanded || hiddenCount > 0) && (
+        <button
+          type="button"
+          className="btn btn-link btn-sm p-0 text-secondary text-decoration-none"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? "Ver menos" : `Ver más (${hiddenCount})`}
+        </button>
+      )}
     </div>
   );
 }

@@ -137,6 +137,7 @@ export function Catalog() {
 
           <div className="collapse d-md-block" id="filter-panel">
             <FilterPanel
+              key={category}
               brands={brands}
               selectedBrands={selectedBrands}
               onToggleBrand={toggleBrand}
