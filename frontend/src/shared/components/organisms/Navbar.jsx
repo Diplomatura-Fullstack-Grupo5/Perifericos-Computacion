@@ -11,10 +11,7 @@ export function Navbar() {
     <nav className="navbar navbar-expand-md navbar-dark app-navbar">
       <div className="container">
         {/* -------------------- Marca -------------------- */}
-        <a className="navbar-brand fw-bold" href="/">
-          TechPerifa
-        </a>
-
+        <img className="navbar-brand" src="/icon.svg" alt="TechPerifa" />
         {/* -------------------- Botón hamburguesa (mobile) -------------------- */}
         <button
           className="navbar-toggler"

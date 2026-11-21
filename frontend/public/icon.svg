@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 166 48" width="166" height="48">
+  <defs>
+    <radialGradient id="g6"><stop offset="0" stop-color="#F0ABFC"/><stop offset="0.5" stop-color="#A855F7"/><stop offset="1" stop-color="#A855F7" stop-opacity="0"/></radialGradient>
+  </defs>
+  <text x="4" y="32" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="21" font-weight="800" fill="#F8FAFC" letter-spacing="0.3">PUNTO</text>
+  <circle cx="93" cy="24" r="10" fill="url(#g6)"/>
+  <circle cx="93" cy="24" r="4" fill="#FFFFFF"/>
+  <text x="105" y="32" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="21" font-weight="300" fill="#C4B5FD" letter-spacing="0.3">TECH</text>
+</svg>
