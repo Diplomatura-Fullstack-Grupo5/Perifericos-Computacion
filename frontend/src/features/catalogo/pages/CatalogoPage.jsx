@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { TarjetaProducto } from "../components/TarjetaProducto";
 import { FiltrosCatalogo } from "../components/FiltrosCatalogo";
 import { SelectorOrden } from "../components/SelectorOrden";
+import { Paginacion } from "../components/Paginacion";
 import {
+  PRODUCTOS_POR_PAGINA,
   obtenerProductos,
   obtenerMarcas,
   obtenerOpcionesSpecs,
@@ -24,26 +26,31 @@ export function CatalogoPage() {
     specs: selectedSpecs,
     ranges: specRanges,
     price: priceRange,
+    page,
   } = filtros;
 
   const [resultado, setResultado] = useState({
     consulta: null,
     products: [],
+    total: 0,
     error: null,
   });
   const [specsDefinitions, setSpecsDefinitions] = useState({});
   const [brands, setBrands] = useState([]);
   const [specOptions, setSpecOptions] = useState({});
 
-  const { products, error } = resultado;
+  const { products, total, error } = resultado;
   const loading = resultado.consulta !== consulta;
+  const totalPaginas = Math.ceil(total / PRODUCTOS_POR_PAGINA);
 
   useEffect(() => {
     let ignoreResponse = false;
     const timer = setTimeout(() => {
       obtenerProductos(leerFiltros(new URLSearchParams(consulta)))
-        .then((data) => {
-          if (!ignoreResponse) setResultado({ consulta, products: data, error: null });
+        .then(({ products, total }) => {
+          if (!ignoreResponse) {
+            setResultado({ consulta, products, total, error: null });
+          }
         })
         .catch((err) => {
           if (ignoreResponse) return;
@@ -51,6 +58,7 @@ export function CatalogoPage() {
           setResultado({
             consulta,
             products: [],
+            total: 0,
             error: "Error al obtener los productos. Por favor, inténtalo de nuevo.",
           });
         });
@@ -78,6 +86,11 @@ export function CatalogoPage() {
   useEffect(() => {
     obtenerDefinicionesSpecs().then((data) => setSpecsDefinitions(data));
   }, []);
+
+  function irAPagina(pagina) {
+    acciones.cambiarPagina(pagina);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <div className="container py-3">
@@ -134,8 +147,7 @@ export function CatalogoPage() {
           {/* Título */}
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="fs-6 fw-bold mb-0">
-              {category} · {products.length}{" "}
-              {products.length === 1 ? "resultado" : "resultados"}
+              {category} · {total} {total === 1 ? "resultado" : "resultados"}
             </h2>
 
             <SelectorOrden sort={sort} onChange={acciones.cambiarOrden} />
@@ -171,6 +183,14 @@ export function CatalogoPage() {
                 </div>
               ))}
             </div>
+          )}
+
+          {!loading && !error && (
+            <Paginacion
+              paginaActual={page}
+              totalPaginas={totalPaginas}
+              onChange={irAPagina}
+            />
           )}
         </section>
       </div>

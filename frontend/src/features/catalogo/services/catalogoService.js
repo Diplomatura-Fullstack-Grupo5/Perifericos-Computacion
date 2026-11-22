@@ -8,6 +8,8 @@ export const OPCIONES_ORDEN = [
   { value: "name_desc", label: "Nombre (Z-A)" },
 ];
 
+export const PRODUCTOS_POR_PAGINA = 12;
+
 /**
  * Indica si un valor está dentro del rango. Un límite en null no restringe.
  * Si el valor es null (ej. batería de un auricular con cable), solo pasa cuando no hay límites.
@@ -21,7 +23,7 @@ function isInRange(value, { min = null, max = null } = {}) {
 }
 
 /**
- * Obtiene los productos filtrados y ordenados.
+ * Obtiene una página de productos filtrados y ordenados, y el total de productos que cumplen los filtros.
  * @param {object} [filters]
  * @param {string} [filters.category] Categoría (ej. "Mouses").
  * @param {string} [filters.sort] Uno de los `value` de OPCIONES_ORDEN.
@@ -29,7 +31,8 @@ function isInRange(value, { min = null, max = null } = {}) {
  * @param {Object<string, Array>} [filters.specs] Valores elegidos por spec, ej. `{ connectivity: ["Inalámbrico"] }`.
  * @param {Object<string, {min: number|null, max: number|null}>} [filters.ranges] Rangos por spec, ej. `{ weight_g: { min: null, max: 80 } }`.
  * @param {{min: number|null, max: number|null}} [filters.price] Rango de precio.
- * @returns {Promise<object[]>}
+ * @param {number} [filters.page] Número de página, empezando en 1.
+ * @returns {Promise<{ products: object[], total: number }>}
  */
 export async function obtenerProductos({
   category,
@@ -38,10 +41,11 @@ export async function obtenerProductos({
   specs = {},
   ranges = {},
   price,
+  page = 1,
 } = {}) {
   const data = await pedir(ENDPOINTS.productos);
 
-  return data
+  const filtrados = data
     .filter((product) => !category || product.category === category)
     .filter((product) => !brands?.length || brands.includes(product.brand))
     .filter((product) =>
@@ -69,6 +73,12 @@ export async function obtenerProductos({
           return 0;
       }
     });
+
+  const inicio = (page - 1) * PRODUCTOS_POR_PAGINA;
+  return {
+    products: filtrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA),
+    total: filtrados.length,
+  };
 }
 
 //! Agregar un brand en productos, implica agregarlo aca tambien. Replantear en backend

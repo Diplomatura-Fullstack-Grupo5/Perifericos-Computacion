@@ -2,7 +2,14 @@ import { useSearchParams } from "react-router";
 import { OPCIONES_ORDEN } from "../services/catalogoService";
 
 const CATEGORIA_POR_DEFECTO = "Mouses";
-const PARAMETROS_FIJOS = ["categoria", "orden", "marca", "precio_min", "precio_max"];
+const PARAMETROS_FIJOS = [
+  "categoria",
+  "orden",
+  "marca",
+  "precio_min",
+  "precio_max",
+  "pagina",
+];
 
 /**
  * Agrega el valor si no está en la lista, o lo quita si ya estaba.
@@ -38,11 +45,12 @@ function aNumeroONull(texto) {
 
 /**
  * Lee los filtros del catálogo desde los parámetros de la URL.
- * Formato: `categoria`, `orden`, `marca` (repetible), `precio_min`, `precio_max`,
+ * Formato: `categoria`, `orden`, `marca` (repetible), `precio_min`, `precio_max`, `pagina`,
  * `<spec>=<valor>` (repetible) para specs de checkbox y `<spec>_min` / `<spec>_max` para rangos.
  * @param {URLSearchParams} params
  * @returns {{ category: string, sort: string, brands: string[], specs: Object<string, Array>,
- *   ranges: Object<string, {min: number|null, max: number|null}>, price: {min: number|null, max: number|null} }}
+ *   ranges: Object<string, {min: number|null, max: number|null}>, price: {min: number|null, max: number|null},
+ *   page: number }}
  */
 export function leerFiltros(params) {
   const specs = {};
@@ -72,6 +80,7 @@ export function leerFiltros(params) {
       min: aNumeroONull(params.get("precio_min")),
       max: aNumeroONull(params.get("precio_max")),
     },
+    page: Math.max(1, Number(params.get("pagina")) || 1),
   };
 }
 
@@ -95,12 +104,14 @@ export function useFiltrosCatalogo() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   /**
+   * Cambia los filtros y vuelve a la primera página.
    * @param {(params: URLSearchParams) => void} modificar Cambia una copia de los parámetros.
    * @param {object} [opciones] `{ replace: true }` para no agregar una entrada al historial.
    */
   function actualizar(modificar, opciones) {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
+      params.delete("pagina");
       modificar(params);
       return params;
     }, opciones);
@@ -123,6 +134,14 @@ export function useFiltrosCatalogo() {
       setSearchParams((prev) => {
         const params = new URLSearchParams({ categoria });
         if (prev.has("orden")) params.set("orden", prev.get("orden"));
+        return params;
+      });
+    },
+    cambiarPagina(pagina) {
+      setSearchParams((prev) => {
+        const params = new URLSearchParams(prev);
+        if (pagina <= 1) params.delete("pagina");
+        else params.set("pagina", String(pagina));
         return params;
       });
     },
