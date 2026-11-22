@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
 /**
- * Estructura común de las páginas públicas. La página de la ruta actual se dibuja en <Outlet />.
+ * Estructura común de las páginas públicas.
  */
 export function LayoutPublico() {
   return (
