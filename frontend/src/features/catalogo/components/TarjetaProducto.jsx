@@ -3,7 +3,15 @@ import "./TarjetaProducto.css";
 import { formatearValorSpec } from "../../../shared/utils/formatearValorSpec";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 
-export function TarjetaProducto({ name, price, image, specs, specsDefinitions }) {
+export function TarjetaProducto({
+  name,
+  price,
+  image,
+  stock,
+  specs,
+  specsDefinitions,
+}) {
+  const sinStock = stock === 0;
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = image && !imageFailed;
 
@@ -60,9 +68,10 @@ export function TarjetaProducto({ name, price, image, specs, specsDefinitions })
           </label>
           <button
             type="button"
-            className="btn btn-primary btn-sm px-3 fw-semibold"
+            className={`btn btn-sm px-3 fw-semibold ${sinStock ? "btn-outline-secondary" : "btn-primary"}`}
+            disabled={sinStock}
           >
-            Agregar
+            {sinStock ? "Sin stock" : "Agregar"}
           </button>
         </div>
       </div>

@@ -3,65 +3,56 @@ import { TarjetaProducto } from "../components/TarjetaProducto";
 import { FiltrosCatalogo } from "../components/FiltrosCatalogo";
 import { SelectorOrden } from "../components/SelectorOrden";
 import {
-  OPCIONES_ORDEN,
   obtenerProductos,
   obtenerMarcas,
   obtenerOpcionesSpecs,
   obtenerDefinicionesSpecs,
 } from "../services/catalogoService";
+import {
+  leerFiltros,
+  useFiltrosCatalogo,
+} from "../hooks/useFiltrosCatalogo";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 
-/**
- * Agrega el valor si no está en la lista, o lo quita si ya estaba.
- * @param {Array} list
- * @param {*} value
- * @returns {Array} Una lista nueva (no modifica la original).
- */
-function toggleInList(list, value) {
-  if (list.includes(value)) return list.filter((item) => item !== value);
-  return [...list, value];
-}
-
 export function CatalogoPage() {
-  const [category, setCategory] = useState("Mouses"); //! Temporal hasta el navbar
-  const [products, setProducts] = useState([]);
+  const { filtros, consulta, acciones } = useFiltrosCatalogo();
+  const {
+    category,
+    sort,
+    brands: selectedBrands,
+    specs: selectedSpecs,
+    ranges: specRanges,
+    price: priceRange,
+  } = filtros;
+
+  const [resultado, setResultado] = useState({
+    consulta: null,
+    products: [],
+    error: null,
+  });
   const [specsDefinitions, setSpecsDefinitions] = useState({});
-  const [sort, setSort] = useState(OPCIONES_ORDEN[0].value);
   const [brands, setBrands] = useState([]);
-  const [selectedBrands, setSelectedBrands] = useState([]);
   const [specOptions, setSpecOptions] = useState({});
-  const [selectedSpecs, setSelectedSpecs] = useState({});
-  const [specRanges, setSpecRanges] = useState({});
-  const [priceRange, setPriceRange] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const { products, error } = resultado;
+  const loading = resultado.consulta !== consulta;
 
   useEffect(() => {
     let ignoreResponse = false;
     const timer = setTimeout(() => {
-      obtenerProductos({
-        category,
-        sort,
-        brands: selectedBrands,
-        specs: selectedSpecs,
-        ranges: specRanges,
-        price: priceRange,
-      })
+      obtenerProductos(leerFiltros(new URLSearchParams(consulta)))
         .then((data) => {
-          if (ignoreResponse) return;
-          setProducts(data);
-          setError(null);
+          if (!ignoreResponse) setResultado({ consulta, products: data, error: null });
         })
         .catch((err) => {
           if (ignoreResponse) return;
           console.error("Error al obtener los productos:", err);
-          setError(
-            "Error al obtener los productos. Por favor, inténtalo de nuevo.",
-          );
-        })
-        .finally(() => {
-          if (!ignoreResponse) setLoading(false);
+          setResultado({
+            consulta,
+            products: [],
+            error: "Error al obtener los productos. Por favor, inténtalo de nuevo.",
+          });
         });
     }, 300);
 
@@ -69,7 +60,7 @@ export function CatalogoPage() {
       ignoreResponse = true;
       clearTimeout(timer);
     };
-  }, [category, sort, selectedBrands, selectedSpecs, specRanges, priceRange]);
+  }, [consulta]);
 
   useEffect(() => {
     let ignoreResponse = false;
@@ -87,42 +78,6 @@ export function CatalogoPage() {
   useEffect(() => {
     obtenerDefinicionesSpecs().then((data) => setSpecsDefinitions(data));
   }, []);
-
-  function toggleBrand(brand) {
-    setLoading(true);
-    setSelectedBrands((prev) => toggleInList(prev, brand));
-  }
-
-  function toggleSpec(key, value) {
-    setLoading(true);
-    setSelectedSpecs((prev) => ({
-      ...prev,
-      [key]: toggleInList(prev[key] ?? [], value),
-    }));
-  }
-
-  function changeSpecRange(key, range) {
-    setLoading(true);
-    setSpecRanges((prev) => ({ ...prev, [key]: range }));
-  }
-
-  function changePriceRange(range) {
-    setLoading(true);
-    setPriceRange(range);
-  }
-
-  function changeSort(value) {
-    setLoading(true);
-    setSort(value);
-  }
-
-  function clearFilters() {
-    setLoading(true);
-    setSelectedBrands([]);
-    setSelectedSpecs({});
-    setSpecRanges({});
-    setPriceRange({});
-  }
 
   return (
     <div className="container py-3">
@@ -145,16 +100,16 @@ export function CatalogoPage() {
               key={category}
               brands={brands}
               selectedBrands={selectedBrands}
-              onToggleBrand={toggleBrand}
+              onToggleBrand={acciones.toggleMarca}
               specsDefinitions={specsDefinitions[category]}
               specOptions={specOptions}
               selectedSpecs={selectedSpecs}
-              onToggleSpec={toggleSpec}
+              onToggleSpec={acciones.toggleSpec}
               specRanges={specRanges}
-              onChangeSpecRange={changeSpecRange}
+              onChangeSpecRange={acciones.cambiarRangoSpec}
               priceRange={priceRange}
-              onChangePriceRange={changePriceRange}
-              onClearFilters={clearFilters}
+              onChangePriceRange={acciones.cambiarRangoPrecio}
+              onClearFilters={acciones.limpiarFiltros}
             />
           </div>
         </aside>
@@ -168,10 +123,7 @@ export function CatalogoPage() {
                 key={cat}
                 type="button"
                 className={`btn btn-sm ${cat === category ? "btn-primary" : "btn-outline-primary"}`}
-                onClick={() => {
-                  setCategory(cat);
-                  clearFilters();
-                }}
+                onClick={() => acciones.cambiarCategoria(cat)}
               >
                 {cat}
               </button>
@@ -186,7 +138,7 @@ export function CatalogoPage() {
               {products.length === 1 ? "resultado" : "resultados"}
             </h2>
 
-            <SelectorOrden sort={sort} onChange={changeSort} />
+            <SelectorOrden sort={sort} onChange={acciones.cambiarOrden} />
           </div>
 
           {/* Cards de productos */}
@@ -212,6 +164,7 @@ export function CatalogoPage() {
                     name={product.name}
                     price={product.price}
                     image={product.image}
+                    stock={product.stock}
                     specs={product.specs}
                     specsDefinitions={specsDefinitions[product.category]}
                   />
