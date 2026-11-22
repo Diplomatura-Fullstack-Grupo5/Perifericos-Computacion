@@ -7,7 +7,6 @@ export function LayoutPublico() {
   return (
     <>
       {/* TODO: reemplazar por el Navbar de shared/components/organisms */}
-      <h1>TechPerifa</h1>
       <main>
         <Outlet />
       </main>

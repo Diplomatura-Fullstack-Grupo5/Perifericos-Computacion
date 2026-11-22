@@ -6,7 +6,7 @@ Edita las instrucciones aquí, no en `CLAUDE.md`.
 
 ## Proyecto
 
-**TechPerifa**: e-commerce de periféricos de computación (teclados, mouses, monitores, auriculares,
+**PuntoTech**: e-commerce de periféricos de computación (teclados, mouses, monitores, auriculares,
 webcams, etc.). Proyecto integrador académico.
 
 Lo que distingue al sistema: cada producto guarda sus **especificaciones técnicas como datos
