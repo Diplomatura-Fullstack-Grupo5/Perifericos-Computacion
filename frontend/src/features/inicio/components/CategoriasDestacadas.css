@@ -1,0 +1,19 @@
+.categoria-destacada {
+  border-radius: 0.75rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.categoria-destacada:hover,
+.categoria-destacada:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--bs-primary);
+  box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.12);
+}
+
+.categoria-destacada-icono {
+  font-size: 3.5rem;
+  line-height: 1;
+}

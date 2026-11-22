@@ -1,0 +1,13 @@
+.footer-sitio {
+  background: #161b2e;
+  color: #aab1c5;
+}
+
+.footer-sitio-enlace {
+  color: #dfe3ee;
+}
+
+.footer-sitio-enlace:hover,
+.footer-sitio-enlace:focus-visible {
+  color: #fff;
+}
