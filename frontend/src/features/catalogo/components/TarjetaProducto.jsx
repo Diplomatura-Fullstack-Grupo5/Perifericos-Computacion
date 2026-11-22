@@ -1,8 +1,9 @@
 import { useState } from "react";
-import "../styles/ProductCard.css";
-import { formatSpecValue } from "../utils/formatSpecValue";
+import "./TarjetaProducto.css";
+import { formatearValorSpec } from "../../../shared/utils/formatearValorSpec";
+import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 
-export function ProductCard({ name, price, image, specs, specsDefinitions }) {
+export function TarjetaProducto({ name, price, image, specs, specsDefinitions }) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = image && !imageFailed;
 
@@ -41,14 +42,14 @@ export function ProductCard({ name, price, image, specs, specsDefinitions }) {
                 className="badge rounded-pill bg-primary-subtle text-primary-emphasis fw-normal"
                 title={specsDefinitions[key].label}
               >
-                {formatSpecValue(value, specsDefinitions[key].unit)}
+                {formatearValorSpec(value, specsDefinitions[key].unit)}
               </span>
             ))}
         </div>
 
         {/* -------------------- Precio -------------------- */}
         <p className="fs-5 fw-bold text-primary mb-3">
-          ${price.toLocaleString("es-AR")}
+          {formatearPrecio(price)}
         </p>
 
         {/* -------------------- Check y Boton -------------------- */}

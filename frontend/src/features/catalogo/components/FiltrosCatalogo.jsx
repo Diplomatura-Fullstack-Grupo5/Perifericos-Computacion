@@ -1,6 +1,6 @@
-import { CheckboxFilter } from "./CheckboxFilter";
-import { RangeFilter } from "./RangeFilter";
-import { formatSpecValue } from "../utils/formatSpecValue";
+import { FiltroCheckbox } from "./FiltroCheckbox";
+import { FiltroRango } from "./FiltroRango";
+import { formatearValorSpec } from "../../../shared/utils/formatearValorSpec";
 
 /**
  * Indica si un rango tiene al menos un límite cargado.
@@ -15,7 +15,7 @@ function isRangeActive(range) {
  * Panel de filtros del catálogo: marca, las specs con `filter` en su definición
  * (checkbox o rango, en el orden del JSON) y precio.
  */
-export function FilterPanel({
+export function FiltrosCatalogo({
   brands,
   selectedBrands,
   onToggleBrand,
@@ -54,7 +54,7 @@ export function FilterPanel({
         )}
       </div>
 
-      <CheckboxFilter
+      <FiltroCheckbox
         title="Marca"
         options={brands}
         selected={selectedBrands}
@@ -63,7 +63,7 @@ export function FilterPanel({
 
       {filterableSpecs.map(([key, definition]) =>
         definition.filter === "range" ? (
-          <RangeFilter
+          <FiltroRango
             key={key}
             title={definition.label}
             unit={definition.unit}
@@ -71,18 +71,18 @@ export function FilterPanel({
             onChange={(range) => onChangeSpecRange(key, range)}
           />
         ) : (
-          <CheckboxFilter
+          <FiltroCheckbox
             key={key}
             title={definition.label}
             options={specOptions[key] ?? []}
             selected={selectedSpecs[key] ?? []}
             onToggle={(value) => onToggleSpec(key, value)}
-            formatOption={(value) => formatSpecValue(value, definition.unit)}
+            formatOption={(value) => formatearValorSpec(value, definition.unit)}
           />
         ),
       )}
 
-      <RangeFilter
+      <FiltroRango
         title="Precio"
         unit="$"
         value={priceRange}

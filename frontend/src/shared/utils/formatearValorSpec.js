@@ -5,7 +5,7 @@
  * @param {string} [unit] Unidad de la spec.
  * @returns {string}
  */
-export function formatSpecValue(value, unit) {
+export function formatearValorSpec(value, unit) {
   switch (typeof value) {
     case "boolean":
       return value ? "Sí" : "No";

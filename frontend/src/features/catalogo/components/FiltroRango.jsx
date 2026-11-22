@@ -1,4 +1,4 @@
-import "../styles/RangeFilter.css";
+import "./FiltroRango.css";
 
 /**
  * Convierte el texto de un input numérico en número, o en null si está vacío.
@@ -17,7 +17,7 @@ function toNumberOrNull(text) {
  * @param {{ min: number | null, max: number | null }} [props.value] Rango actual.
  * @param {(range: { min: number | null, max: number | null }) => void} props.onChange Se llama al cambiar cualquiera de los dos campos.
  */
-export function RangeFilter({ title, unit, value = {}, onChange }) {
+export function FiltroRango({ title, unit, value = {}, onChange }) {
   const { min = null, max = null } = value;
   const invalid = min !== null && max !== null && min > max;
   const inputClass = `form-control form-control-sm range-filter-input ${invalid ? "is-invalid" : ""}`;

@@ -12,7 +12,7 @@ const VISIBLE_OPTIONS = 5;
  * @param {(option: any) => void} props.onToggle Se llama al marcar o desmarcar una opción.
  * @param {(option: any) => string} [props.formatOption] Texto a mostrar por opción (ej. true → "Sí").
  */
-export function CheckboxFilter({
+export function FiltroCheckbox({
   title,
   options,
   selected,

@@ -1,11 +1,16 @@
-import { ProductCard } from "../components/ProductCard";
-import { FilterPanel } from "../components/FilterPanel";
-import { SortDropdown } from "../components/SortDropdown";
-import { getProducts, SORT_OPTIONS } from "../api/products";
-import { getSpecsDefinitions } from "../api/specsDefinitions";
-import { getBrands } from "../api/brands";
-import { getSpecOptions } from "../api/specOptions";
 import { useEffect, useState } from "react";
+import { TarjetaProducto } from "../components/TarjetaProducto";
+import { FiltrosCatalogo } from "../components/FiltrosCatalogo";
+import { SelectorOrden } from "../components/SelectorOrden";
+import {
+  OPCIONES_ORDEN,
+  obtenerProductos,
+  obtenerMarcas,
+  obtenerOpcionesSpecs,
+  obtenerDefinicionesSpecs,
+} from "../services/catalogoService";
+import { Spinner } from "../../../shared/components/atoms/Spinner";
+import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 
 /**
  * Agrega el valor si no está en la lista, o lo quita si ya estaba.
@@ -18,11 +23,11 @@ function toggleInList(list, value) {
   return [...list, value];
 }
 
-export function Catalog() {
+export function CatalogoPage() {
   const [category, setCategory] = useState("Mouses"); //! Temporal hasta el navbar
   const [products, setProducts] = useState([]);
   const [specsDefinitions, setSpecsDefinitions] = useState({});
-  const [sort, setSort] = useState(SORT_OPTIONS[0].value);
+  const [sort, setSort] = useState(OPCIONES_ORDEN[0].value);
   const [brands, setBrands] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [specOptions, setSpecOptions] = useState({});
@@ -35,7 +40,7 @@ export function Catalog() {
   useEffect(() => {
     let ignoreResponse = false;
     const timer = setTimeout(() => {
-      getProducts({
+      obtenerProductos({
         category,
         sort,
         brands: selectedBrands,
@@ -68,10 +73,10 @@ export function Catalog() {
 
   useEffect(() => {
     let ignoreResponse = false;
-    getBrands({ category }).then((data) => {
+    obtenerMarcas({ category }).then((data) => {
       if (!ignoreResponse) setBrands(data);
     });
-    getSpecOptions({ category }).then((data) => {
+    obtenerOpcionesSpecs({ category }).then((data) => {
       if (!ignoreResponse) setSpecOptions(data);
     });
 
@@ -80,7 +85,7 @@ export function Catalog() {
     };
   }, [category]);
   useEffect(() => {
-    getSpecsDefinitions().then((data) => setSpecsDefinitions(data));
+    obtenerDefinicionesSpecs().then((data) => setSpecsDefinitions(data));
   }, []);
 
   function toggleBrand(brand) {
@@ -136,7 +141,7 @@ export function Catalog() {
           </button>
 
           <div className="collapse d-md-block" id="filter-panel">
-            <FilterPanel
+            <FiltrosCatalogo
               key={category}
               brands={brands}
               selectedBrands={selectedBrands}
@@ -181,17 +186,11 @@ export function Catalog() {
               {products.length === 1 ? "resultado" : "resultados"}
             </h2>
 
-            <SortDropdown sort={sort} onChange={changeSort} />
+            <SelectorOrden sort={sort} onChange={changeSort} />
           </div>
 
           {/* Cards de productos */}
-          {loading && (
-            <div className="d-flex justify-content-center my-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </div>
-            </div>
-          )}
+          {loading && <Spinner />}
 
           {!loading && error && (
             <div className="alert alert-danger" role="alert">
@@ -200,16 +199,16 @@ export function Catalog() {
           )}
 
           {!loading && !error && products.length === 0 && (
-            <p className="text-secondary text-center my-5">
+            <MensajeVacio>
               No hay productos que coincidan con los filtros elegidos.
-            </p>
+            </MensajeVacio>
           )}
 
           {!loading && !error && (
             <div className="row g-3">
               {products.map((product) => (
                 <div key={product.id} className="col-sm-6 col-lg-4">
-                  <ProductCard
+                  <TarjetaProducto
                     name={product.name}
                     price={product.price}
                     image={product.image}

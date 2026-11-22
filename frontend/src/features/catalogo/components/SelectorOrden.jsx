@@ -1,7 +1,7 @@
-import { SORT_OPTIONS } from "../api/products";
+import { OPCIONES_ORDEN } from "../services/catalogoService";
 
-export function SortDropdown({ sort, onChange }) {
-  const sortLabel = SORT_OPTIONS.find((option) => option.value === sort).label;
+export function SelectorOrden({ sort, onChange }) {
+  const sortLabel = OPCIONES_ORDEN.find((option) => option.value === sort).label;
 
   return (
     <div className="dropdown">
@@ -14,7 +14,7 @@ export function SortDropdown({ sort, onChange }) {
         Ordenar por: {sortLabel}
       </button>
       <ul className="dropdown-menu dropdown-menu-end shadow-sm">
-        {SORT_OPTIONS.map((option) => (
+        {OPCIONES_ORDEN.map((option) => (
           <li key={option.value}>
             <button
               type="button"
