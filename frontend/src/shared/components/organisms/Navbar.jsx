@@ -16,7 +16,9 @@ export function Navbar({ categorias }) {
     <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
       <div className="container">
         {/* -------------------- Marca -------------------- */}
-        <img className="navbar-brand" src="/icon.svg" alt="PuntoTech" />
+        <Link className="navbar-brand" to="/">
+          <img src="/icon.svg" alt="PuntoTech - Inicio" />
+        </Link>
         {/* -------------------- Botón hamburguesa (mobile) -------------------- */}
         <button
           className="navbar-toggler"
