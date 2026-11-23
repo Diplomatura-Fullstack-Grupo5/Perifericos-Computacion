@@ -1,0 +1,30 @@
+.vista-comparador {
+  border-radius: 1rem;
+}
+
+.vista-comparador-paso {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--bs-primary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.vista-comparador-tabla th,
+.vista-comparador-tabla td {
+  padding: 0.6rem 0.75rem;
+}
+
+.vista-comparador-difiere {
+  border-left: 3px solid var(--bs-warning) !important;
+}
+
+.vista-comparador-mejor {
+  background: var(--bs-success-bg-subtle) !important;
+  color: var(--bs-success-text-emphasis);
+  font-weight: 700;
+}

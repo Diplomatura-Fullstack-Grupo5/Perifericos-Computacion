@@ -1,0 +1,11 @@
+/* Oculta las flechas de incrementar/decrementar de los input number */
+.range-filter-input::-webkit-outer-spin-button,
+.range-filter-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.range-filter-input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

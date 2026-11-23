@@ -1,4 +1,4 @@
-# TechPerifa
+# PuntoTech
 
 E-commerce de periféricos de computación: teclados, mouses, monitores, auriculares, webcams y más.
 Proyecto Integrador del Grupo 5.
@@ -9,7 +9,7 @@ Quien compra periféricos suele decidir por especificaciones técnicas. Un mouse
 sensor y peso, y un monitor por panel y tasa de refresco. En la mayoría de las tiendas esos datos
 aparecen como texto libre en la descripción, así que hay que abrir varias pestañas y comparar a mano.
 
-TechPerifa guarda las especificaciones de cada producto (DPI, switches, tasa de refresco,
+PuntoTech guarda las especificaciones de cada producto (DPI, switches, tasa de refresco,
 conectividad, latencia, etc.) como **datos estructurados**. Con eso se puede filtrar el catálogo por
 especificaciones y comparar productos automáticamente, en un **comparador lado a lado** que resalta
 las diferencias.
@@ -41,12 +41,12 @@ las diferencias.
 
 ## Tecnologías
 
-| Capa          | Tecnología                                          |
-| ------------- | --------------------------------------------------- |
+| Capa          | Tecnología                                            |
+| ------------- | ----------------------------------------------------- |
 | Frontend      | React + Vite (sitio público y panel admin en una SPA) |
-| Backend       | API REST en Node.js + Express                       |
-| Base de datos | PostgreSQL                                          |
-| Autenticación | JWT y contraseñas hasheadas con bcrypt              |
+| Backend       | API REST en Node.js + Express                         |
+| Base de datos | PostgreSQL                                            |
+| Autenticación | JWT y contraseñas hasheadas con bcrypt                |
 
 ## Arquitectura
 
@@ -69,11 +69,11 @@ un dominio queda en un solo lugar. Además, hay un único despliegue y una únic
 
 ## Estructura del repositorio
 
-| Carpeta     | Contenido                                      |
-| ----------- | ---------------------------------------------- |
-| `frontend/` | Aplicación React + Vite                        |
-| `backend/`  | API REST (en preparación)                      |
-| `database/` | Base de datos (en preparación)                 |
+| Carpeta     | Contenido                      |
+| ----------- | ------------------------------ |
+| `frontend/` | Aplicación React + Vite        |
+| `backend/`  | API REST (en preparación)      |
+| `database/` | Base de datos (en preparación) |
 
 ## Cómo ejecutar el frontend
 
