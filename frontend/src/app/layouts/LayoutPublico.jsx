@@ -1,31 +1,13 @@
-import { useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import { Footer } from "../../shared/components/organisms/Footer";
 import { Navbar } from "../../shared/components/organisms/Navbar";
-import { obtenerCategorias } from "../../features/catalogo";
 
 /**
- * Estructura común de las páginas públicas. Carga las categorías para el menú del Navbar.
+ * Estructura común de las páginas públicas. Las categorías del Navbar vienen del loader de la ruta.
  * @returns {JSX.Element}
  */
 export function LayoutPublico() {
-  const [categorias, setCategorias] = useState([]);
-
-  useEffect(() => {
-    let ignoreResponse = false;
-
-    obtenerCategorias()
-      .then((data) => {
-        if (!ignoreResponse) setCategorias(data);
-      })
-      .catch((err) => {
-        if (!ignoreResponse) console.error("Error al cargar las categorías del menú:", err);
-      });
-
-    return () => {
-      ignoreResponse = true;
-    };
-  }, []);
+  const { categorias } = useLoaderData();
 
   return (
     <div className="d-flex flex-column min-vh-100">

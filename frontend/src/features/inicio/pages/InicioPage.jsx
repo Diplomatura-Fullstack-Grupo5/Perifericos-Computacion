@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
+import { useRouteLoaderData } from "react-router";
 import { HeroInicio } from "../components/HeroInicio";
 import { CategoriasDestacadas } from "../components/CategoriasDestacadas";
 import { MasVendidos } from "../components/MasVendidos";
 import { obtenerMasVendidos } from "../services/inicioService";
-import { obtenerCategorias } from "../../catalogo";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 
+/**
+ * Página de inicio: hero, accesos por categoría y productos más vendidos.
+ * Las categorías vienen del loader del layout público (ruta "publico"), así no se piden dos veces.
+ * @returns {JSX.Element}
+ */
 export function InicioPage() {
+  const { categorias } = useRouteLoaderData("publico");
   const [datos, setDatos] = useState({
-    categorias: [],
     masVendidos: [],
     cargando: true,
     error: null,
@@ -17,17 +22,16 @@ export function InicioPage() {
   useEffect(() => {
     let ignoreResponse = false;
 
-    Promise.all([obtenerCategorias(), obtenerMasVendidos({ limite: 8 })])
-      .then(([categorias, masVendidos]) => {
+    obtenerMasVendidos({ limite: 8 })
+      .then((masVendidos) => {
         if (!ignoreResponse) {
-          setDatos({ categorias, masVendidos, cargando: false, error: null });
+          setDatos({ masVendidos, cargando: false, error: null });
         }
       })
       .catch((err) => {
         if (ignoreResponse) return;
         console.error("Error al cargar la página de inicio:", err);
         setDatos({
-          categorias: [],
           masVendidos: [],
           cargando: false,
           error: "No se pudieron cargar los productos. Por favor, inténtalo de nuevo.",
@@ -55,7 +59,7 @@ export function InicioPage() {
 
       {!datos.cargando && !datos.error && (
         <>
-          <CategoriasDestacadas categorias={datos.categorias} />
+          <CategoriasDestacadas categorias={categorias} />
           <MasVendidos productos={datos.masVendidos} />
         </>
       )}
