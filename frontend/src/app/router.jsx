@@ -15,6 +15,8 @@ export const router = createBrowserRouter([
       { index: true, element: <InicioPage /> },
       { path: "catalogo", element: <CatalogoPage /> },
       { path: "legales", element: <Legales /> },
+      { path: "nosotros", element: <MensajeVacio>Página en construcción.</MensajeVacio> },
+      { path: "contacto", element: <MensajeVacio>Página en construcción.</MensajeVacio> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

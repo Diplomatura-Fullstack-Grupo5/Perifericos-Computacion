@@ -58,16 +58,16 @@ export function Navbar({ categorias }) {
                 ))}
               </ul>
             </li>
-            {/* TODO: redirigir a las páginas cuando existan */}
+            {/* TODO: reemplazar el mensaje de /nosotros y /contacto por las páginas reales cuando existan */}
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/nosotros">
                 Nosotros
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/contacto">
                 Contacto
-              </a>
+              </Link>
             </li>
           </ul>
 
