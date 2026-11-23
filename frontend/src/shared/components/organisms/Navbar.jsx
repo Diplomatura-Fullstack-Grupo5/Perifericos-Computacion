@@ -8,7 +8,7 @@ export function Navbar() {
   const cartCount = 0;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark app-navbar">
+    <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
       <div className="container">
         {/* -------------------- Marca -------------------- */}
         <img className="navbar-brand" src="/icon.svg" alt="TechPerifa" />
