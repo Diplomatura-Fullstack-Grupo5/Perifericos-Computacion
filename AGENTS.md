@@ -41,6 +41,7 @@ Panel de administración:
   - React Router (`react-router`) para las rutas.
   - Bootstrap 5 (CSS y `bootstrap.bundle` JS, importados en `app/main.jsx`) para estilos y
     componentes como dropdowns y collapse.
+  - Bootstrap Icons (`bootstrap-icons`, clases `bi bi-<nombre>`) para los iconos.
 - `database/`: JSON con datos de práctica que hoy hacen de API (ver "Datos de práctica").
 - `backend/`: API REST en Node.js + Express (todavía sin código).
 - Base de datos relacional PostgreSQL, accedida con `pg` mediante un único `Pool` compartido.
@@ -143,7 +144,9 @@ servidor dentro de los services (filtrar, ordenar, calcular opciones de filtro) 
   orden de las claves es el orden en que se muestran.
 - `marcas.json`: marcas por categoría. Se mantiene a mano: una marca nueva en `productos.json`
   también va aquí.
-- Las imágenes de producto están en `frontend/public/images/products/`.
+- Las imágenes de producto están en `frontend/public/images/products/`, en `.webp`. Deben tener
+  **fondo blanco o transparente**: la interfaz usa `mix-blend-mode: multiply` para fundir el fondo
+  con el recuadro, y una foto con ambiente o fondo de color se vería como un rectángulo.
 
 ## Comandos (desde `frontend/`)
 
