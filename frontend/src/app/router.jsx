@@ -5,6 +5,7 @@ import { CatalogoPage, obtenerCategorias } from "../features/catalogo";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
+import { ProductoPage } from "../features/producto";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <InicioPage /> },
       { path: "catalogo", element: <CatalogoPage /> },
+      { path: "producto/:id", element: <ProductoPage /> },
       { path: "legales", element: <Legales /> },
       ...PAGINAS_EN_CONSTRUCCION.map((path) => ({
         path,
