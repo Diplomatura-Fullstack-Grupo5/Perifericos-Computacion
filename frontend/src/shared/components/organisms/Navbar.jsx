@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import "../../../styles/Navbar.css";
+import "./Navbar.css";
 
 /**
  * Barra de navegación superior del sitio público.
