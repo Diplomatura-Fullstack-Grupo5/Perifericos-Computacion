@@ -1,12 +1,22 @@
 import "./FiltroRango.css";
 
+const TECLAS_BLOQUEADAS = ["-", "+", "e", "E"];
+
 /**
- * Convierte el texto de un input numérico en número, o en null si está vacío.
+ * Convierte el texto de un input numérico en un número de 0 en adelante, o en null si está vacío.
  * @param {string} text
  * @returns {number | null}
  */
 function toNumberOrNull(text) {
-  return text === "" ? null : Number(text);
+  return text === "" ? null : Math.max(0, Number(text));
+}
+
+/**
+ * Evita escribir signos y notación científica (`-`, `+`, `e`) en un input numérico.
+ * @param {import("react").KeyboardEvent<HTMLInputElement>} e
+ */
+function bloquearTeclasNoValidas(e) {
+  if (TECLAS_BLOQUEADAS.includes(e.key)) e.preventDefault();
 }
 
 /**
@@ -37,6 +47,7 @@ export function FiltroRango({ title, unit, value = {}, onChange }) {
           placeholder="Mín"
           aria-label={`${title} mínimo`}
           value={min ?? ""}
+          onKeyDown={bloquearTeclasNoValidas}
           onChange={(e) => onChange({ min: toNumberOrNull(e.target.value), max })}
         />
         <span className="text-secondary">–</span>
@@ -47,6 +58,7 @@ export function FiltroRango({ title, unit, value = {}, onChange }) {
           placeholder="Máx"
           aria-label={`${title} máximo`}
           value={max ?? ""}
+          onKeyDown={bloquearTeclasNoValidas}
           onChange={(e) => onChange({ min, max: toNumberOrNull(e.target.value) })}
         />
       </div>

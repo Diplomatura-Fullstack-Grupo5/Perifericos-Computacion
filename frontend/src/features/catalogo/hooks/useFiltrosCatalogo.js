@@ -36,11 +36,15 @@ function parsearValor(texto) {
 }
 
 /**
+ * Convierte un límite de rango de la URL en un número de 0 en adelante.
+ * Devuelve null si falta o no es un número (ej. `?precio_min=abc`).
  * @param {string | null} texto
  * @returns {number | null}
  */
 function aNumeroONull(texto) {
-  return texto === null || texto === "" ? null : Number(texto);
+  if (texto === null || texto === "") return null;
+  const numero = Number(texto);
+  return Number.isFinite(numero) ? Math.max(0, numero) : null;
 }
 
 /**
