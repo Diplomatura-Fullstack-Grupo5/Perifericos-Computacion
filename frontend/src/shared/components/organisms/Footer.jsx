@@ -2,21 +2,25 @@ import { Link } from "react-router";
 import "./Footer.css";
 
 const ENLACES = [
-  { to: "/catalogo", texto: "Catálogo" },
-  { to: "/comparador", texto: "Comparador" },
-  { to: "/mis-pedidos", texto: "Mis pedidos" },
-  { to: "/ingresar", texto: "Ingresar" },
+  { to: "/legales#terminos", texto: "Términos y condiciones" },
+  { to: "/legales#privacidad", texto: "Política de privacidad" },
+  { to: "/legales#devoluciones", texto: "Cambios y devoluciones" },
+  { to: "/legales#arrepentimiento", texto: "Botón de arrepentimiento" },
 ];
 
 /**
  * Pie de página del sitio público.
  */
 export function Footer() {
+  const anio = new Date().getFullYear();
+
   return (
     <footer className="footer-sitio py-4">
       <div className="container d-flex flex-wrap justify-content-between align-items-center gap-3">
         <div>
-          <p className="fw-bold text-white mb-1">PuntoTech</p>
+          <Link to="/" aria-label="PuntoTech, ir al inicio">
+            <img src="/icon.svg" alt="PuntoTech" height="28" className="mb-1" />
+          </Link>
           <p className="small mb-0">E-commerce de periféricos de computación</p>
         </div>
 
@@ -33,7 +37,7 @@ export function Footer() {
         </nav>
 
         <p className="small mb-0">
-          Grupo 5 · Diplomatura Full Stack · Proyecto Integrador
+          © {anio} PuntoTech · Grupo 5 · Diplomatura Full Stack · Proyecto Integrador
         </p>
       </div>
     </footer>

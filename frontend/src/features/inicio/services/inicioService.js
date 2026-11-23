@@ -2,15 +2,6 @@ import { pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
 
 /**
- * Obtiene los nombres de las categorías, en el orden de categorias.json.
- * @returns {Promise<string[]>}
- */
-export async function obtenerCategorias() {
-  const data = await pedir(ENDPOINTS.categorias);
-  return Object.keys(data);
-}
-
-/**
  * Obtiene los productos más vendidos, de mayor a menor cantidad de unidades vendidas.
  * Simula `GET /api/productos/mas-vendidos?limite=...`.
  * @param {object} [params]

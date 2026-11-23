@@ -134,13 +134,6 @@ export function useFiltrosCatalogo() {
   }
 
   const acciones = {
-    cambiarCategoria(categoria) {
-      setSearchParams((prev) => {
-        const params = new URLSearchParams({ categoria });
-        if (prev.has("orden")) params.set("orden", prev.get("orden"));
-        return params;
-      });
-    },
     cambiarPagina(pagina) {
       setSearchParams((prev) => {
         const params = new URLSearchParams(prev);

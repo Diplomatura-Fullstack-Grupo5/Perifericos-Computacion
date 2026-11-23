@@ -1,0 +1,83 @@
+/* -------------------- Barra -------------------- */
+.app-navbar {
+  background-color: #1e293b;
+}
+
+/* -------------------- Links (Catálogo, Nosotros, Contacto) -------------------- */
+.app-navbar .nav-link {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  border-radius: 0.375rem;
+}
+
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link:focus-visible,
+.app-navbar .nav-link.show {
+  color: #fff;
+}
+
+/* -------------------- Desplegable de Catálogo -------------------- */
+.app-navbar-dropdown {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 0.375rem;
+  margin-top: 0.5rem !important;
+  min-width: 11rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(15, 23, 42, 0.35);
+}
+
+.app-navbar-dropdown .dropdown-header {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.625rem 0.375rem;
+}
+
+.app-navbar-dropdown .dropdown-item {
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.625rem;
+}
+
+.app-navbar-dropdown .dropdown-item:hover,
+.app-navbar-dropdown .dropdown-item:focus-visible {
+  background-color: #334155;
+  color: #fff;
+}
+
+/* -------------------- Botones (Comparar, Carrito, Log In) -------------------- */
+.app-navbar-btn {
+  background-color: #334155;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.app-navbar-btn:hover,
+.app-navbar-btn:focus-visible {
+  background-color: #475569;
+  color: #fff;
+}
+
+.app-navbar-btn-outline {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #475569;
+}
+
+.app-navbar-btn-outline:hover,
+.app-navbar-btn-outline:focus-visible {
+  background-color: #334155;
+  border-color: #64748b;
+  color: #fff;
+}
+
+/* Separador vertical entre carrito y Log In */
+.app-navbar-divider {
+  width: 1px;
+  align-self: stretch;
+  background-color: #334155;
+  margin: 0 0.25rem;
+}

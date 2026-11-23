@@ -1,13 +1,17 @@
-import { Outlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import { Footer } from "../../shared/components/organisms/Footer";
+import { Navbar } from "../../shared/components/organisms/Navbar";
 
 /**
- * Estructura común de las páginas públicas.
+ * Estructura común de las páginas públicas. Las categorías del Navbar vienen del loader de la ruta.
+ * @returns {JSX.Element}
  */
 export function LayoutPublico() {
+  const { categorias } = useLoaderData();
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      {/* TODO: reemplazar por el Navbar de shared/components/organisms */}
+      <Navbar categorias={categorias} />
       <main className="flex-grow-1">
         <Outlet />
       </main>

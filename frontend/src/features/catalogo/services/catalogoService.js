@@ -94,6 +94,16 @@ export async function obtenerMarcas({ category } = {}) {
 }
 
 /**
+ * Obtiene los nombres de las categorías, en el orden de categorias.json.
+ * Simula `GET /api/categorias`.
+ * @returns {Promise<string[]>}
+ */
+export async function obtenerCategorias() {
+  const data = await pedir(ENDPOINTS.categorias);
+  return Object.keys(data);
+}
+
+/**
  * Obtiene las definiciones de specs de todas las categorías (etiqueta, unidad, featured, rule, filter).
  * @returns {Promise<Object<string, object>>} Ej. `{ Mouses: { weight_g: { label: "Peso", unit: "g", ... } } }`
  */
