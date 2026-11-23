@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "German Altamirano",
+    "email": "germanaltamirano944@gmail.com",
+    "passwordHash": "scrypt$bfa8255dd6768108a534472861c2596a$1a24debbcc1bf759255a5a4db50a8de91aa191bd94144904116ac636d2c63a78b926090d2b443b6f6b624406b33f4dbb728655d308f11f3a19d22a572b53c9ce",
+    "role": "cliente",
+    "createdAt": "2026-11-23T21:00:04.358Z"
+  },
+  {
+    "id": 2,
+    "name": "German Altamirano",
+    "email": "germanaltamirano9444@gmail.com",
+    "passwordHash": "scrypt$cc9352479bf484f66dab7c54037d75e4$189d465bc0614ed93d8e6f6c4e25cb7fa39a98bd09ad5af0ea21122e6e1f706ad6d192b3f2abbbbd0eec2c166796036c2fb13a0d137c29482d37742d359e7971",
+    "role": "cliente",
+    "createdAt": "2026-11-23T21:06:57.531Z"
+  }
+]
