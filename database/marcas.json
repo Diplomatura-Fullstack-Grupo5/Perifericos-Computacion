@@ -1,0 +1,6 @@
+{
+  "Mouses": ["Corsair", "HyperX", "Logitech", "Razer", "SteelSeries"],
+  "Teclados": ["Corsair", "HyperX", "Keychron", "Logitech", "Razer", "Redragon", "SteelSeries"],
+  "Auriculares": ["Corsair", "HyperX", "JBL", "Logitech", "Razer", "Sony", "SteelSeries"],
+  "Monitores": ["AOC", "ASUS", "BenQ", "Dell", "Gigabyte", "LG", "Samsung", "ViewSonic"]
+}

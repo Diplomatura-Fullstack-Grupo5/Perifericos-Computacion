@@ -6,7 +6,7 @@ Edita las instrucciones aquí, no en `CLAUDE.md`.
 
 ## Proyecto
 
-**TechPerifa**: e-commerce de periféricos de computación (teclados, mouses, monitores, auriculares,
+**PuntoTech**: e-commerce de periféricos de computación (teclados, mouses, monitores, auriculares,
 webcams, etc.). Proyecto integrador académico.
 
 Lo que distingue al sistema: cada producto guarda sus **especificaciones técnicas como datos
@@ -38,6 +38,10 @@ Panel de administración:
 - `frontend/`: SPA en React 19 + Vite 8, en JavaScript (`.jsx`), con React Compiler activado
   (`babel-plugin-react-compiler` vía `@rolldown/plugin-babel` en `vite.config.js`). Incluye el sitio
   público y el panel admin.
+  - React Router (`react-router`) para las rutas.
+  - Bootstrap 5 (CSS y `bootstrap.bundle` JS, importados en `app/main.jsx`) para estilos y
+    componentes como dropdowns y collapse.
+- `database/`: JSON con datos de práctica que hoy hacen de API (ver "Datos de práctica").
 - `backend/`: API REST en Node.js + Express (todavía sin código).
 - Base de datos relacional PostgreSQL, accedida con `pg` mediante un único `Pool` compartido.
 - Autenticación con JWT; contraseñas hasheadas con bcrypt.
@@ -76,17 +80,70 @@ Reglas:
 - Las rutas del panel admin se protegen con `auth` + `requiereRol` en el backend; ocultarlas en el
   frontend no alcanza.
 
-### Frontend
+### Frontend: organizado por funcionalidad (features)
 
 Código en `frontend/src/`:
 
-- `App.jsx`: definición de rutas.
-- `api/`: cliente HTTP (`http.js` con `fetch` y el JWT) y un archivo por recurso. Los componentes no
-  llaman a `fetch` directamente; pasan por `api/`.
-- `context/`: estado global: `AuthContext`, `CarritoContext`, `ComparadorContext`.
-- `components/`: componentes reutilizables (p. ej. `TarjetaProducto`, `TablaSpecs`).
-- `pages/`: una página por ruta; las del panel admin en `pages/admin/`.
-- `styles/`: estilos.
+```
+src/
+├── app/                  # arma la aplicación
+│   ├── main.jsx          # punto de entrada: Bootstrap, index.css y <App />
+│   ├── App.jsx           # monta el router
+│   ├── router.jsx        # rutas (y más adelante loaders: protegerRuta, redirigirSiHaySesion)
+│   └── layouts/          # LayoutPublico, LayoutPrivado (zona admin)
+├── api/
+│   ├── endpoints.js      # URL_BASE + ENDPOINTS de cada recurso
+│   └── cliente.js        # pedir(endpoint): el único fetch de la aplicación
+├── features/             # un módulo por funcionalidad
+│   └── <feature>/        # catalogo, producto, comparador, carrito, pedidos, auth, panel
+│       ├── components/   # componentes propios de la feature (con su .css al lado)
+│       ├── pages/        # una página por ruta (<Nombre>Page.jsx)
+│       ├── services/     # <feature>Service.js: obtiene datos usando api/cliente.js
+│       ├── hooks/        # hooks propios, si hacen falta (useComparador, useCarrito…)
+│       └── index.js      # lo que la feature expone hacia afuera (sus páginas)
+├── shared/               # lo genérico: no conoce ninguna feature
+│   ├── components/       # atoms (Spinner, Boton…), molecules (MensajeVacio…), organisms (Navbar…)
+│   ├── hooks/            # useFetch, useLocalStorage…
+│   └── utils/            # formatearPrecio, formatearValorSpec…
+├── assets/
+└── index.css             # estilos globales
+```
+
+Reglas:
+
+- **Solo `api/cliente.js` hace `fetch`.** Los componentes piden datos a los `services` de su feature,
+  y los services usan `pedir()` con las rutas de `ENDPOINTS`.
+- Una feature no importa archivos internos de otra; usa lo que esa feature exporta en su
+  `index.js`. Si algo lo necesitan varias features, va a `shared/`.
+- `shared/` nunca importa nada de `features/`.
+- Un componente que usa una sola feature vive en esa feature, aunque sea genérico. Se mueve a
+  `shared/` cuando otra feature lo necesite.
+- El estado vive en el componente más bajo que lo necesita. Estado global (sesión, carrito,
+  comparador) en un contexto o hook de su feature.
+- Lo que cambia por una acción del usuario se actualiza en el manejador del evento, no en un
+  `useEffect`. Los `useEffect` que piden datos ignoran respuestas viejas con una función de
+  limpieza.
+- Bootstrap JS (`data-bs-toggle`) solo abre/cierra elementos (dropdown, collapse); qué se muestra lo
+  decide el estado de React. No controlar lo mismo con los dos.
+
+### Datos de práctica (`database/`)
+
+Mientras no hay backend, `database/*.json` hace de API. El plugin `servirDatabase()` de
+`vite.config.js` los sirve en `/database/*` (solo en `npm run dev` y `npm run preview`). Cuando
+exista la API real, se cambia `URL_BASE` en `api/endpoints.js` y la lógica que hoy simula al
+servidor dentro de los services (filtrar, ordenar, calcular opciones de filtro) pasa al backend.
+
+- `productos.json`: lista plana de productos. `specs` guarda solo **clave → valor**
+  (`{ "weight_g": 60, "connectivity": "Inalámbrico" }`): números como números, la unidad va en el
+  nombre de la clave, `null` = no aplica. Todos los productos de una categoría tienen las mismas
+  claves.
+- `categorias.json`: por categoría, la **definición de cada spec**: `label`, `unit`, `featured`
+  (se muestra en la tarjeta), `rule` (`"higher"` / `"lower"` para el mejor valor del comparador;
+  sin `rule` no hay ganador) y `filter` (`"checkbox"` / `"range"`; sin `filter` no se filtra). El
+  orden de las claves es el orden en que se muestran.
+- `marcas.json`: marcas por categoría. Se mantiene a mano: una marca nueva en `productos.json`
+  también va aquí.
+- Las imágenes de producto están en `frontend/public/images/products/`.
 
 ## Comandos (desde `frontend/`)
 
@@ -97,8 +154,14 @@ Código en `frontend/src/`:
 
 ## Convenciones
 
-- Nombres de dominio, archivos, componentes y rutas en español, siguiendo la estructura de arriba
-  (`productos`, `pedidos`, `Catalogo.jsx`, `Comparador.jsx`, etc.).
+- Nombres de carpetas, archivos, componentes, funciones exportadas y rutas en español, siguiendo
+  la estructura de arriba (`catalogo`, `CatalogoPage.jsx`, `TarjetaProducto`, `obtenerProductos`).
+  Las claves de los datos (`name`, `price`, `specs`…) y las props que las reciben están en inglés.
+- El CSS de un componente vive junto a él, con el mismo nombre (`TarjetaProducto.jsx` +
+  `TarjetaProducto.css`). Usar clases con prefijo propio, porque el CSS importado es global.
+- Documentar las funciones y componentes con JSDoc (`/** … */` con `@param` y `@returns`) en lugar
+  de comentarios que expliquen el código.
+- Antes de cada commit, `npm run lint` sin errores.
 - Secretos (credenciales de PostgreSQL, clave del JWT) solo en variables de entorno, nunca en el
   código ni en el repositorio. En el frontend, solo las variables con prefijo `VITE_` llegan al
   navegador, así que nunca pongas secretos ahí.
