@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { HeroInicio } from "../components/HeroInicio";
 import { CategoriasDestacadas } from "../components/CategoriasDestacadas";
 import { MasVendidos } from "../components/MasVendidos";
-import {
-  obtenerCategorias,
-  obtenerMasVendidos,
-} from "../services/inicioService";
+import { obtenerMasVendidos } from "../services/inicioService";
+import { obtenerCategorias } from "../../catalogo";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 
 export function InicioPage() {

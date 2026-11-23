@@ -1,8 +1,13 @@
+import { Link } from "react-router";
 import "../../../styles/Navbar.css";
 
-const CATEGORIES = ["Audio", "Monitores", "Mouses", "Teclados"];
-
-export function Navbar() {
+/**
+ * Barra de navegación superior del sitio público.
+ * @param {object} props
+ * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
+ * @returns {JSX.Element}
+ */
+export function Navbar({ categorias }) {
   // TODO: conectar a ComparadorContext / CarritoContext cuando existan
   const compareCount = 0;
   const cartCount = 0;
@@ -41,12 +46,14 @@ export function Navbar() {
                 <li>
                   <h6 className="dropdown-header">Categorías</h6>
                 </li>
-                {CATEGORIES.map((category) => (
-                  <li key={category}>
-                    {/* TODO: redirigir al catálogo filtrado por categoría */}
-                    <a className="dropdown-item" href="#">
-                      {category}
-                    </a>
+                {categorias.map((categoria) => (
+                  <li key={categoria}>
+                    <Link
+                      className="dropdown-item"
+                      to={`/catalogo?categoria=${encodeURIComponent(categoria)}`}
+                    >
+                      {categoria}
+                    </Link>
                   </li>
                 ))}
               </ul>
