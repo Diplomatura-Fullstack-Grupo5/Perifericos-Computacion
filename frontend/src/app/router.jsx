@@ -21,6 +21,19 @@ async function cargarLayoutPublico() {
   }
 }
 
+/**
+ * Rutas que todavía no tienen página: muestran "Página en construcción".
+ * Al crear la página real, quitarla de esta lista y agregar su ruta abajo.
+ */
+const PAGINAS_EN_CONSTRUCCION = [
+  "nosotros",
+  "contacto",
+  "comparador",
+  "carrito",
+  "iniciar-sesion",
+  "mis-pedidos",
+];
+
 /** Rutas de la aplicación. Cada página de una feature se agrega como hija del layout que le corresponde. */
 export const router = createBrowserRouter([
   {
@@ -35,8 +48,10 @@ export const router = createBrowserRouter([
       { index: true, element: <InicioPage /> },
       { path: "catalogo", element: <CatalogoPage /> },
       { path: "legales", element: <Legales /> },
-      { path: "nosotros", element: <MensajeVacio>Página en construcción.</MensajeVacio> },
-      { path: "contacto", element: <MensajeVacio>Página en construcción.</MensajeVacio> },
+      ...PAGINAS_EN_CONSTRUCCION.map((path) => ({
+        path,
+        element: <MensajeVacio>Página en construcción.</MensajeVacio>,
+      })),
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

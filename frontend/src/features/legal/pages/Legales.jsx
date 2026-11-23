@@ -122,7 +122,7 @@ export function Legales() {
 
         <h3>Qué datos recopilamos</h3>
         <ul>
-          <li>Datos de registro: nombre, email y contraseña (guardada cifrada, nunca en texto plano).</li>
+          <li>Datos de registro: nombre, email y contraseña almacenada de manera cifrada.</li>
           <li>Datos de compra: dirección de envío, teléfono e historial de pedidos.</li>
           <li>Datos de uso: productos visitados y comparados, para mejorar el catálogo.</li>
         </ul>

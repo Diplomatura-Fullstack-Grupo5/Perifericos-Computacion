@@ -87,23 +87,23 @@ export function Navbar({ categorias }) {
             />
           </form>
 
-          {/* -------------------- Comparar y carrito (solo visual) -------------------- */}
+          {/* -------------------- Comparar, carrito y sesión -------------------- */}
+          {/* TODO: hoy /comparador, /carrito e /iniciar-sesion muestran "Página en construcción" */}
           <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">
-            <button type="button" className="btn btn-sm app-navbar-btn">
+            <Link className="btn btn-sm app-navbar-btn" to="/comparador">
               ⇄ Comparar ({compareCount})
-            </button>
-            <button
-              type="button"
+            </Link>
+            <Link
               className="btn btn-sm app-navbar-btn"
-              aria-label="Carrito"
+              to="/carrito"
+              aria-label={`Carrito (${cartCount})`}
             >
               🛒 {cartCount}
-            </button>
+            </Link>
             <span className="app-navbar-divider" aria-hidden="true"></span>
-            {/* TODO: redirigir a la página de inicio de sesión */}
-            <a className="btn btn-sm app-navbar-btn-outline" href="#">
+            <Link className="btn btn-sm app-navbar-btn-outline" to="/iniciar-sesion">
               Log In
-            </a>
+            </Link>
           </div>
         </div>
       </div>
