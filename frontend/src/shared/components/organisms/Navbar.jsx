@@ -11,7 +11,7 @@ export function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
       <div className="container">
         {/* -------------------- Marca -------------------- */}
-        <img className="navbar-brand" src="/icon.svg" alt="TechPerifa" />
+        <img className="navbar-brand" src="/icon.svg" alt="PuntoTech" />
         {/* -------------------- Botón hamburguesa (mobile) -------------------- */}
         <button
           className="navbar-toggler"
