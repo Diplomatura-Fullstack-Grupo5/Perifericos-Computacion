@@ -129,21 +129,6 @@ export function CatalogoPage() {
 
         {/* -------------------- Columna derecha: Grilla de productos -------------------- */}
         <section className="col-md-9">
-          {/* TODO: botones de categoría hasta que exista el navbar. Eliminar después */}
-          <div className="d-flex flex-wrap gap-2 mb-3">
-            {Object.keys(specsDefinitions).map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`btn btn-sm ${cat === category ? "btn-primary" : "btn-outline-primary"}`}
-                onClick={() => acciones.cambiarCategoria(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-          {/* TODO: Fin de los botones temporales */}
-
           {/* Título */}
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="fs-6 fw-bold mb-0">
