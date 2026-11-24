@@ -1,0 +1,22 @@
+.ficha-imagen {
+  aspect-ratio: 4 / 3;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: #f1f3f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ficha-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Funde el fondo blanco de la foto con el recuadro. */
+  mix-blend-mode: multiply;
+}
+
+.ficha-imagen-vacia {
+  background: linear-gradient(135deg, #e3e8f0, #cfd6e1);
+  color: #6c757d;
+}

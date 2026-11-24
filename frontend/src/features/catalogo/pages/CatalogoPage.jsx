@@ -158,6 +158,7 @@ export function CatalogoPage() {
               {products.map((product) => (
                 <div key={product.id} className="col-sm-6 col-lg-4">
                   <TarjetaProducto
+                    id={product.id}
                     name={product.name}
                     price={product.price}
                     image={product.image}

@@ -1,0 +1,12 @@
+.tabla-specs {
+  font-size: 0.9rem;
+}
+
+.tabla-specs th,
+.tabla-specs td {
+  padding: 0.5rem 0.75rem;
+}
+
+.tabla-specs tbody th {
+  width: 50%;
+}
