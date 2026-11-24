@@ -23,17 +23,9 @@ export function HeroInicio() {
               ordenados. Filtrá por lo que importa y compará hasta 4 productos
               lado a lado.
             </p>
-            <div className="d-flex flex-wrap gap-2">
-              <Link to="/catalogo" className="btn btn-primary btn-lg fw-semibold">
-                Ver catálogo
-              </Link>
-              <Link
-                to="/comparador"
-                className="btn btn-outline-primary btn-lg fw-semibold bg-white"
-              >
-                Probar el comparador
-              </Link>
-            </div>
+            <Link to="/catalogo" className="btn btn-primary btn-lg fw-semibold">
+              Ver catálogo
+            </Link>
           </div>
 
           <div className="col-lg-6">

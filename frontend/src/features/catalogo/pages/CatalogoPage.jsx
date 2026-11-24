@@ -59,7 +59,7 @@ export function CatalogoPage() {
             consulta,
             products: [],
             total: 0,
-            error: "Error al obtener los productos. Por favor, inténtalo de nuevo.",
+            error: "Error al obtener los productos. Por favor, intentá de nuevo.",
           });
         });
     }, 300);
@@ -159,6 +159,7 @@ export function CatalogoPage() {
                 <div key={product.id} className="col-sm-6 col-lg-4">
                   <TarjetaProducto
                     id={product.id}
+                    category={product.category}
                     name={product.name}
                     price={product.price}
                     image={product.image}

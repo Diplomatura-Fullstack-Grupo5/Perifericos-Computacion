@@ -1,0 +1,99 @@
+/* fixed: todas las columnas de productos con el mismo ancho, sin importar el largo del nombre */
+/* separate: cada celda dibuja sus bordes, así la columna fija tapa también las líneas entre filas
+   y no se ve el borde amarillo de las celdas que pasan por debajo al hacer scroll */
+.tabla-comparacion {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tabla-comparacion th,
+.tabla-comparacion td {
+  padding: 0.65rem 0.9rem;
+}
+
+/* Primera columna fija: al hacer scroll horizontal en pantallas chicas, las etiquetas quedan a la vista */
+.tabla-comparacion-spec {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  width: 10rem;
+  background: var(--bs-tertiary-bg) !important;
+  font-weight: 600;
+}
+
+.tabla-comparacion-producto {
+  position: relative;
+  text-align: center;
+  vertical-align: top;
+  background: var(--bs-tertiary-bg) !important;
+}
+
+.tabla-comparacion-quitar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  font-size: 0.6rem;
+}
+
+.tabla-comparacion-imagen {
+  height: 90px;
+  margin: 0 1.25rem;
+  border-radius: 0.5rem;
+  background: #eef2f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tabla-comparacion-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.5rem;
+  mix-blend-mode: multiply;
+}
+
+.tabla-comparacion-hueco {
+  height: 9.5rem;
+  border: 2px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: var(--bs-secondary-color);
+  font-weight: 400;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.tabla-comparacion-hueco:hover,
+.tabla-comparacion-hueco:focus-visible {
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
+}
+
+.tabla-comparacion-relleno {
+  display: inline-block;
+  width: 60%;
+  height: 0.6rem;
+  border-radius: 1rem;
+  background: var(--bs-secondary-bg);
+  vertical-align: middle;
+}
+
+.tabla-comparacion-difiere {
+  border-left: 3px solid var(--bs-warning) !important;
+}
+
+.tabla-comparacion-mejor {
+  background: var(--bs-success-bg-subtle) !important;
+  color: var(--bs-success-text-emphasis) !important;
+  font-weight: 700;
+}

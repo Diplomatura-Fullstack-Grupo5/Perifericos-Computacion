@@ -1,16 +1,20 @@
+import { useState } from "react";
 import { Link } from "react-router";
+import { ModalConfirmacion } from "../molecules/ModalConfirmacion";
 import "./Navbar.css";
 
 /**
  * Barra de navegación superior del sitio público.
  * @param {object} props
  * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
+ * @param {number} [props.cantidadComparar] Productos elegidos para comparar.
+ * @param {() => void} [props.onVaciarComparador] Vacía el comparador (se pide confirmación antes).
  * @returns {JSX.Element}
  */
-export function Navbar({ categorias }) {
-  // TODO: conectar a ComparadorContext / CarritoContext cuando existan
-  const compareCount = 0;
+export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador }) {
+  // TODO: conectar al carrito cuando exista
   const cartCount = 0;
+  const [confirmarVaciar, setConfirmarVaciar] = useState(false);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
@@ -88,11 +92,24 @@ export function Navbar({ categorias }) {
           </form>
 
           {/* -------------------- Comparar, carrito y sesión -------------------- */}
-          {/* TODO: hoy /comparador, /carrito e /iniciar-sesion muestran "Página en construcción" */}
+          {/* TODO: hoy /carrito e /iniciar-sesion muestran "Página en construcción" */}
           <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">
-            <Link className="btn btn-sm app-navbar-btn" to="/comparador">
-              ⇄ Comparar ({compareCount})
-            </Link>
+            <div className="btn-group btn-group-sm">
+              <Link className="btn app-navbar-btn" to="/comparador">
+                ⇄ Comparar ({cantidadComparar})
+              </Link>
+              {cantidadComparar > 0 && onVaciarComparador && (
+                <button
+                  type="button"
+                  className="btn app-navbar-btn app-navbar-btn-tacho"
+                  aria-label="Vaciar comparador"
+                  title="Vaciar comparador"
+                  onClick={() => setConfirmarVaciar(true)}
+                >
+                  <i className="bi bi-trash" aria-hidden="true" />
+                </button>
+              )}
+            </div>
             <Link
               className="btn btn-sm app-navbar-btn"
               to="/carrito"
@@ -107,6 +124,20 @@ export function Navbar({ categorias }) {
           </div>
         </div>
       </div>
+
+      <ModalConfirmacion
+        abierto={confirmarVaciar}
+        titulo="Vaciar comparador"
+        textoConfirmar="Vaciar"
+        onConfirmar={() => {
+          onVaciarComparador();
+          setConfirmarVaciar(false);
+        }}
+        onCancelar={() => setConfirmarVaciar(false)}
+      >
+        ¿Querés quitar los {cantidadComparar}{" "}
+        {cantidadComparar === 1 ? "producto" : "productos"} del comparador?
+      </ModalConfirmacion>
     </nav>
   );
 }

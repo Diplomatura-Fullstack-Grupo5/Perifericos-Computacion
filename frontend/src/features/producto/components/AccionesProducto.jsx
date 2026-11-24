@@ -1,16 +1,29 @@
+import { useState } from "react";
+import { AvisoBloqueoComparador, useComparador } from "../../comparador";
+
 /**
- * Botones de la ficha: agregar al carrito y al comparador.
- * Por ahora son solo visuales: se conectan cuando existan el carrito y el comparador.
+ * Botones de la ficha: agregar al carrito y agregar o quitar del comparador.
  * @param {object} props
+ * @param {number} props.id Id del producto.
+ * @param {string} props.category Categoría, para el comparador (solo compara una categoría a la vez).
  * @param {number} props.stock Unidades disponibles; sin stock, no se puede agregar al carrito.
  * @returns {JSX.Element}
  */
-export function AccionesProducto({ stock }) {
+export function AccionesProducto({ id, category, stock }) {
   const sinStock = stock === 0;
+  const { estaSeleccionado, motivoBloqueo, alternar } = useComparador();
+  const comparando = estaSeleccionado(id);
+  const bloqueoComparar = motivoBloqueo({ id, category });
+  const [avisoAbierto, setAvisoAbierto] = useState(false);
+
+  function alternarComparar() {
+    if (bloqueoComparar) setAvisoAbierto(true);
+    else alternar({ id, category });
+  }
 
   return (
     <div className="d-flex flex-wrap gap-2 mb-4">
-      {/* TODO: agregar al carrito cuando exista CarritoContext */}
+      {/* TODO: agregar al carrito cuando exista el carrito */}
       <button
         type="button"
         className={`btn fw-semibold ${sinStock ? "btn-outline-secondary" : "btn-primary"}`}
@@ -18,10 +31,27 @@ export function AccionesProducto({ stock }) {
       >
         {sinStock ? "Sin stock" : "Agregar al carrito"}
       </button>
-      {/* TODO: agregar al comparador cuando exista ComparadorContext */}
-      <button type="button" className="btn btn-outline-primary fw-semibold">
-        ⇄ Agregar al comparador
+      <button
+        type="button"
+        className={`btn fw-semibold ${comparando ? "btn-outline-secondary" : "btn-outline-primary"}`}
+        aria-pressed={comparando}
+        onClick={alternarComparar}
+      >
+        {comparando ? (
+          <>
+            <i className="bi bi-x-lg me-1" aria-hidden="true" />
+            Quitar del comparador
+          </>
+        ) : (
+          "⇄ Agregar al comparador"
+        )}
       </button>
+      <AvisoBloqueoComparador
+        bloqueo={bloqueoComparar}
+        categoriaProducto={category}
+        abierto={avisoAbierto}
+        onCerrar={() => setAvisoAbierto(false)}
+      />
     </div>
   );
 }

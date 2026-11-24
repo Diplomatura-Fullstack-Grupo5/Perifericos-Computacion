@@ -1,8 +1,13 @@
 import { RouterProvider } from "react-router";
 import { router } from "./router";
+import { ComparadorProvider } from "../features/comparador";
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ComparadorProvider>
+      <RouterProvider router={router} />
+    </ComparadorProvider>
+  );
 }
 
 export default App;

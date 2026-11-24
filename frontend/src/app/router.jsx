@@ -6,6 +6,7 @@ import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
 import { ProductoPage } from "../features/producto";
+import { ComparadorPage } from "../features/comparador";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -29,7 +30,6 @@ async function cargarLayoutPublico() {
 const PAGINAS_EN_CONSTRUCCION = [
   "nosotros",
   "contacto",
-  "comparador",
   "carrito",
   "iniciar-sesion",
   "mis-pedidos",
@@ -49,6 +49,7 @@ export const router = createBrowserRouter([
       { index: true, element: <InicioPage /> },
       { path: "catalogo", element: <CatalogoPage /> },
       { path: "producto/:id", element: <ProductoPage /> },
+      { path: "comparador", element: <ComparadorPage /> },
       { path: "legales", element: <Legales /> },
       ...PAGINAS_EN_CONSTRUCCION.map((path) => ({
         path,

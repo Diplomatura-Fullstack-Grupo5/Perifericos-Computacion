@@ -1,0 +1,10 @@
+/* Botón de acción destructiva discreto: gris en reposo, rojo al pasar el mouse.
+   Se usa junto con btn-outline-secondary (ej. "Vaciar comparador"). */
+.btn-peligro-al-pasar {
+  --bs-btn-hover-bg: var(--bs-danger);
+  --bs-btn-hover-border-color: var(--bs-danger);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--bs-danger);
+  --bs-btn-active-border-color: var(--bs-danger);
+  --bs-btn-active-color: #fff;
+}
