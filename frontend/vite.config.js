@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
-import { crearMiddlewareRegistro } from './mock/usuariosMock.js'
+import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMock.js'
 
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
