@@ -61,6 +61,17 @@
   color: #fff;
 }
 
+/* Tacho pegado al botón "Comparar": una línea fina los separa sin que dejen de verse como uno solo */
+.app-navbar-btn-tacho {
+  border-left: 1px solid #475569;
+}
+
+.app-navbar-btn-tacho:hover,
+.app-navbar-btn-tacho:focus-visible {
+  background-color: #b91c1c;
+  border-left-color: #b91c1c;
+}
+
 .app-navbar-btn-outline {
   background-color: transparent;
   color: #fff;

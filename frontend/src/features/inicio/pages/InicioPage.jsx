@@ -34,7 +34,7 @@ export function InicioPage() {
         setDatos({
           masVendidos: [],
           cargando: false,
-          error: "No se pudieron cargar los productos. Por favor, inténtalo de nuevo.",
+          error: "No se pudieron cargar los productos. Por favor, intentá de nuevo.",
         });
       });
 

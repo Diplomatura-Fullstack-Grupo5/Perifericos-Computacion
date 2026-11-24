@@ -53,7 +53,7 @@ export function ProductoPage() {
           id,
           producto: null,
           specsDefinitions: {},
-          error: "No se pudo cargar el producto. Por favor, inténtalo de nuevo.",
+          error: "No se pudo cargar el producto. Por favor, intentá de nuevo.",
         });
       });
 
@@ -95,7 +95,11 @@ export function ProductoPage() {
             price={producto.price}
             stock={producto.stock}
           />
-          <AccionesProducto stock={producto.stock} />
+          <AccionesProducto
+            id={producto.id}
+            category={producto.category}
+            stock={producto.stock}
+          />
           <TablaSpecs specs={producto.specs} specsDefinitions={specsDefinitions} />
         </div>
       </div>
