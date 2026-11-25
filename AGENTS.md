@@ -176,3 +176,10 @@ servidor dentro de los services (filtrar, ordenar, calcular opciones de filtro) 
 ## Skills
 
 Las skills del proyecto están en `.claude/skills/` (las leen tanto Claude Code como OpenCode).
+
+- `revisar-pr`: code review previo a pedirle la revisión del PR al equipo (se activa pidiendo
+  "hacé un code review" o "revisá mi rama"). Su criterio está en
+  `.claude/skills/revisar-pr/checklist.md`: buenas prácticas del curso, este archivo y la
+  arquitectura del repo.
+- `react-vite-best-practices`: guía externa de rendimiento. Si contradice al curso o a este archivo,
+  mandan el curso y este archivo.
