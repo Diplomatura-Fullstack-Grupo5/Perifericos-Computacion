@@ -16,29 +16,56 @@ function clasesStock(stock) {
   return "text-bg-light";
 }
 
+/** Próximo orden al hacer clic en "Stock": menor primero → mayor primero → sin orden. */
+const SIGUIENTE_ORDEN = { "": "stock_asc", stock_asc: "stock_desc", stock_desc: "" };
+
+/** Valor de `aria-sort` e ícono para cada orden de la columna Stock. */
+const INDICADOR_ORDEN = {
+  "": { ariaSort: "none", icono: "bi-arrow-down-up", texto: "Ordenar por stock, de menor a mayor" },
+  stock_asc: { ariaSort: "ascending", icono: "bi-sort-numeric-down", texto: "Ordenar por stock, de mayor a menor" },
+  stock_desc: { ariaSort: "descending", icono: "bi-sort-numeric-up-alt", texto: "Quitar el orden por stock" },
+};
+
 /**
  * Tabla de productos del panel, con las acciones de editar y eliminar en cada fila.
+ * La columna Stock se ordena con un clic en su encabezado.
  * @param {object} props
  * @param {object[]} props.productos
+ * @param {"stock_asc" | "stock_desc" | ""} props.orden Orden actual.
+ * @param {(orden: string) => void} props.onOrdenar Recibe el orden nuevo al hacer clic en "Stock".
  * @param {(producto: object) => void} props.onEliminar Se llama al pedir eliminar un producto.
  * @returns {JSX.Element}
  */
-export function TablaProductos({ productos, onEliminar }) {
+export function TablaProductos({ productos, orden, onOrdenar, onEliminar }) {
+  const indicador = INDICADOR_ORDEN[orden] ?? INDICADOR_ORDEN[""];
+
   return (
-    <div className="table-responsive">
-      <table className="table align-middle tabla-productos-admin">
-        <thead>
+    <div className="card overflow-hidden">
+      <div className="table-responsive">
+      <table className="table align-middle mb-0 tabla-productos-admin">
+        <thead className="table-light tabla-productos-admin__encabezado">
           <tr>
             <th scope="col">Producto</th>
             <th scope="col">Categoría</th>
             <th scope="col" className="text-end">
               Precio
             </th>
-            <th scope="col" className="text-end">
-              Stock
+            <th scope="col" className="text-end" aria-sort={indicador.ariaSort}>
+              <button
+                type="button"
+                className="btn btn-link p-0 text-reset text-decoration-none text-nowrap tabla-productos-admin__ordenar"
+                title={indicador.texto}
+                onClick={() => onOrdenar(SIGUIENTE_ORDEN[orden] ?? "stock_asc")}
+              >
+                Stock
+                <i
+                  className={`bi ${indicador.icono} ms-1 ${orden ? "text-primary" : "text-secondary"}`}
+                  aria-hidden="true"
+                />
+              </button>
             </th>
-            <th scope="col" className="text-end">
-              Acciones
+            <th scope="col">
+              <span className="visually-hidden">Acciones</span>
             </th>
           </tr>
         </thead>
@@ -67,24 +94,27 @@ export function TablaProductos({ productos, onEliminar }) {
               <td className="text-end text-nowrap">
                 <Link
                   to={`/admin/productos/${producto.id}/editar`}
-                  className="btn btn-sm btn-outline-primary me-2"
+                  className="btn btn-sm btn-link tabla-productos-admin__accion"
+                  title="Editar"
+                  aria-label={`Editar ${producto.name}`}
                 >
-                  <i className="bi bi-pencil me-1" aria-hidden="true" />
-                  Editar
+                  <i className="bi bi-pencil" aria-hidden="true" />
                 </Link>
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-secondary btn-peligro-al-pasar"
+                  className="btn btn-sm btn-link tabla-productos-admin__accion tabla-productos-admin__accion--eliminar"
+                  title="Eliminar"
+                  aria-label={`Eliminar ${producto.name}`}
                   onClick={() => onEliminar(producto)}
                 >
-                  <i className="bi bi-trash me-1" aria-hidden="true" />
-                  Eliminar
+                  <i className="bi bi-trash" aria-hidden="true" />
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

@@ -2,14 +2,15 @@ import { enviar, pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
 
 /**
- * Obtiene los productos del panel que coinciden con la búsqueda (por nombre o marca) y la categoría.
- * Simula `GET /api/productos?busqueda=&categoria=` (admin).
+ * Obtiene los productos del panel que coinciden con la búsqueda (por nombre o marca) y la categoría,
+ * en el orden pedido. Simula `GET /api/productos?busqueda=&categoria=&orden=` (admin).
  * @param {object} [filtros]
  * @param {string} [filtros.busqueda] Texto a buscar. Vacío = sin filtro.
  * @param {string} [filtros.category] Categoría. Vacío = todas.
+ * @param {"stock_asc" | "stock_desc" | ""} [filtros.sort] Orden por stock. Vacío = el orden guardado.
  * @returns {Promise<{ products: object[], total: number }>} Los que coinciden y el total sin filtrar.
  */
-export async function obtenerProductos({ busqueda = "", category = "" } = {}) {
+export async function obtenerProductos({ busqueda = "", category = "", sort = "" } = {}) {
   const data = await pedir(ENDPOINTS.productos);
   const texto = busqueda.trim().toLocaleLowerCase("es");
 
@@ -20,7 +21,12 @@ export async function obtenerProductos({ busqueda = "", category = "" } = {}) {
         !texto ||
         product.name.toLocaleLowerCase("es").includes(texto) ||
         product.brand.toLocaleLowerCase("es").includes(texto),
-    );
+    )
+    .sort((a, b) => {
+      if (sort === "stock_asc") return a.stock - b.stock;
+      if (sort === "stock_desc") return b.stock - a.stock;
+      return 0;
+    });
 
   return { products, total: data.length };
 }

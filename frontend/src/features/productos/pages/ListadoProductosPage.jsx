@@ -8,8 +8,8 @@ import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio"
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
 
 /**
- * Listado de productos del panel de administración: búsqueda, filtro por categoría (los dos en la
- * URL: `?busqueda=&categoria=`) y acceso a crear, editar y eliminar (con confirmación).
+ * Listado de productos del panel de administración: búsqueda, filtro por categoría y orden por stock
+ * (en la URL: `?busqueda=&categoria=&orden=`) y acceso a crear, editar y eliminar (con confirmación).
  * @returns {JSX.Element}
  */
 export function ListadoProductosPage() {
@@ -18,6 +18,7 @@ export function ListadoProductosPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const busqueda = searchParams.get("busqueda") ?? "";
   const categoria = searchParams.get("categoria") ?? "";
+  const orden = searchParams.get("orden") ?? "";
   const clave = searchParams.toString();
 
   const [resultado, setResultado] = useState({
@@ -50,7 +51,7 @@ export function ListadoProductosPage() {
   useEffect(() => {
     let ignoreResponse = false;
 
-    obtenerProductos({ busqueda, category: categoria })
+    obtenerProductos({ busqueda, category: categoria, sort: orden })
       .then(({ products, total }) => {
         if (!ignoreResponse) setResultado({ clave, productos: products, total, error: null });
       })
@@ -68,7 +69,7 @@ export function ListadoProductosPage() {
     return () => {
       ignoreResponse = true;
     };
-  }, [clave, busqueda, categoria]);
+  }, [clave, busqueda, categoria, orden]);
 
   /**
    * Cambia un filtro en la URL. Sin valor, lo quita. Reemplaza la entrada del historial para no
@@ -177,7 +178,12 @@ export function ListadoProductosPage() {
           {productos.length === 0 ? (
             <MensajeVacio>No hay productos que coincidan con la búsqueda.</MensajeVacio>
           ) : (
-            <TablaProductos productos={productos} onEliminar={setAEliminar} />
+            <TablaProductos
+              productos={productos}
+              orden={orden}
+              onOrdenar={(nuevoOrden) => cambiarFiltro("orden", nuevoOrden)}
+              onEliminar={setAEliminar}
+            />
           )}
         </>
       )}
