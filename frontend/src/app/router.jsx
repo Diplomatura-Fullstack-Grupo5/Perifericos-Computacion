@@ -1,5 +1,6 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { LayoutPublico } from "./layouts/LayoutPublico";
+import { LayoutPrivado } from "./layouts/LayoutPrivado";
 import { InicioPage } from "../features/inicio";
 import { CatalogoPage, obtenerCategorias } from "../features/catalogo";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
@@ -7,6 +8,7 @@ import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
 import { ProductoPage } from "../features/producto";
 import { ComparadorPage } from "../features/comparador";
+import { ListadoProductosPage, FormularioProductoPage } from "../features/productos";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -55,6 +57,19 @@ export const router = createBrowserRouter([
         path,
         element: <MensajeVacio>Página en construcción.</MensajeVacio>,
       })),
+      { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
+    ],
+  },
+  {
+    // Panel de administración. Cada sección es una feature de su dominio (productos, pedidos…).
+    path: "/admin",
+    element: <LayoutPrivado />,
+    children: [
+      // Hasta que exista el dashboard, el panel abre en productos.
+      { index: true, element: <Navigate to="productos" replace /> },
+      { path: "productos", element: <ListadoProductosPage /> },
+      { path: "productos/nuevo", element: <FormularioProductoPage /> },
+      { path: "productos/:id/editar", element: <FormularioProductoPage /> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

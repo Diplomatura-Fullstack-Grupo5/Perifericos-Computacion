@@ -1,0 +1,8 @@
+.tabla-productos-admin__imagen {
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  object-fit: contain;
+  /* Funde el fondo blanco de la foto con el de la tabla. */
+  mix-blend-mode: multiply;
+}
