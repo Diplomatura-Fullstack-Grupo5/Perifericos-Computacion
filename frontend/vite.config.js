@@ -4,8 +4,25 @@ import { fileURLToPath } from 'node:url'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
+import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMock.js'
 
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
+
+/*ESTA FUNCION servirRegistro SIRVE UNICAMENTE PARA PROBAR EL ALTA DE USUARIOS CON JSON DEBE BORRARSE CUANDO SE CREE EL BACKEND*/
+const archivoUsuarios = path.join(carpetaDatabase, 'usuarios.json')
+function servirRegistro() {
+  const middleware = crearMiddlewareRegistro(archivoUsuarios)
+
+  return {
+    name: 'servir-registro-local',
+    configureServer(server) {
+      server.middlewares.use(middleware)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(middleware)
+    },
+  }
+}
 
 /**
  * Sirve los JSON de la carpeta /database (fuera de frontend/) en la ruta /database/*,
@@ -41,6 +58,7 @@ export default defineConfig({
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
+    servirRegistro(),
     servirDatabase(),
   ],
 })

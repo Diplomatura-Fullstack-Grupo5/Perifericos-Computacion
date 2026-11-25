@@ -9,4 +9,6 @@ export const ENDPOINTS = {
   productos: "/productos.json",
   marcas: "/marcas.json",
   categorias: "/categorias.json",
+  usuarios: "/usuarios.json",
+  registrarUsuario: "/api/usuarios/registro",
 };
