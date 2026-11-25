@@ -35,3 +35,13 @@
   letter-spacing: inherit;
   text-transform: inherit;
 }
+
+/* Nombre del producto: abre el detalle; se subraya al pasar el mouse para que se note que es un botón. */
+.tabla-productos-admin__nombre {
+  text-decoration: none;
+}
+
+.tabla-productos-admin__nombre:hover,
+.tabla-productos-admin__nombre:focus-visible {
+  text-decoration: underline;
+}

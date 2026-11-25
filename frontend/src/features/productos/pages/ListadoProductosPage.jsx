@@ -1,8 +1,11 @@
 import { useEffect, useId, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
-import { eliminarProducto, obtenerProductos } from "../services/productosService";
+import {
+  eliminarProducto,
+  obtenerDefinicionesSpecs,
+  obtenerProductos,
+} from "../services/productosService";
 import { TablaProductos } from "../components/TablaProductos";
-import { obtenerCategorias } from "../../catalogo";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
@@ -27,7 +30,8 @@ export function ListadoProductosPage() {
     total: 0,
     error: null,
   });
-  const [categorias, setCategorias] = useState([]);
+  const [definiciones, setDefiniciones] = useState({});
+  const categorias = Object.keys(definiciones);
   const [aEliminar, setAEliminar] = useState(null);
   const [aviso, setAviso] = useState(location.state?.aviso ?? null);
 
@@ -37,9 +41,9 @@ export function ListadoProductosPage() {
   useEffect(() => {
     let ignoreResponse = false;
 
-    obtenerCategorias()
-      .then((categorias) => {
-        if (!ignoreResponse) setCategorias(categorias);
+    obtenerDefinicionesSpecs()
+      .then((definiciones) => {
+        if (!ignoreResponse) setDefiniciones(definiciones);
       })
       .catch((err) => console.error("Error al obtener las categorías:", err));
 
@@ -180,6 +184,7 @@ export function ListadoProductosPage() {
           ) : (
             <TablaProductos
               productos={productos}
+              definiciones={definiciones}
               orden={orden}
               onOrdenar={(nuevoOrden) => cambiarFiltro("orden", nuevoOrden)}
               onEliminar={setAEliminar}

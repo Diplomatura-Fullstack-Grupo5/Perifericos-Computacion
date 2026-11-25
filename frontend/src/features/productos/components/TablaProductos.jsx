@@ -1,4 +1,6 @@
+import { Fragment, useId, useState } from "react";
 import { Link } from "react-router";
+import { DetalleProducto } from "./DetalleProducto";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 import "./TablaProductos.css";
 
@@ -28,16 +30,24 @@ const INDICADOR_ORDEN = {
 
 /**
  * Tabla de productos del panel, con las acciones de editar y eliminar en cada fila.
- * La columna Stock se ordena con un clic en su encabezado.
+ * La columna Stock se ordena con un clic en su encabezado. Un clic en el nombre de un producto
+ * abre (o cierra) debajo una fila con toda su información.
  * @param {object} props
  * @param {object[]} props.productos
+ * @param {Object<string, Object<string, object>>} props.definiciones Definiciones de specs por categoría.
  * @param {"stock_asc" | "stock_desc" | ""} props.orden Orden actual.
  * @param {(orden: string) => void} props.onOrdenar Recibe el orden nuevo al hacer clic en "Stock".
  * @param {(producto: object) => void} props.onEliminar Se llama al pedir eliminar un producto.
  * @returns {JSX.Element}
  */
-export function TablaProductos({ productos, orden, onOrdenar, onEliminar }) {
+export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEliminar }) {
+  const idBase = useId();
+  const [idExpandido, setIdExpandido] = useState(null);
   const indicador = INDICADOR_ORDEN[orden] ?? INDICADOR_ORDEN[""];
+
+  function alternarDetalle(id) {
+    setIdExpandido(idExpandido === id ? null : id);
+  }
 
   return (
     <div className="card overflow-hidden">
@@ -70,8 +80,13 @@ export function TablaProductos({ productos, orden, onOrdenar, onEliminar }) {
           </tr>
         </thead>
         <tbody>
-          {productos.map((producto) => (
-            <tr key={producto.id}>
+          {productos.map((producto) => {
+            const expandido = producto.id === idExpandido;
+            const idDetalle = `${idBase}-detalle-${producto.id}`;
+
+            return (
+            <Fragment key={producto.id}>
+            <tr className={expandido ? "table-active" : undefined}>
               <td>
                 <div className="d-flex align-items-center gap-3">
                   <img
@@ -81,7 +96,19 @@ export function TablaProductos({ productos, orden, onOrdenar, onEliminar }) {
                     loading="lazy"
                   />
                   <div>
-                    <div className="fw-semibold">{producto.name}</div>
+                    <button
+                      type="button"
+                      className="btn btn-link p-0 text-start text-body fw-semibold tabla-productos-admin__nombre"
+                      aria-expanded={expandido}
+                      aria-controls={idDetalle}
+                      onClick={() => alternarDetalle(producto.id)}
+                    >
+                      {producto.name}
+                      <i
+                        className={`bi ${expandido ? "bi-chevron-up" : "bi-chevron-down"} ms-2 small text-secondary`}
+                        aria-hidden="true"
+                      />
+                    </button>
                     <div className="small text-secondary">{producto.brand}</div>
                   </div>
                 </div>
@@ -111,7 +138,19 @@ export function TablaProductos({ productos, orden, onOrdenar, onEliminar }) {
                 </button>
               </td>
             </tr>
-          ))}
+            {expandido && (
+              <tr id={idDetalle}>
+                <td colSpan={5} className="bg-body-tertiary px-4 py-3">
+                  <DetalleProducto
+                    producto={producto}
+                    definiciones={definiciones[producto.category]}
+                  />
+                </td>
+              </tr>
+            )}
+            </Fragment>
+            );
+          })}
         </tbody>
       </table>
       </div>
