@@ -1,12 +1,14 @@
 ---
 name: revisar-pr
-description: Revisión previa de un Pull Request de PuntoTech antes de mostrárselo al equipo. Contrasta los cambios contra las buenas prácticas de la Diplomatura (lo que la cátedra enseña y lo que dice NO usar), las reglas de AGENTS.md y la arquitectura del repo, corre lint y build, y entrega un informe con hallazgos por gravedad. Usar cuando se pida "revisar el PR", "review antes de abrir el PR", "revisá mi rama", "/revisar-pr" o un chequeo de calidad de cambios del frontend.
+description: Code review de PuntoTech antes de mostrarle un PR al equipo. Contrasta los cambios contra las buenas prácticas de la Diplomatura (lo que la cátedra enseña y lo que dice NO usar), las reglas de AGENTS.md y la arquitectura del repo, verifica lint y build, y entrega un informe con hallazgos por gravedad. Usar cuando se pida "code review", "hacé una review", "revisá el PR", "revisá mi rama", "review antes de abrir el PR" o un chequeo de calidad de cambios del frontend.
 ---
 
-# Revisar PR (primer filtro antes del equipo)
+# Code review (primer filtro antes del equipo)
 
 Objetivo: encontrar **antes de abrir o pedir revisión del PR** lo que el equipo o la cátedra marcarían.
 No reemplaza la revisión de los compañeros: es el primer filtrado.
+
+La fuente de criterio es [checklist.md](checklist.md). **Leelo completo antes de revisar.**
 
 ## Orden de prioridad de las reglas
 
@@ -18,53 +20,76 @@ No reemplaza la revisión de los compañeros: es el primer filtrado.
    es de terceros: si sugiere algo que choca con el curso o con `AGENTS.md` (por ejemplo `useMemo`
    manual), gana el curso.
 
-Las reglas concretas, con su fuente, están en [checklist.md](checklist.md). Leelo completo antes de revisar.
-
 ## Pasos
 
 ### 1. Delimitar qué se revisa
-- Por defecto: la rama actual contra `origin/main` (incluye cambios sin commitear).
-  ```bash
-  git fetch origin main
-  git diff --stat origin/main...HEAD
-  git status --short
-  ```
+- Por defecto: la rama actual contra `origin/main`, incluidos los cambios sin commitear y los archivos nuevos
+  (`git fetch origin main`, `git diff --stat origin/main...HEAD`, `git status --short`).
 - Si se pasa un número de PR: `gh pr diff <n>` y `gh pr view <n>` (título, descripción, rama).
-- Si se pide otra base o una carpeta, usar esa.
-- Anotar qué features toca el cambio (`frontend/src/features/<x>`), si toca `shared/`, `api/`, `app/`,
+- Si se pide revisar todo el proyecto o una carpeta, usar ese alcance.
+- Anotar qué toca el cambio: qué features (`frontend/src/features/<x>`), y si toca `shared/`, `api/`, `app/`,
   `database/` o `vite.config.js`. Eso define qué secciones del checklist pesan más.
+- Si aparecen en el cambio `dist/`, `node_modules/` o un `.env`, es un bloqueante.
 
-### 2. Chequeos automáticos
-Desde la raíz del repo:
-```bash
-bash .claude/skills/revisar-pr/scripts/chequeos.sh            # archivos cambiados vs origin/main
-bash .claude/skills/revisar-pr/scripts/chequeos.sh --todo     # todo frontend/src (auditoría general)
-```
-El script corre `npm run lint` y `npm run build` en `frontend/` y busca patrones conocidos (fetch fuera de
-`api/cliente.js`, imports a internos de otra feature, `key` con índice, Bootstrap 4, `!important`,
-`useMemo` manual, etc.). **Sus avisos son candidatos, no veredictos**: confirmá cada uno leyendo el código.
-Si `node_modules` no existe, correr antes `npm ci` en `frontend/`.
+### 2. Lint y build
+En `frontend/` correr `npm run lint` y `npm run build` (si falta `node_modules`, antes `npm ci`).
+Cualquier error es bloqueante; copiar en el informe las líneas relevantes.
 
-### 3. Lectura del diff
-- Leer **cada archivo cambiado completo** (no solo el diff): muchas reglas dependen del contexto
+### 3. Búsquedas rápidas sobre los archivos cambiados
+Buscar estos patrones en los archivos del alcance (con la herramienta de búsqueda del agente). Cada coincidencia
+es un **candidato**: confirmarlo leyendo el código antes de reportarlo, e ignorar las que estén en comentarios.
+
+| Buscar | Dónde | Qué indica | Gravedad |
+|---|---|---|---|
+| `fetch(` | `.js/.jsx` fuera de `api/cliente.js` | Acceso a datos fuera del cliente único | Bloqueante |
+| `from "../../<otra-feature>/components\|pages\|services\|hooks\|utils/…"` | `features/` | Import a internos de otra feature (usar su `index.js`) | Bloqueante |
+| `features/` en un import | `shared/` | `shared` depende de una feature | Bloqueante |
+| `innerHTML`, `dangerouslySetInnerHTML`, `appendChild`, `document.createElement`, `querySelector`, `getElementById` | `.jsx` (salvo `main.jsx`) | DOM manipulado a mano | Bloqueante (confirmar; ver excepciones en el checklist) |
+| `key={i}`, `key={index}`, `key={idx}` | `.jsx` | Índice como `key` | Bloqueante |
+| `onAlgo={funcion()}` | `.jsx` | Manejador ejecutado al renderizar | Bloqueante |
+| `var ` | `.js/.jsx` | Declaración con `var` | Bloqueante |
+| `ml-`, `mr-`, `pl-`, `pr-`, `data-toggle`, `data-target`, `form-group`, `custom-select`, `float-left`, `text-left`, `jquery` | `.jsx` | Bootstrap 4 | Bloqueante |
+| `password`, `secret`, `token`, `apiKey` con un valor literal; `VITE_…SECRET/TOKEN/KEY` | todo el cambio | Posible secreto | Bloqueante |
+| `/database` como texto | `.js/.jsx` fuera de `api/endpoints.js` | Ruta escrita a mano (usar `ENDPOINTS`) | Importante |
+| `localStorage.` | fuera de `shared/hooks/useLocalStorage.js` | Usar el hook compartido | Importante |
+| `useMemo`, `useCallback`, `memo(` | `.js/.jsx` | Memo manual con React Compiler activo | Importante |
+| `export default` | fuera de `app/App.jsx` | El repo usa exportaciones nombradas | Importante |
+| ` == `, ` != ` | `.js/.jsx` | Usar `===` / `!==` | Importante |
+| `bg-white`, `text-dark` | `.jsx` | Usar `bg-body` / `text-body` | Importante |
+| `!important` | `.css` | Evitar en CSS propio | Importante |
+| `<img` sin `alt` | `.jsx` | Imagen sin texto alternativo | Importante |
+| `useEffect` que pide datos sin `ignoreResponse` (o equivalente) en la limpieza | `.jsx` | No ignora respuestas viejas | Importante |
+| `export function` sin `/** … */` justo antes | `.js/.jsx` | Falta JSDoc | Importante |
+| `style={{` | `.jsx` | Estilo inline | Sugerencia |
+| `console.log` | `.js/.jsx` | Log olvidado (`console.error` en un `catch` está bien) | Sugerencia |
+| Colores fijos (`#…`, `rgb(`) | `.css` | Preferir variables `--bs-*` | Sugerencia |
+
+Si el cambio toca `database/*.json`, verificar que los JSON sean válidos y que respeten el modelo de specs.
+
+### 4. Lectura completa de los archivos cambiados
+- Leer **cada archivo cambiado completo**, no solo el diff: muchas reglas dependen del contexto
   (dónde vive el estado, qué exporta el `index.js`, si el `useEffect` tiene limpieza).
 - Recorrer las secciones del [checklist](checklist.md) que apliquen. Para cada hallazgo, anotar archivo,
   línea, regla, fuente y una corrección concreta.
-- Comparar con el código existente del repo que resuelve algo parecido (por ejemplo, una página nueva
-  contra `features/producto/pages/ProductoPage.jsx`). Si el cambio se aparta del patrón ya usado sin motivo,
-  es un hallazgo.
+- Comparar con el código del repo que ya resuelve algo parecido (por ejemplo, una página nueva contra
+  `features/producto/pages/ProductoPage.jsx`, un contexto nuevo contra el del comparador). Si el cambio se aparta
+  del patrón ya usado sin motivo, es un hallazgo.
+- Recordatorios según lo que toque el cambio:
+  - **Router:** ¿la ruta cuelga del layout correcto? ¿se sacó de `PAGINAS_EN_CONSTRUCCION`? ¿las de admin están protegidas?
+  - **`productos.json` / `categorias.json`:** ¿specs clave → valor, mismas claves por categoría, marca nueva en `marcas.json`?
+  - **`vite.config.js`:** ¿es solo para desarrollo, está documentado y marcado para borrar cuando exista el backend?
 - Si hay pantallas nuevas y se puede levantar `npm run dev`, mirarlas en el navegador: estados de carga,
-  error y vacío, celular (≤ 576 px), teclado (Tab/Enter/Esc) y modo oscuro si aplica.
+  error y vacío, celular (≤ 576 px), teclado (Tab, Enter, Esc).
 
-### 4. Descripción del PR
+### 5. Descripción del PR
 Si hay PR (o se va a abrir), verificar que la descripción diga qué cambia, cómo probarlo y,
 como pide la cátedra, **qué propuso la IA, qué se corrigió y por qué** cuando se usó IA.
 
-### 5. Informe
+### 6. Informe
 Responder **en español** con este formato:
 
 ```markdown
-## Revisión previa · <rama o PR>
+## Code review · <rama o PR>
 
 **Veredicto:** Listo para el equipo | Listo con ajustes menores | Corregir antes de abrir el PR
 **Alcance:** <n> archivos · features: <lista> · lint: ✔/✘ · build: ✔/✘
@@ -88,14 +113,14 @@ Gravedad:
   dice explícitamente que no se use (DOM a mano en React, `key` con índice, Hooks condicionales,
   `innerHTML` con datos, Bootstrap 4, `var`); secretos en el código; rompe el modelo de specs estructuradas.
 - **Importante:** se aparta de una buena práctica del curso o de un patrón ya establecido en el repo
-  (falta estado de carga/error, `useEffect` sin limpieza, estado que debería derivarse, accesibilidad,
+  (falta estado de carga o error, `useEffect` sin limpieza, estado que debería derivarse, accesibilidad,
   JSDoc faltante, CSS sin prefijo, `!important`).
 - **Sugerencia:** mejoras de legibilidad, nombres, duplicación menor, UX.
 
 Reglas del informe:
 - Cada hallazgo con `archivo:línea` y su fuente (`Curso · React clase 1`, `AGENTS.md`, `Patrón del repo`…).
-- No inventar reglas: si algo no está en el checklist ni en el material, va como sugerencia y se dice que es
+- No inventar reglas: si algo no está en el checklist ni en el material, va como sugerencia y se aclara que es
   criterio propio.
-- No marcar lo que ya estaba en `main` y el PR no tocó (se puede mencionar al final como "deuda existente").
+- No marcar lo que ya estaba en `main` y el cambio no tocó (se puede mencionar al final como "deuda existente").
 - **No modificar código ni publicar comentarios en GitHub** salvo que se pida. Si se pide corregir, hacerlo
-  hallazgo por hallazgo y volver a correr los chequeos.
+  hallazgo por hallazgo y volver a revisar.
