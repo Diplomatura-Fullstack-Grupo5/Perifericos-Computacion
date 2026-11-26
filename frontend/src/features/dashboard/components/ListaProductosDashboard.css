@@ -1,0 +1,14 @@
+/* Miniatura de producto en las listas del dashboard (más comparados y stock bajo). */
+.lista-productos-dashboard__imagen {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  object-fit: contain;
+  /* Funde el fondo blanco de la foto con el de la lista. */
+  mix-blend-mode: multiply;
+}
+
+/* Permite que el nombre se corte con "…" en vez de ensanchar la fila. */
+.lista-productos-dashboard__texto {
+  min-width: 0;
+}

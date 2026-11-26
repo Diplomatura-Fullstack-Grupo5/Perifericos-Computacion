@@ -1,0 +1,535 @@
+[
+  {
+    "id": 1,
+    "customer": "Juan Ignacio Díaz",
+    "createdAt": "2026-10-01T14:00:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 34, "name": "Razer Barracuda X", "price": 149900, "quantity": 2 },
+      { "productId": 26, "name": "Redragon Kumara K552", "price": 59900, "quantity": 1 }
+    ],
+    "total": 359700
+  },
+  {
+    "id": 2,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-10-02T17:44:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 17, "name": "Logitech K120", "price": 29900, "quantity": 1 },
+      { "productId": 31, "name": "Logitech G Pro X 2 Lightspeed", "price": 374900, "quantity": 1 }
+    ],
+    "total": 404800
+  },
+  {
+    "id": 3,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-10-04T01:29:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 32, "name": "Logitech G435", "price": 119900, "quantity": 1 },
+      { "productId": 26, "name": "Redragon Kumara K552", "price": 59900, "quantity": 1 }
+    ],
+    "total": 179800
+  },
+  {
+    "id": 4,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-10-05T04:14:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 30, "name": "HyperX Cloud III Wireless", "price": 254900, "quantity": 1 }
+    ],
+    "total": 254900
+  },
+  {
+    "id": 5,
+    "customer": "Sofía Pereyra",
+    "createdAt": "2026-10-06T08:58:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 6, "name": "Razer Basilisk V3", "price": 104900, "quantity": 2 },
+      { "productId": 4, "name": "Razer DeathAdder V3", "price": 134900, "quantity": 1 },
+      { "productId": 8, "name": "HyperX Pulsefire Haste 2", "price": 89900, "quantity": 1 }
+    ],
+    "total": 434600
+  },
+  {
+    "id": 6,
+    "customer": "Mateo Álvarez",
+    "createdAt": "2026-10-07T11:43:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 23, "name": "Corsair K65 Plus Wireless", "price": 239900, "quantity": 1 }
+    ],
+    "total": 239900
+  },
+  {
+    "id": 7,
+    "customer": "Lucía Fernández",
+    "createdAt": "2026-10-08T17:28:00Z",
+    "status": "cancelado",
+    "items": [
+      { "productId": 45, "name": "ASUS ROG Swift PG27AQDM", "price": 1349900, "quantity": 2 },
+      { "productId": 39, "name": "Samsung Odyssey G5 27\"", "price": 449900, "quantity": 1 },
+      { "productId": 1, "name": "Logitech G Pro X Superlight 2", "price": 239900, "quantity": 1 }
+    ],
+    "total": 3389600
+  },
+  {
+    "id": 8,
+    "customer": "Sofía Pereyra",
+    "createdAt": "2026-10-09T18:12:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 38, "name": "JBL Quantum 100", "price": 44900, "quantity": 1 }
+    ],
+    "total": 44900
+  },
+  {
+    "id": 9,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-10-11T00:57:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 19, "name": "Razer Huntsman Mini", "price": 179900, "quantity": 2 }
+    ],
+    "total": 359800
+  },
+  {
+    "id": 10,
+    "customer": "Agustina Molina",
+    "createdAt": "2026-10-11T21:42:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 32, "name": "Logitech G435", "price": 119900, "quantity": 2 },
+      { "productId": 2, "name": "Logitech G502 X", "price": 119900, "quantity": 2 },
+      { "productId": 10, "name": "SteelSeries Rival 3", "price": 44900, "quantity": 2 }
+    ],
+    "total": 569400
+  },
+  {
+    "id": 11,
+    "customer": "Nicolás Castro",
+    "createdAt": "2026-10-13T03:26:00Z",
+    "status": "cancelado",
+    "items": [
+      { "productId": 11, "name": "SteelSeries Aerox 3 Wireless", "price": 149900, "quantity": 1 }
+    ],
+    "total": 149900
+  },
+  {
+    "id": 12,
+    "customer": "Lucía Fernández",
+    "createdAt": "2026-10-14T10:11:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 25, "name": "Keychron K2 Pro", "price": 164900, "quantity": 1 },
+      { "productId": 6, "name": "Razer Basilisk V3", "price": 104900, "quantity": 2 },
+      { "productId": 7, "name": "Razer Orochi V2", "price": 104900, "quantity": 1 }
+    ],
+    "total": 479600
+  },
+  {
+    "id": 13,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-10-15T15:56:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 50, "name": "ViewSonic VA2432-H", "price": 149900, "quantity": 2 },
+      { "productId": 39, "name": "Samsung Odyssey G5 27\"", "price": 449900, "quantity": 1 },
+      { "productId": 13, "name": "Logitech MX Master 3S", "price": 149900, "quantity": 1 }
+    ],
+    "total": 899600
+  },
+  {
+    "id": 14,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-10-16T13:40:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 45, "name": "ASUS ROG Swift PG27AQDM", "price": 1349900, "quantity": 1 },
+      { "productId": 18, "name": "Razer BlackWidow V4", "price": 254900, "quantity": 1 }
+    ],
+    "total": 1604800
+  },
+  {
+    "id": 15,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-10-17T21:25:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 10, "name": "SteelSeries Rival 3", "price": 44900, "quantity": 1 },
+      { "productId": 50, "name": "ViewSonic VA2432-H", "price": 149900, "quantity": 2 }
+    ],
+    "total": 344700
+  },
+  {
+    "id": 16,
+    "customer": "Camila Sosa",
+    "createdAt": "2026-10-19T03:10:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 33, "name": "Razer BlackShark V2 X", "price": 89900, "quantity": 1 }
+    ],
+    "total": 89900
+  },
+  {
+    "id": 17,
+    "customer": "Camila Sosa",
+    "createdAt": "2026-10-20T05:54:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 25, "name": "Keychron K2 Pro", "price": 164900, "quantity": 1 },
+      { "productId": 23, "name": "Corsair K65 Plus Wireless", "price": 239900, "quantity": 1 },
+      { "productId": 34, "name": "Razer Barracuda X", "price": 149900, "quantity": 1 }
+    ],
+    "total": 554700
+  },
+  {
+    "id": 18,
+    "customer": "Agustina Molina",
+    "createdAt": "2026-10-21T09:39:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 38, "name": "JBL Quantum 100", "price": 44900, "quantity": 1 },
+      { "productId": 15, "name": "Logitech G213 Prodigy", "price": 74900, "quantity": 1 }
+    ],
+    "total": 119800
+  },
+  {
+    "id": 19,
+    "customer": "Nicolás Castro",
+    "createdAt": "2026-10-22T09:24:00Z",
+    "status": "cancelado",
+    "items": [
+      { "productId": 33, "name": "Razer BlackShark V2 X", "price": 89900, "quantity": 1 }
+    ],
+    "total": 89900
+  },
+  {
+    "id": 20,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-10-23T17:08:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 46, "name": "AOC 24G2SP", "price": 254900, "quantity": 1 },
+      { "productId": 48, "name": "BenQ Zowie XL2546K", "price": 749900, "quantity": 1 },
+      { "productId": 39, "name": "Samsung Odyssey G5 27\"", "price": 449900, "quantity": 1 }
+    ],
+    "total": 1454700
+  },
+  {
+    "id": 21,
+    "customer": "Lucía Fernández",
+    "createdAt": "2026-10-24T14:53:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 5, "name": "Razer Viper V3 Pro", "price": 239900, "quantity": 1 }
+    ],
+    "total": 239900
+  },
+  {
+    "id": 22,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-10-25T22:38:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 10, "name": "SteelSeries Rival 3", "price": 44900, "quantity": 1 },
+      { "productId": 11, "name": "SteelSeries Aerox 3 Wireless", "price": 149900, "quantity": 1 },
+      { "productId": 13, "name": "Logitech MX Master 3S", "price": 149900, "quantity": 1 }
+    ],
+    "total": 344700
+  },
+  {
+    "id": 23,
+    "customer": "Mateo Álvarez",
+    "createdAt": "2026-10-27T03:22:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 20, "name": "HyperX Alloy Origins Core", "price": 134900, "quantity": 1 },
+      { "productId": 4, "name": "Razer DeathAdder V3", "price": 134900, "quantity": 1 },
+      { "productId": 41, "name": "LG UltraGear 27GP850", "price": 599900, "quantity": 2 }
+    ],
+    "total": 1469600
+  },
+  {
+    "id": 24,
+    "customer": "Lucía Fernández",
+    "createdAt": "2026-10-28T06:07:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 11, "name": "SteelSeries Aerox 3 Wireless", "price": 149900, "quantity": 1 }
+    ],
+    "total": 149900
+  },
+  {
+    "id": 25,
+    "customer": "Juan Ignacio Díaz",
+    "createdAt": "2026-10-29T07:52:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 28, "name": "Sony WH-CH520", "price": 89900, "quantity": 1 },
+      { "productId": 50, "name": "ViewSonic VA2432-H", "price": 149900, "quantity": 1 }
+    ],
+    "total": 239800
+  },
+  {
+    "id": 26,
+    "customer": "Mateo Álvarez",
+    "createdAt": "2026-10-30T09:37:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 21, "name": "HyperX Alloy Origins 65", "price": 149900, "quantity": 1 }
+    ],
+    "total": 149900
+  },
+  {
+    "id": 27,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-10-31T19:21:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 22, "name": "Corsair K70 RGB Pro", "price": 254900, "quantity": 2 },
+      { "productId": 49, "name": "Gigabyte M27Q", "price": 419900, "quantity": 2 },
+      { "productId": 34, "name": "Razer Barracuda X", "price": 149900, "quantity": 1 }
+    ],
+    "total": 1499500
+  },
+  {
+    "id": 28,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-11-01T20:06:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 29, "name": "HyperX Cloud II", "price": 149900, "quantity": 1 },
+      { "productId": 34, "name": "Razer Barracuda X", "price": 149900, "quantity": 1 }
+    ],
+    "total": 299800
+  },
+  {
+    "id": 29,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-11-03T02:51:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 22, "name": "Corsair K70 RGB Pro", "price": 254900, "quantity": 1 },
+      { "productId": 48, "name": "BenQ Zowie XL2546K", "price": 749900, "quantity": 2 },
+      { "productId": 18, "name": "Razer BlackWidow V4", "price": 254900, "quantity": 1 }
+    ],
+    "total": 2009600
+  },
+  {
+    "id": 30,
+    "customer": "Nicolás Castro",
+    "createdAt": "2026-11-04T05:35:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 48, "name": "BenQ Zowie XL2546K", "price": 749900, "quantity": 1 },
+      { "productId": 11, "name": "SteelSeries Aerox 3 Wireless", "price": 149900, "quantity": 1 },
+      { "productId": 40, "name": "Samsung Odyssey OLED G6", "price": 1049900, "quantity": 1 }
+    ],
+    "total": 1949700
+  },
+  {
+    "id": 31,
+    "customer": "Agustina Molina",
+    "createdAt": "2026-11-05T09:20:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 27, "name": "Sony WH-1000XM5", "price": 599900, "quantity": 1 },
+      { "productId": 44, "name": "ASUS TUF Gaming VG249Q3A", "price": 239900, "quantity": 1 }
+    ],
+    "total": 839800
+  },
+  {
+    "id": 32,
+    "customer": "Valentina Rossi",
+    "createdAt": "2026-11-06T11:05:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 10, "name": "SteelSeries Rival 3", "price": 44900, "quantity": 1 },
+      { "productId": 12, "name": "Corsair M65 RGB Ultra", "price": 119900, "quantity": 2 }
+    ],
+    "total": 284700
+  },
+  {
+    "id": 33,
+    "customer": "Agustina Molina",
+    "createdAt": "2026-11-07T16:49:00Z",
+    "status": "cancelado",
+    "items": [
+      { "productId": 6, "name": "Razer Basilisk V3", "price": 104900, "quantity": 1 },
+      { "productId": 47, "name": "Dell S2721DGF", "price": 524900, "quantity": 1 },
+      { "productId": 7, "name": "Razer Orochi V2", "price": 104900, "quantity": 1 }
+    ],
+    "total": 734700
+  },
+  {
+    "id": 34,
+    "customer": "Sofía Pereyra",
+    "createdAt": "2026-11-08T22:34:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 11, "name": "SteelSeries Aerox 3 Wireless", "price": 149900, "quantity": 2 }
+    ],
+    "total": 299800
+  },
+  {
+    "id": 35,
+    "customer": "Juan Ignacio Díaz",
+    "createdAt": "2026-11-09T19:19:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 1, "name": "Logitech G Pro X Superlight 2", "price": 239900, "quantity": 2 },
+      { "productId": 30, "name": "HyperX Cloud III Wireless", "price": 254900, "quantity": 1 }
+    ],
+    "total": 734700
+  },
+  {
+    "id": 36,
+    "customer": "Lucía Fernández",
+    "createdAt": "2026-11-11T04:03:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 28, "name": "Sony WH-CH520", "price": 89900, "quantity": 1 },
+      { "productId": 39, "name": "Samsung Odyssey G5 27\"", "price": 449900, "quantity": 1 },
+      { "productId": 37, "name": "Corsair HS55 Stereo", "price": 89900, "quantity": 1 }
+    ],
+    "total": 629700
+  },
+  {
+    "id": 37,
+    "customer": "Federico Ruiz",
+    "createdAt": "2026-11-12T06:48:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 30, "name": "HyperX Cloud III Wireless", "price": 254900, "quantity": 1 }
+    ],
+    "total": 254900
+  },
+  {
+    "id": 38,
+    "customer": "Nicolás Castro",
+    "createdAt": "2026-11-13T11:33:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 12, "name": "Corsair M65 RGB Ultra", "price": 119900, "quantity": 2 },
+      { "productId": 3, "name": "Logitech G305 Lightspeed", "price": 59900, "quantity": 1 },
+      { "productId": 21, "name": "HyperX Alloy Origins 65", "price": 149900, "quantity": 1 }
+    ],
+    "total": 449600
+  },
+  {
+    "id": 39,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-11-14T10:17:00Z",
+    "status": "entregado",
+    "items": [
+      { "productId": 26, "name": "Redragon Kumara K552", "price": 59900, "quantity": 2 },
+      { "productId": 22, "name": "Corsair K70 RGB Pro", "price": 254900, "quantity": 2 },
+      { "productId": 40, "name": "Samsung Odyssey OLED G6", "price": 1049900, "quantity": 1 }
+    ],
+    "total": 1679500
+  },
+  {
+    "id": 40,
+    "customer": "Mateo Álvarez",
+    "createdAt": "2026-11-15T15:02:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 8, "name": "HyperX Pulsefire Haste 2", "price": 89900, "quantity": 1 },
+      { "productId": 48, "name": "BenQ Zowie XL2546K", "price": 749900, "quantity": 2 },
+      { "productId": 3, "name": "Logitech G305 Lightspeed", "price": 59900, "quantity": 1 }
+    ],
+    "total": 1649600
+  },
+  {
+    "id": 41,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-11-16T23:47:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 14, "name": "Logitech G Pro X TKL", "price": 299900, "quantity": 1 },
+      { "productId": 2, "name": "Logitech G502 X", "price": 119900, "quantity": 1 },
+      { "productId": 28, "name": "Sony WH-CH520", "price": 89900, "quantity": 1 }
+    ],
+    "total": 509700
+  },
+  {
+    "id": 42,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-11-17T22:31:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 3, "name": "Logitech G305 Lightspeed", "price": 59900, "quantity": 1 }
+    ],
+    "total": 59900
+  },
+  {
+    "id": 43,
+    "customer": "Agustina Molina",
+    "createdAt": "2026-11-19T07:16:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 26, "name": "Redragon Kumara K552", "price": 59900, "quantity": 1 },
+      { "productId": 20, "name": "HyperX Alloy Origins Core", "price": 134900, "quantity": 1 },
+      { "productId": 49, "name": "Gigabyte M27Q", "price": 419900, "quantity": 1 }
+    ],
+    "total": 614700
+  },
+  {
+    "id": 44,
+    "customer": "Tomás Herrera",
+    "createdAt": "2026-11-20T09:01:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 9, "name": "HyperX Pulsefire Haste 2 Wireless", "price": 134900, "quantity": 1 },
+      { "productId": 37, "name": "Corsair HS55 Stereo", "price": 89900, "quantity": 1 },
+      { "productId": 22, "name": "Corsair K70 RGB Pro", "price": 254900, "quantity": 1 }
+    ],
+    "total": 479700
+  },
+  {
+    "id": 45,
+    "customer": "Sofía Pereyra",
+    "createdAt": "2026-11-21T08:45:00Z",
+    "status": "enviado",
+    "items": [
+      { "productId": 4, "name": "Razer DeathAdder V3", "price": 134900, "quantity": 1 }
+    ],
+    "total": 134900
+  },
+  {
+    "id": 46,
+    "customer": "Julieta Romero",
+    "createdAt": "2026-11-22T17:30:00Z",
+    "status": "pendiente",
+    "items": [
+      { "productId": 3, "name": "Logitech G305 Lightspeed", "price": 59900, "quantity": 1 }
+    ],
+    "total": 59900
+  },
+  {
+    "id": 47,
+    "customer": "Federico Ruiz",
+    "createdAt": "2026-11-23T16:15:00Z",
+    "status": "pendiente",
+    "items": [
+      { "productId": 16, "name": "Logitech MX Keys S", "price": 164900, "quantity": 1 },
+      { "productId": 46, "name": "AOC 24G2SP", "price": 254900, "quantity": 1 },
+      { "productId": 1, "name": "Logitech G Pro X Superlight 2", "price": 239900, "quantity": 2 }
+    ],
+    "total": 899600
+  },
+  {
+    "id": 48,
+    "customer": "Sofía Pereyra",
+    "createdAt": "2026-11-24T23:00:00Z",
+    "status": "pendiente",
+    "items": [
+      { "productId": 9, "name": "HyperX Pulsefire Haste 2 Wireless", "price": 134900, "quantity": 1 }
+    ],
+    "total": 134900
+  }
+]
