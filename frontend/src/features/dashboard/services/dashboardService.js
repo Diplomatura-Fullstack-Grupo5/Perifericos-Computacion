@@ -13,7 +13,7 @@ export const ESTADOS_PEDIDO = ["pendiente", "enviado", "entregado", "cancelado"]
 /** Con esta cantidad de unidades o menos, un producto entra en las alertas de stock bajo. */
 const LIMITE_STOCK_BAJO = 5;
 
-/** Cantidad de elementos de las listas (más vendidos y últimos pedidos). */
+/** Cantidad de productos de la lista de más vendidos. */
 const LIMITE_LISTAS = 5;
 
 /** Desde esta cantidad de días, la evolución de ventas se agrupa por semana en lugar de por día. */
@@ -245,8 +245,5 @@ export async function obtenerDashboard(dias = 30) {
     stockBajo: productos
       .filter((producto) => producto.stock <= LIMITE_STOCK_BAJO)
       .sort((a, b) => a.stock - b.stock),
-    ultimosPedidos: [...pedidos]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, LIMITE_LISTAS),
   };
 }

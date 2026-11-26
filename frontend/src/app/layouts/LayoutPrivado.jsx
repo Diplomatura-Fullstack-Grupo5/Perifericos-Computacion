@@ -10,6 +10,7 @@ import { NavbarPanel } from "../../shared/components/organisms/NavbarPanel";
 const SECCIONES_PANEL = [
   { to: "/admin", texto: "Dashboard", end: true },
   { to: "/admin/productos", texto: "Productos" },
+  { to: "/admin/pedidos", texto: "Pedidos" },
 ];
 
 /**

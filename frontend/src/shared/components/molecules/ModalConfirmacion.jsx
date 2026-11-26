@@ -1,12 +1,15 @@
 import { Modal } from "./Modal";
 
 /**
- * Modal que pide confirmar una acción destructiva (ej. vaciar el comparador).
+ * Modal que pide confirmar una acción (ej. vaciar el comparador). Por defecto el botón de confirmar es
+ * rojo, para las acciones destructivas.
  * @param {object} props
  * @param {boolean} props.abierto
  * @param {string} props.titulo
  * @param {import("react").ReactNode} props.children Mensaje.
  * @param {string} [props.textoConfirmar] Texto del botón de confirmar.
+ * @param {string} [props.textoCancelar] Texto del botón que cierra sin confirmar.
+ * @param {string} [props.claseConfirmar] Clase de Bootstrap del botón de confirmar (ej. `btn-primary`).
  * @param {() => void} props.onConfirmar
  * @param {() => void} props.onCancelar También se llama al cerrar el modal sin confirmar.
  * @returns {JSX.Element | null}
@@ -16,6 +19,8 @@ export function ModalConfirmacion({
   titulo,
   children,
   textoConfirmar = "Confirmar",
+  textoCancelar = "Cancelar",
+  claseConfirmar = "btn-danger",
   onConfirmar,
   onCancelar,
 }) {
@@ -32,9 +37,9 @@ export function ModalConfirmacion({
             onClick={onCancelar}
             autoFocus
           >
-            Cancelar
+            {textoCancelar}
           </button>
-          <button type="button" className="btn btn-danger" onClick={onConfirmar}>
+          <button type="button" className={`btn ${claseConfirmar}`} onClick={onConfirmar}>
             {textoConfirmar}
           </button>
         </>
