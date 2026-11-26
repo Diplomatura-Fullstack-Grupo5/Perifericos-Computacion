@@ -64,7 +64,6 @@ export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador })
                 ))}
               </ul>
             </li>
-            {/* TODO: reemplazar el mensaje de /contacto por la página real cuando exista */}
             <li className="nav-item">
               <Link className="nav-link" to="/nosotros">
                 Nosotros

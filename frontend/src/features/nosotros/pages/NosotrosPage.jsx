@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { EncabezadoPagina } from "../../../shared/components/molecules/EncabezadoPagina";
 import "./NosotrosPage.css";
 
 const DATOS = [
@@ -44,34 +45,22 @@ const EQUIPO = [
  */
 export function NosotrosPage() {
   return (
-    <div className="nosotros py-4">
-      <div className="container">
-        {/* -------------------- Migas y título -------------------- */}
-        <nav aria-label="Migas de pan">
-          <ol className="breadcrumb small mb-2">
-            <li className="breadcrumb-item">
-              <Link to="/">Inicio</Link>
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              Nosotros
-            </li>
-          </ol>
-        </nav>
-        <h1 className="fs-2 fw-bold mb-3">Nosotros</h1>
+    <div className="nosotros">
+      {/* -------------------- Encabezado e historia -------------------- */}
+      <EncabezadoPagina titulo="Nosotros">
+        <p>
+          PuntoTech nació en 2026, en un departamento de San Luis, cuando cuatro amigos se
+          cansaron de abrir diez pestañas para comparar dos mouses. Las tiendas mostraban las
+          características como texto suelto, y cada marca las nombraba distinto.
+        </p>
+        <p>
+          Empezamos cargando a mano las especificaciones de unos pocos productos en una
+          planilla. Hoy cada artículo del catálogo tiene sus datos técnicos ordenados, y nuestro
+          comparador resalta las diferencias y marca el mejor valor de cada una.
+        </p>
+      </EncabezadoPagina>
 
-        {/* -------------------- Historia -------------------- */}
-        <section className="mb-5">
-          <p className="text-body-secondary">
-            PuntoTech nació en 2026, en un departamento de San Luis, cuando cuatro amigos se
-            cansaron de abrir diez pestañas para comparar dos mouses. Las tiendas mostraban las
-            características como texto suelto, y cada marca las nombraba distinto.
-          </p>
-          <p className="text-body-secondary mb-0">
-            Empezamos cargando a mano las especificaciones de unos pocos productos en una
-            planilla. Hoy cada artículo del catálogo tiene sus datos técnicos ordenados, y nuestro
-            comparador resalta las diferencias y marca el mejor valor de cada una.
-          </p>
-        </section>
+      <div className="container py-4">
 
         {/* -------------------- Datos -------------------- */}
         <section className="mb-5" aria-label="PuntoTech en números">
