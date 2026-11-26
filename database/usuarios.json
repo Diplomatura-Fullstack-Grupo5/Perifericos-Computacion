@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "name": "German Altamirano",
+    "email": "germanaltamirano944@gmail.com",
+    "passwordHash": "scrypt$bfa8255dd6768108a534472861c2596a$1a24debbcc1bf759255a5a4db50a8de91aa191bd94144904116ac636d2c63a78b926090d2b443b6f6b624406b33f4dbb728655d308f11f3a19d22a572b53c9ce",
+    "role": "cliente",
+    "createdAt": "2026-11-23T21:00:04.358Z"
+  }
+]

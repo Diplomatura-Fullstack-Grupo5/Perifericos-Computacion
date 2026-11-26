@@ -1,0 +1,293 @@
+.registro-page {
+  display: flex;
+  min-height: 75vh;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(24px, 5vw, 56px) 20px;
+  background: #f4f7fb;
+}
+
+.registro-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  width: 100%;
+  max-width: 1080px;
+  overflow: hidden;
+  border: 1px solid #e8edf4;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+}
+
+.registro-panel-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(32px, 5vw, 56px);
+  color: #fff;
+  background: linear-gradient(145deg, #0f172a 0%, #142b58 48%, #1d4ed8 100%);
+}
+
+.registro-panel-visual::before,
+.registro-panel-visual::after {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.registro-panel-visual::before {
+  top: -160px;
+  right: -180px;
+  width: 400px;
+  height: 400px;
+  background: rgba(59, 130, 246, 0.18);
+  filter: blur(5px);
+}
+
+.registro-panel-visual::after {
+  bottom: -120px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: rgba(96, 165, 250, 0.12);
+  filter: blur(10px);
+}
+
+.registro-panel-contenido {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.registro-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: clamp(36px, 6vw, 64px);
+}
+
+.registro-logo img {
+  display: block;
+  width: 166px;
+  height: auto;
+}
+
+.registro-etiqueta {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 12px;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.registro-texto-principal h2 {
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: clamp(32px, 3.5vw, 43px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.registro-texto-principal h2 span {
+  color: #60a5fa;
+}
+
+.registro-texto-principal p {
+  max-width: 380px;
+  margin-bottom: 36px;
+  color: #cbd5e1;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.registro-panel-formulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(32px, 5vw, 60px);
+  background: #fff;
+}
+
+.registro-header {
+  margin-bottom: 28px;
+}
+
+.registro-header h1 {
+  margin-bottom: 10px;
+  color: #172033;
+  font-size: clamp(26px, 3vw, 32px);
+  font-weight: 750;
+}
+
+.registro-header p {
+  margin-bottom: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.registro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.registro-campo label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.registro-campo input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #dbe2ea;
+  border-radius: 9px;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.registro-campo input::placeholder {
+  color: #94a3b8;
+}
+
+.registro-campo input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.registro-campo small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.registro-boton {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 2px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.registro-boton:hover {
+  transform: translateY(-1px);
+  background: #1d4ed8;
+}
+
+.registro-boton:focus-visible,
+.registro-login a:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 3px;
+}
+
+.registro-mensaje {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.registro-mensaje-info {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.registro-mensaje-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.registro-mensaje-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.registro-login {
+  margin: 22px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
+
+.registro-login a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.registro-login a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .registro-page {
+    min-height: 0;
+    align-items: flex-start;
+  }
+
+  .registro-layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 520px;
+  }
+
+  .registro-panel-visual {
+    padding: 30px clamp(24px, 7vw, 40px);
+  }
+
+  .registro-logo {
+    margin-bottom: 28px;
+  }
+
+  .registro-texto-principal h2 {
+    margin-bottom: 12px;
+    font-size: 32px;
+  }
+
+  .registro-texto-principal p {
+    margin-bottom: 22px;
+  }
+
+  .registro-panel-formulario {
+    padding: 32px clamp(24px, 7vw, 40px);
+  }
+}
+
+@media (max-width: 420px) {
+  .registro-page {
+    padding: 20px 12px;
+  }
+
+  .registro-layout {
+    border-radius: 14px;
+  }
+
+  .registro-panel-formulario {
+    padding: 28px 20px;
+  }
+}

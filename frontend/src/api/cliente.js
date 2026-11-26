@@ -1,7 +1,7 @@
 import { URL_BASE } from "./endpoints";
 
 /**
- * Hace una petición GET y devuelve la respuesta como JSON. Es el único fetch de la aplicación.
+ * Hace una petición GET y devuelve la respuesta como JSON. Este archivo es el único que usa fetch.
  * @param {string} endpoint Ruta relativa a URL_BASE (usar las de ENDPOINTS).
  * @returns {Promise<any>}
  * @throws {Error} Si la respuesta no es exitosa.
@@ -22,7 +22,8 @@ export async function pedir(endpoint) {
  * @param {object} [datos] Datos a enviar en el cuerpo, como JSON.
  * @param {"POST" | "PUT" | "DELETE"} [metodo]
  * @returns {Promise<any>} Lo que devuelve el servidor, o `null` si responde sin contenido (204).
- * @throws {Error} Si la respuesta no es exitosa, con el mensaje que manda el servidor si lo hay.
+ * @throws {Error} Si la respuesta no es exitosa, con el mensaje que manda el servidor si lo hay y
+ *   el código HTTP en `error.status`.
  */
 export async function enviar(endpoint, datos, metodo = "POST") {
   const response = await fetch(`${URL_BASE}${endpoint}`, {
@@ -34,7 +35,9 @@ export async function enviar(endpoint, datos, metodo = "POST") {
   const respuesta = response.status === 204 ? null : await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(respuesta?.message ?? `Error ${response.status} al enviar ${endpoint}`);
+    const error = new Error(respuesta?.message ?? `Error ${response.status} al enviar ${endpoint}`);
+    error.status = response.status;
+    throw error;
   }
 
   return respuesta;

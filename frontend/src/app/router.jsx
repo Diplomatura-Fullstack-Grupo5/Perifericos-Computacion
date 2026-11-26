@@ -3,6 +3,7 @@ import { LayoutPublico } from "./layouts/LayoutPublico";
 import { LayoutPrivado } from "./layouts/LayoutPrivado";
 import { InicioPage } from "../features/inicio";
 import { CatalogoPage, obtenerCategorias } from "../features/catalogo";
+import { RegistroPage } from "../features/auth";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
         path,
         element: <MensajeVacio>Página en construcción.</MensajeVacio>,
       })),
+      { path: "registrarse", element: <RegistroPage /> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },
