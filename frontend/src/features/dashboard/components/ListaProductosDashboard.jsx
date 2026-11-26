@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import "./ListaProductosDashboard.css";
 
 /**
- * Lista de productos del dashboard (más vendidos, más comparados, stock bajo): miniatura, nombre
+ * Lista de productos del dashboard (más vendidos y stock bajo): miniatura, nombre
  * con enlace, categoría y, a la derecha, el dato que corresponde a cada lista.
  * @param {object} props
  * @param {{ id: number, name: string, image?: string, category: string }[]} props.productos

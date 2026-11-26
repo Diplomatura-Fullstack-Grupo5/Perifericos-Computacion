@@ -32,8 +32,8 @@ function formatearFecha(dia) {
 /**
  * Página de inicio del panel de administración: indicadores del período elegido (TPV, TPN, ticket
  * promedio, unidades y cancelaciones, comparados con el período anterior), evolución de ventas,
- * ventas por categoría y por medio de pago, estado de los pedidos, más vendidos, más comparados,
- * stock bajo y últimos pedidos. El período va en la URL (`?periodo=7|30|90`).
+ * ventas por categoría y por medio de pago, estado de los pedidos, más vendidos, stock bajo y
+ * últimos pedidos. El período va en la URL (`?periodo=7|30|90`).
  * @returns {JSX.Element}
  */
 export function DashboardPage() {
@@ -135,7 +135,6 @@ export function DashboardPage() {
     mediosDePago,
     estados,
     masVendidos,
-    masComparados,
     stockBajo,
     ultimosPedidos,
   } = dashboard;
@@ -282,50 +281,32 @@ export function DashboardPage() {
         </SeccionDashboard>
       </div>
 
-      {/* -------------------- Más comparados y stock bajo -------------------- */}
-      <div className="row g-3">
-        <div className="col-lg-6">
-          <SeccionDashboard titulo="Más comparados" sinMargen>
-            <ListaProductosDashboard
-              numerada
-              productos={masComparados}
-              enlace={(producto) => `/producto/${producto.id}`}
-              dato={(producto) => (
-                <>
-                  <strong>{producto.compared}</strong> comparaciones
-                </>
-              )}
-            />
-          </SeccionDashboard>
-        </div>
-        <div className="col-lg-6">
-          <SeccionDashboard
-            titulo={`Stock bajo (${stockBajo.length})`}
-            sinMargen
-            accion={
-              <Link to="/admin/productos?orden=stock_asc" className="small">
-                Ver productos
-              </Link>
-            }
-          >
-            {stockBajo.length === 0 ? (
-              <MensajeVacio>Todos los productos tienen stock suficiente.</MensajeVacio>
-            ) : (
-              <ListaProductosDashboard
-                productos={stockBajo}
-                enlace={(producto) => `/admin/productos/${producto.id}/editar`}
-                dato={(producto) => (
-                  <span
-                    className={`badge ${producto.stock <= 0 ? "text-bg-danger" : "text-bg-warning"}`}
-                  >
-                    {producto.stock <= 0 ? "Sin stock" : `${producto.stock} u.`}
-                  </span>
-                )}
-              />
+      {/* -------------------- Stock bajo -------------------- */}
+      <SeccionDashboard
+        titulo={`Stock bajo (${stockBajo.length})`}
+        sinMargen
+        accion={
+          <Link to="/admin/productos?orden=stock_asc" className="small">
+            Ver productos
+          </Link>
+        }
+      >
+        {stockBajo.length === 0 ? (
+          <MensajeVacio>Todos los productos tienen stock suficiente.</MensajeVacio>
+        ) : (
+          <ListaProductosDashboard
+            productos={stockBajo}
+            enlace={(producto) => `/admin/productos/${producto.id}/editar`}
+            dato={(producto) => (
+              <span
+                className={`badge ${producto.stock <= 0 ? "text-bg-danger" : "text-bg-warning"}`}
+              >
+                {producto.stock <= 0 ? "Sin stock" : `${producto.stock} u.`}
+              </span>
             )}
-          </SeccionDashboard>
-        </div>
-      </div>
+          />
+        )}
+      </SeccionDashboard>
     </>
   );
 }

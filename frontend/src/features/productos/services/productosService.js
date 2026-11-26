@@ -137,8 +137,7 @@ async function validarProducto(producto) {
 }
 
 /**
- * Crea un producto. Simula `POST /api/productos`. Un producto nuevo empieza sin ventas ni
- * comparaciones.
+ * Crea un producto. Simula `POST /api/productos`. Un producto nuevo empieza sin ventas.
  * @param {object} producto Datos del producto, sin `id` (lo asigna el servidor).
  * @returns {Promise<object>} El producto creado, con su `id`.
  * @throws {Error} Si los datos no son válidos o el servidor responde con error.
@@ -146,12 +145,11 @@ async function validarProducto(producto) {
 export async function crearProducto(producto) {
   await validarProducto(producto);
   const { image, specs, ...datos } = producto;
-  return enviar(ENDPOINTS.crearProducto, { ...datos, sold: 0, compared: 0, image, specs });
+  return enviar(ENDPOINTS.crearProducto, { ...datos, sold: 0, image, specs });
 }
 
 /**
- * Modifica un producto. Simula `PUT /api/productos/:id`. Las ventas (`sold`) y las
- * comparaciones (`compared`) no se modifican.
+ * Modifica un producto. Simula `PUT /api/productos/:id`. Las ventas (`sold`) no se modifican.
  * @param {number} id
  * @param {object} producto Datos nuevos del producto.
  * @returns {Promise<object>} El producto modificado.
