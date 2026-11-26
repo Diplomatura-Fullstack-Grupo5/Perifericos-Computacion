@@ -56,7 +56,7 @@ export function FormularioContacto() {
             name="nombre"
             type="text"
             className="form-control"
-            placeholder="Martina Gómez"
+            placeholder="Tu nombre"
             autoComplete="name"
             required
             value={consulta.nombre}
@@ -74,7 +74,7 @@ export function FormularioContacto() {
             name="email"
             type="email"
             className="form-control"
-            placeholder="martina.gomez@correo.com"
+            placeholder="tu.mail@correo.com"
             autoComplete="email"
             required
             value={consulta.email}
@@ -116,7 +116,7 @@ export function FormularioContacto() {
             name="mensaje"
             className="form-control"
             rows={5}
-            placeholder="Hola, quería saber si el mouse es compatible con Linux y cuánto tarda el envío a Mendoza."
+            placeholder="Escribinos tu consulta"
             required
             value={consulta.mensaje}
             onChange={cambiarCampo}
