@@ -7,10 +7,13 @@ import { RegistroPage } from "../features/auth";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
-import { ProductoPage } from "../features/producto";
 import { ComparadorPage } from "../features/comparador";
-import { ListadoProductosPage, FormularioProductoPage } from "../features/productos";
-import { DashboardPage } from "../features/dashboard";
+import {
+  ProductoPage,
+  AdminProductosPage,
+  AdminFormularioProductoPage,
+} from "../features/productos";
+import { AdminDashboardPage } from "../features/dashboard";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -64,14 +67,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    // Panel de administración. Cada sección es una feature de su dominio (productos, pedidos…).
+    // Panel de administración. Cada sección vive en la feature de su dominio (productos, pedidos…)
+    // y sus páginas llevan el prefijo `Admin`.
     path: "/admin",
     element: <LayoutPrivado />,
     children: [
-      { index: true, element: <DashboardPage /> },
-      { path: "productos", element: <ListadoProductosPage /> },
-      { path: "productos/nuevo", element: <FormularioProductoPage /> },
-      { path: "productos/:id/editar", element: <FormularioProductoPage /> },
+      { index: true, element: <AdminDashboardPage /> },
+      { path: "productos", element: <AdminProductosPage /> },
+      { path: "productos/nuevo", element: <AdminFormularioProductoPage /> },
+      { path: "productos/:id/editar", element: <AdminFormularioProductoPage /> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

@@ -97,7 +97,7 @@ src/
 │   ├── endpoints.js      # URL_BASE + ENDPOINTS de cada recurso
 │   └── cliente.js        # pedir() y enviar(): los únicos fetch de la aplicación
 ├── features/             # un módulo por funcionalidad
-│   └── <feature>/        # catalogo, producto, comparador, carrito, pedidos, auth, productos…
+│   └── <feature>/        # catalogo, productos, comparador, carrito, pedidos, auth, dashboard…
 │       ├── components/   # componentes propios de la feature (con su .css al lado)
 │       ├── pages/        # una página por ruta (<Nombre>Page.jsx)
 │       ├── services/     # <feature>Service.js: obtiene datos usando api/cliente.js
@@ -130,6 +130,11 @@ Reglas:
 - El panel admin **no es una feature**: "admin" es un tipo de usuario. Cada sección del panel va en
   la feature de su dominio, con los mismos nombres que los módulos del backend (`productos`,
   `pedidos`, `usuarios`, `dashboard`), y sus rutas cuelgan de `/admin` con el `LayoutPrivado`.
+  Una feature por dominio: la ficha pública y el ABM de productos están juntos en `productos`.
+- Las páginas del panel llevan el prefijo `Admin` en el nombre (`AdminProductosPage`,
+  `AdminFormularioProductoPage`, `AdminDashboardPage`), para distinguirlas de las públicas del mismo
+  dominio (`ProductoPage`). No se usa una subcarpeta `admin/`: público y privado no son carpetas, lo
+  resuelven el layout y el control de acceso.
 
 ### Datos de práctica (`database/`)
 

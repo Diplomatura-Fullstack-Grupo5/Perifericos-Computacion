@@ -72,7 +72,7 @@ Si el cambio toca `database/*.json`, verificar que los JSON sean válidos y que 
 - Recorrer las secciones del [checklist](checklist.md) que apliquen. Para cada hallazgo, anotar archivo,
   línea, regla, fuente y una corrección concreta.
 - Comparar con el código del repo que ya resuelve algo parecido (por ejemplo, una página nueva contra
-  `features/producto/pages/ProductoPage.jsx`, un contexto nuevo contra el del comparador). Si el cambio se aparta
+  `features/productos/pages/ProductoPage.jsx`, un contexto nuevo contra el del comparador). Si el cambio se aparta
   del patrón ya usado sin motivo, es un hallazgo.
 - Recordatorios según lo que toque el cambio:
   - **Router:** ¿la ruta cuelga del layout correcto? ¿se sacó de `PAGINAS_EN_CONSTRUCCION`? ¿las de admin están protegidas?

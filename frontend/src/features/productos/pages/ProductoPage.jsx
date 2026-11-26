@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { obtenerProducto, obtenerDefinicionesSpecs } from "../services/productoService";
+import { obtenerProducto, obtenerDefinicionesSpecs } from "../services/productosService";
 import { MigasProducto } from "../components/MigasProducto";
 import { ImagenProducto } from "../components/ImagenProducto";
 import { InfoProducto } from "../components/InfoProducto";
@@ -18,8 +18,8 @@ async function cargarFicha(id) {
   const producto = await obtenerProducto(id);
   if (!producto) return { producto: null, specsDefinitions: {} };
 
-  const specsDefinitions = await obtenerDefinicionesSpecs(producto.category);
-  return { producto, specsDefinitions };
+  const definiciones = await obtenerDefinicionesSpecs();
+  return { producto, specsDefinitions: definiciones[producto.category] ?? {} };
 }
 
 /**
