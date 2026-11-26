@@ -12,8 +12,20 @@
 
 .app-navbar .nav-link:hover,
 .app-navbar .nav-link:focus-visible,
-.app-navbar .nav-link.show {
+.app-navbar .nav-link.show,
+.app-navbar .nav-link.active {
   color: #fff;
+}
+
+/* Sección actual del panel de administración */
+.app-navbar .nav-link.active {
+  background-color: #334155;
+}
+
+/* "Administración" junto al logo, en el panel */
+.app-navbar-etiqueta {
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
 /* -------------------- Desplegable de Catálogo -------------------- */

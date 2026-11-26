@@ -9,7 +9,7 @@ const ENLACES = [
 ];
 
 /**
- * Pie de página del sitio público.
+ * Pie de página del sitio (tienda y panel de administración).
  */
 export function Footer() {
   const anio = new Date().getFullYear();

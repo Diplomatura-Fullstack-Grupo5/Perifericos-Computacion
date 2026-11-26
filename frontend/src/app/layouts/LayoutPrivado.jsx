@@ -1,41 +1,25 @@
-import { Link, NavLink, Outlet } from "react-router";
+import { Outlet } from "react-router";
+import { Footer } from "../../shared/components/organisms/Footer";
+import { NavbarPanel } from "../../shared/components/organisms/NavbarPanel";
+
+/** Secciones del panel que aparecen en la barra. Cada issue de admin suma la suya. */
+const SECCIONES_PANEL = [{ to: "/admin/productos", texto: "Productos" }];
 
 /**
- * Estructura común de las páginas del panel de administración: barra con las secciones del panel
- * y un enlace para volver a la tienda.
+ * Estructura común de las páginas del panel de administración: la barra del panel (con el mismo
+ * estilo que la del sitio público), el contenido y el pie de página del sitio.
  * Todavía no controla el acceso: eso llega con el inicio de sesión (loader `protegerRuta`). Aun así,
  * la protección real será la del backend (`auth` + `requiereRol`), no la de esta interfaz.
  * @returns {JSX.Element}
  */
 export function LayoutPrivado() {
   return (
-    <div className="d-flex flex-column min-vh-100 bg-body-tertiary">
-      <nav
-        className="navbar navbar-expand bg-dark"
-        data-bs-theme="dark"
-        aria-label="Panel de administración"
-      >
-        <div className="container">
-          <Link className="navbar-brand d-flex align-items-center gap-2" to="/admin">
-            <img src="/icon.svg" alt="PuntoTech" height="28" />
-            <span className="fs-6 text-secondary d-none d-sm-inline">Administración</span>
-          </Link>
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/admin/productos">
-                Productos
-              </NavLink>
-            </li>
-          </ul>
-          <Link className="btn btn-sm btn-outline-light text-nowrap" to="/">
-            <i className="bi bi-shop me-1" aria-hidden="true" />
-            Ver tienda
-          </Link>
-        </div>
-      </nav>
+    <div className="d-flex flex-column min-vh-100">
+      <NavbarPanel secciones={SECCIONES_PANEL} />
       <main className="flex-grow-1 container py-4">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
