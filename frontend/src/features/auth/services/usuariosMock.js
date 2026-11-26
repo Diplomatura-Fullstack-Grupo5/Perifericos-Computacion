@@ -5,7 +5,7 @@ import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCallback);
 const MAX_BYTES_SOLICITUD = 16 * 1024;
-const RUTA_REGISTRO = "/api/usuarios/registro";
+const RUTA_REGISTRO = "/database/usuarios/registro";
 
 class ErrorSolicitud extends Error {
   constructor(status, message) {

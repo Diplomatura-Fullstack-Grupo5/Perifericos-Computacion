@@ -91,12 +91,12 @@ src/
 │   ├── main.jsx          # punto de entrada: Bootstrap, index.css y <App />
 │   ├── App.jsx           # monta el router
 │   ├── router.jsx        # rutas (y más adelante loaders: protegerRuta, redirigirSiHaySesion)
-│   └── layouts/          # LayoutPublico, LayoutPrivado (zona admin)
+│   └── layouts/          # LayoutPublico, LayoutPrivado (panel admin, rutas /admin/*)
 ├── api/
 │   ├── endpoints.js      # URL_BASE + ENDPOINTS de cada recurso
-│   └── cliente.js        # pedir(endpoint): el único fetch de la aplicación
+│   └── cliente.js        # pedir() y enviar(): los únicos fetch de la aplicación
 ├── features/             # un módulo por funcionalidad
-│   └── <feature>/        # catalogo, producto, comparador, carrito, pedidos, auth, panel
+│   └── <feature>/        # catalogo, producto, comparador, carrito, pedidos, auth, productos…
 │       ├── components/   # componentes propios de la feature (con su .css al lado)
 │       ├── pages/        # una página por ruta (<Nombre>Page.jsx)
 │       ├── services/     # <feature>Service.js: obtiene datos usando api/cliente.js
@@ -126,6 +126,9 @@ Reglas:
   limpieza.
 - Bootstrap JS (`data-bs-toggle`) solo abre/cierra elementos (dropdown, collapse); qué se muestra lo
   decide el estado de React. No controlar lo mismo con los dos.
+- El panel admin **no es una feature**: "admin" es un tipo de usuario. Cada sección del panel va en
+  la feature de su dominio, con los mismos nombres que los módulos del backend (`productos`,
+  `pedidos`, `usuarios`, `dashboard`), y sus rutas cuelgan de `/admin` con el `LayoutPrivado`.
 
 ### Datos de práctica (`database/`)
 
@@ -134,11 +137,19 @@ Mientras no hay backend, `database/*.json` hace de API. El plugin `servirDatabas
 exista la API real, se cambia `URL_BASE` en `api/endpoints.js` y la lógica que hoy simula al
 servidor dentro de los services (filtrar, ordenar, calcular opciones de filtro) pasa al backend.
 
+Escrituras: `enviar(endpoint, datos, metodo)` de `api/cliente.js` manda `POST`, `PUT` o `DELETE`, y
+`servirDatabase()` los simula sobre las colecciones de `COLECCIONES_EDITABLES` (hoy `productos`):
+`POST /database/productos` agrega con el id siguiente, `PUT /database/productos/:id` modifica y
+`DELETE /database/productos/:id` borra, **escribiendo el archivo JSON**. Las reglas de negocio
+(validar, valores iniciales) van en el service de la feature, no en `vite.config.js`. Los datos
+que se cargan probando no se commitean: descartarlos con `git checkout database/`.
+
 - `productos.json`: lista plana de productos. `specs` guarda solo **clave → valor**
   (`{ "weight_g": 60, "connectivity": "Inalámbrico" }`): números como números, la unidad va en el
   nombre de la clave, `null` = no aplica. Todos los productos de una categoría tienen las mismas
   claves.
-- `categorias.json`: por categoría, la **definición de cada spec**: `label`, `unit`, `featured`
+- `categorias.json`: por categoría, la **definición de cada spec**: `label`, `type` (`"number"` /
+  `"boolean"` / `"text"`, el tipo del valor y el control del formulario del panel), `unit`, `featured`
   (se muestra en la tarjeta), `rule` (`"higher"` / `"lower"` para el mejor valor del comparador;
   sin `rule` no hay ganador) y `filter` (`"checkbox"` / `"range"`; sin `filter` no se filtra). El
   orden de las claves es el orden en que se muestran.
