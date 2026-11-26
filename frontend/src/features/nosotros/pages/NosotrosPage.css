@@ -1,0 +1,31 @@
+.nosotros {
+  background: #f5f7fb;
+}
+
+.nosotros-tarjeta {
+  background: #fff;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+}
+
+.nosotros-dato-valor {
+  color: var(--bs-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.nosotros-rayita {
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-bottom: 0.75rem;
+  border-radius: 2px;
+  background: var(--bs-primary);
+}
+
+.nosotros-contacto {
+  background: #161b2e;
+  color: #aab1c5;
+  border-radius: 1rem;
+}

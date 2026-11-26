@@ -8,6 +8,7 @@ import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
 import { ComparadorPage } from "../features/comparador";
+import { NosotrosPage } from "../features/nosotros";
 import {
   ProductoPage,
   AdminProductosPage,
@@ -36,7 +37,6 @@ async function cargarLayoutPublico() {
  * Al crear la página real, quitarla de esta lista y agregar su ruta abajo.
  */
 const PAGINAS_EN_CONSTRUCCION = [
-  "nosotros",
   "contacto",
   "carrito",
   "iniciar-sesion",
@@ -59,6 +59,7 @@ export const router = createBrowserRouter([
       { path: "producto/:id", element: <ProductoPage /> },
       { path: "comparador", element: <ComparadorPage /> },
       { path: "legales", element: <Legales /> },
+      { path: "nosotros", element: <NosotrosPage /> },
       ...PAGINAS_EN_CONSTRUCCION.map((path) => ({
         path,
         element: <MensajeVacio>Página en construcción.</MensajeVacio>,
