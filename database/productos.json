@@ -7,7 +7,7 @@
     "category": "Mouses",
     "price": 239900,
     "stock": 14,
-    "sold": 224,
+    "sold": 11,
     "compared": 67,
     "image": "/images/products/mouse-1.webp",
     "specs": { "max_dpi": 32000, "weight_g": 60, "connectivity": "Inalámbrico", "programmable_buttons": 5 }
@@ -20,7 +20,7 @@
     "category": "Mouses",
     "price": 119900,
     "stock": 22,
-    "sold": 80,
+    "sold": 6,
     "compared": 67,
     "image": "/images/products/mouse-2.webp",
     "specs": { "max_dpi": 25600, "weight_g": 89, "connectivity": "Cableado", "programmable_buttons": 13 }
@@ -33,7 +33,7 @@
     "category": "Mouses",
     "price": 59900,
     "stock": 35,
-    "sold": 292,
+    "sold": 13,
     "compared": 197,
     "image": "/images/products/mouse-3.webp",
     "specs": { "max_dpi": 12000, "weight_g": 99, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
@@ -46,7 +46,7 @@
     "category": "Mouses",
     "price": 134900,
     "stock": 18,
-    "sold": 148,
+    "sold": 6,
     "compared": 52,
     "image": "/images/products/mouse-4.webp",
     "specs": { "max_dpi": 30000, "weight_g": 59, "connectivity": "Cableado", "programmable_buttons": 5 }
@@ -59,7 +59,7 @@
     "category": "Mouses",
     "price": 239900,
     "stock": 6,
-    "sold": 360,
+    "sold": 27,
     "compared": 480,
     "image": "/images/products/mouse-1.webp",
     "specs": { "max_dpi": 35000, "weight_g": 54, "connectivity": "Inalámbrico", "programmable_buttons": 5 }
@@ -72,7 +72,7 @@
     "category": "Mouses",
     "price": 104900,
     "stock": 12,
-    "sold": 216,
+    "sold": 8,
     "compared": 171,
     "image": "/images/products/mouse-2.webp",
     "specs": { "max_dpi": 26000, "weight_g": 101, "connectivity": "Cableado", "programmable_buttons": 11 }
@@ -85,7 +85,7 @@
     "category": "Mouses",
     "price": 104900,
     "stock": 3,
-    "sold": 72,
+    "sold": 4,
     "compared": 66,
     "image": "/images/products/mouse-3.webp",
     "specs": { "max_dpi": 18000, "weight_g": 60, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
@@ -98,7 +98,7 @@
     "category": "Mouses",
     "price": 89900,
     "stock": 20,
-    "sold": 284,
+    "sold": 23,
     "compared": 245,
     "image": "/images/products/mouse-4.webp",
     "specs": { "max_dpi": 26000, "weight_g": 53, "connectivity": "Cableado", "programmable_buttons": 6 }
@@ -111,7 +111,7 @@
     "category": "Mouses",
     "price": 134900,
     "stock": 9,
-    "sold": 140,
+    "sold": 7,
     "compared": 121,
     "image": "/images/products/mouse-1.webp",
     "specs": { "max_dpi": 26000, "weight_g": 61, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
@@ -124,7 +124,7 @@
     "category": "Mouses",
     "price": 44900,
     "stock": 40,
-    "sold": 352,
+    "sold": 18,
     "compared": 225,
     "image": "/images/products/mouse-2.webp",
     "specs": { "max_dpi": 8500, "weight_g": 77, "connectivity": "Cableado", "programmable_buttons": 6 }
@@ -137,7 +137,7 @@
     "category": "Mouses",
     "price": 149900,
     "stock": 0,
-    "sold": 208,
+    "sold": 11,
     "compared": 117,
     "image": "/images/products/mouse-3.webp",
     "specs": { "max_dpi": 18000, "weight_g": 68, "connectivity": "Inalámbrico", "programmable_buttons": 6 }
@@ -150,7 +150,7 @@
     "category": "Mouses",
     "price": 119900,
     "stock": 7,
-    "sold": 64,
+    "sold": 5,
     "compared": 74,
     "image": "/images/products/mouse-4.webp",
     "specs": { "max_dpi": 26000, "weight_g": 97, "connectivity": "Cableado", "programmable_buttons": 8 }
@@ -163,7 +163,7 @@
     "category": "Mouses",
     "price": 149900,
     "stock": 16,
-    "sold": 276,
+    "sold": 23,
     "compared": 129,
     "image": "/images/products/mouse-1.webp",
     "specs": { "max_dpi": 8000, "weight_g": 141, "connectivity": "Inalámbrico", "programmable_buttons": 7 }
@@ -181,7 +181,7 @@
     "category": "Teclados",
     "price": 299900,
     "stock": 8,
-    "sold": 132,
+    "sold": 7,
     "compared": 100,
     "image": "/images/products/teclado-1.webp",
     "specs": { "switch_type": "GX Brown", "layout": "TKL", "connectivity": "Inalámbrico", "backlighting": true }
@@ -194,7 +194,7 @@
     "category": "Teclados",
     "price": 74900,
     "stock": 30,
-    "sold": 344,
+    "sold": 19,
     "compared": 346,
     "image": "/images/products/teclado-2.webp",
     "specs": { "switch_type": "Membrana", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
@@ -207,7 +207,7 @@
     "category": "Teclados",
     "price": 164900,
     "stock": 15,
-    "sold": 200,
+    "sold": 9,
     "compared": 258,
     "image": "/images/products/teclado-3.webp",
     "specs": { "switch_type": "Tijera", "layout": "100%", "connectivity": "Inalámbrico", "backlighting": true }
@@ -220,7 +220,7 @@
     "category": "Teclados",
     "price": 29900,
     "stock": 60,
-    "sold": 56,
+    "sold": 5,
     "compared": 43,
     "image": "/images/products/teclado-1.webp",
     "specs": { "switch_type": "Membrana", "layout": "100%", "connectivity": "Cableado", "backlighting": false }
@@ -233,7 +233,7 @@
     "category": "Teclados",
     "price": 254900,
     "stock": 10,
-    "sold": 268,
+    "sold": 20,
     "compared": 108,
     "image": "/images/products/teclado-2.webp",
     "specs": { "switch_type": "Razer Green", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
@@ -246,7 +246,7 @@
     "category": "Teclados",
     "price": 179900,
     "stock": 12,
-    "sold": 124,
+    "sold": 4,
     "compared": 70,
     "image": "/images/products/teclado-3.webp",
     "specs": { "switch_type": "Razer Optical Red", "layout": "60%", "connectivity": "Cableado", "backlighting": true }
@@ -259,7 +259,7 @@
     "category": "Teclados",
     "price": 134900,
     "stock": 14,
-    "sold": 336,
+    "sold": 15,
     "compared": 397,
     "image": "/images/products/teclado-1.webp",
     "specs": { "switch_type": "HyperX Red", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
@@ -272,7 +272,7 @@
     "category": "Teclados",
     "price": 149900,
     "stock": 4,
-    "sold": 192,
+    "sold": 14,
     "compared": 194,
     "image": "/images/products/teclado-2.webp",
     "specs": { "switch_type": "HyperX Aqua", "layout": "65%", "connectivity": "Cableado", "backlighting": true }
@@ -285,7 +285,7 @@
     "category": "Teclados",
     "price": 254900,
     "stock": 9,
-    "sold": 48,
+    "sold": 5,
     "compared": 46,
     "image": "/images/products/teclado-3.webp",
     "specs": { "switch_type": "Cherry MX Red", "layout": "100%", "connectivity": "Cableado", "backlighting": true }
@@ -298,7 +298,7 @@
     "category": "Teclados",
     "price": 239900,
     "stock": 6,
-    "sold": 260,
+    "sold": 17,
     "compared": 227,
     "image": "/images/products/teclado-1.webp",
     "specs": { "switch_type": "Corsair MLX Red", "layout": "75%", "connectivity": "Inalámbrico", "backlighting": true }
@@ -311,7 +311,7 @@
     "category": "Teclados",
     "price": 284900,
     "stock": 5,
-    "sold": 116,
+    "sold": 3,
     "compared": 67,
     "image": "/images/products/teclado-2.webp",
     "specs": { "switch_type": "OmniPoint 2.0", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
@@ -324,7 +324,7 @@
     "category": "Teclados",
     "price": 164900,
     "stock": 11,
-    "sold": 328,
+    "sold": 20,
     "compared": 220,
     "image": "/images/products/teclado-3.webp",
     "specs": { "switch_type": "Gateron Brown", "layout": "75%", "connectivity": "Inalámbrico", "backlighting": true }
@@ -337,7 +337,7 @@
     "category": "Teclados",
     "price": 59900,
     "stock": 45,
-    "sold": 184,
+    "sold": 5,
     "compared": 231,
     "image": "/images/products/teclado-1.webp",
     "specs": { "switch_type": "Outemu Blue", "layout": "TKL", "connectivity": "Cableado", "backlighting": true }
@@ -355,7 +355,7 @@
     "category": "Auriculares",
     "price": 599900,
     "stock": 10,
-    "sold": 40,
+    "sold": 1,
     "compared": 13,
     "image": "/images/products/auricular-1.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": true, "battery_life_hours": 30, "driver_mm": 30, "microphone": true }
@@ -368,7 +368,7 @@
     "category": "Auriculares",
     "price": 89900,
     "stock": 28,
-    "sold": 252,
+    "sold": 17,
     "compared": 134,
     "image": "/images/products/auricular-2.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 30, "microphone": true }
@@ -381,7 +381,7 @@
     "category": "Auriculares",
     "price": 149900,
     "stock": 20,
-    "sold": 108,
+    "sold": 5,
     "compared": 107,
     "image": "/images/products/auricular-3.webp",
     "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 53, "microphone": true }
@@ -394,7 +394,7 @@
     "category": "Auriculares",
     "price": 254900,
     "stock": 7,
-    "sold": 320,
+    "sold": 22,
     "compared": 370,
     "image": "/images/products/auricular-4.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 120, "driver_mm": 53, "microphone": true }
@@ -407,7 +407,7 @@
     "category": "Auriculares",
     "price": 374900,
     "stock": 5,
-    "sold": 176,
+    "sold": 10,
     "compared": 56,
     "image": "/images/products/auricular-1.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 50, "microphone": true }
@@ -420,7 +420,7 @@
     "category": "Auriculares",
     "price": 119900,
     "stock": 19,
-    "sold": 32,
+    "sold": 3,
     "compared": 24,
     "image": "/images/products/auricular-2.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 18, "driver_mm": 40, "microphone": true }
@@ -433,7 +433,7 @@
     "category": "Auriculares",
     "price": 89900,
     "stock": 24,
-    "sold": 244,
+    "sold": 16,
     "compared": 333,
     "image": "/images/products/auricular-3.webp",
     "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 50, "microphone": true }
@@ -446,7 +446,7 @@
     "category": "Auriculares",
     "price": 149900,
     "stock": 2,
-    "sold": 100,
+    "sold": 8,
     "compared": 93,
     "image": "/images/products/auricular-4.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 50, "driver_mm": 40, "microphone": true }
@@ -459,7 +459,7 @@
     "category": "Auriculares",
     "price": 269900,
     "stock": 8,
-    "sold": 312,
+    "sold": 16,
     "compared": 130,
     "image": "/images/products/auricular-1.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": false, "battery_life_hours": 38, "driver_mm": 40, "microphone": true }
@@ -472,7 +472,7 @@
     "category": "Auriculares",
     "price": 524900,
     "stock": 3,
-    "sold": 168,
+    "sold": 13,
     "compared": 173,
     "image": "/images/products/auricular-2.webp",
     "specs": { "connectivity": "Inalámbrico", "noise_cancellation": true, "battery_life_hours": 22, "driver_mm": 40, "microphone": true }
@@ -485,7 +485,7 @@
     "category": "Auriculares",
     "price": 89900,
     "stock": 17,
-    "sold": 24,
+    "sold": 3,
     "compared": 35,
     "image": "/images/products/auricular-3.webp",
     "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 50, "microphone": true }
@@ -498,7 +498,7 @@
     "category": "Auriculares",
     "price": 44900,
     "stock": 33,
-    "sold": 236,
+    "sold": 14,
     "compared": 162,
     "image": "/images/products/auricular-4.webp",
     "specs": { "connectivity": "Cableado", "noise_cancellation": false, "battery_life_hours": null, "driver_mm": 40, "microphone": true }
@@ -516,7 +516,7 @@
     "category": "Monitores",
     "price": 449900,
     "stock": 9,
-    "sold": 92,
+    "sold": 7,
     "compared": 127,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 165, "panel": "VA", "response_time_ms": 1 }
@@ -529,7 +529,7 @@
     "category": "Monitores",
     "price": 1049900,
     "stock": 4,
-    "sold": 304,
+    "sold": 23,
     "compared": 98,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 360, "panel": "OLED", "response_time_ms": 0.03 }
@@ -542,7 +542,7 @@
     "category": "Monitores",
     "price": 599900,
     "stock": 11,
-    "sold": 160,
+    "sold": 10,
     "compared": 186,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 180, "panel": "IPS", "response_time_ms": 1 }
@@ -555,7 +555,7 @@
     "category": "Monitores",
     "price": 269900,
     "stock": 21,
-    "sold": 16,
+    "sold": 0,
     "compared": 20,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 144, "panel": "IPS", "response_time_ms": 1 }
@@ -568,7 +568,7 @@
     "category": "Monitores",
     "price": 674900,
     "stock": 6,
-    "sold": 228,
+    "sold": 5,
     "compared": 328,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "3840x2160", "refresh_rate_hz": 60, "panel": "IPS", "response_time_ms": 5 }
@@ -581,7 +581,7 @@
     "category": "Monitores",
     "price": 239900,
     "stock": 18,
-    "sold": 84,
+    "sold": 5,
     "compared": 54,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 180, "panel": "IPS", "response_time_ms": 1 }
@@ -594,7 +594,7 @@
     "category": "Monitores",
     "price": 1349900,
     "stock": 2,
-    "sold": 296,
+    "sold": 9,
     "compared": 148,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 240, "panel": "OLED", "response_time_ms": 0.03 }
@@ -607,7 +607,7 @@
     "category": "Monitores",
     "price": 254900,
     "stock": 26,
-    "sold": 152,
+    "sold": 11,
     "compared": 191,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 165, "panel": "IPS", "response_time_ms": 1 }
@@ -620,7 +620,7 @@
     "category": "Monitores",
     "price": 524900,
     "stock": 8,
-    "sold": 364,
+    "sold": 17,
     "compared": 523,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 165, "panel": "IPS", "response_time_ms": 1 }
@@ -633,7 +633,7 @@
     "category": "Monitores",
     "price": 749900,
     "stock": 5,
-    "sold": 220,
+    "sold": 13,
     "compared": 259,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 24.5, "resolution": "1920x1080", "refresh_rate_hz": 240, "panel": "TN", "response_time_ms": 1 }
@@ -646,7 +646,7 @@
     "category": "Monitores",
     "price": 419900,
     "stock": 12,
-    "sold": 76,
+    "sold": 4,
     "compared": 114,
     "image": "/images/products/monitor-1.webp",
     "specs": { "size_in": 27, "resolution": "2560x1440", "refresh_rate_hz": 170, "panel": "IPS", "response_time_ms": 0.5 }
@@ -659,7 +659,7 @@
     "category": "Monitores",
     "price": 149900,
     "stock": 30,
-    "sold": 288,
+    "sold": 21,
     "compared": 363,
     "image": "/images/products/monitor-2.webp",
     "specs": { "size_in": 24, "resolution": "1920x1080", "refresh_rate_hz": 100, "panel": "IPS", "response_time_ms": 4 }

@@ -153,7 +153,8 @@ que se cargan probando no se commitean: descartarlos con `git checkout database/
   (se muestra en la tarjeta), `rule` (`"higher"` / `"lower"` para el mejor valor del comparador;
   sin `rule` no hay ganador) y `filter` (`"checkbox"` / `"range"`; sin `filter` no se filtra). El
   orden de las claves es el orden en que se muestran.
-- Además de `specs`, cada producto guarda `sold` (unidades vendidas, para "más vendidos") y
+- Además de `specs`, cada producto guarda `sold` (unidades vendidas en los pedidos no
+  cancelados de `pedidos.json`, para "más vendidos") y
   `compared` (veces que se agregó al comparador, para "más comparados" del dashboard). Ambos los
   calcula el sistema: el ABM los inicia en 0 y no los edita.
 - `pedidos.json`: pedidos con `customer`, `createdAt` (ISO), `status` (`"pendiente"` / `"enviado"`

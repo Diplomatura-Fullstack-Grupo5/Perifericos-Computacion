@@ -15,6 +15,15 @@ export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador })
   // TODO: conectar al carrito cuando exista
   const cartCount = 0;
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
+  /**
+   * Cierra el menú plegado (celular) al elegir un enlace, para que no tape la página nueva.
+   * @param {import("react").MouseEvent} evento
+   */
+  function handleClickMenu(evento) {
+    if (evento.target.closest("a")) setMenuAbierto(false);
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
@@ -27,16 +36,21 @@ export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador })
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarContenido"
           aria-controls="navbarContenido"
-          aria-expanded="false"
-          aria-label="Abrir menú"
+          aria-expanded={menuAbierto}
+          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          onClick={() => setMenuAbierto(!menuAbierto)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse gap-3" id="navbarContenido">
+        {/* El menú se abre y se cierra con el estado de React (no con Bootstrap JS), así se puede
+            cerrar al navegar. */}
+        <div
+          className={`collapse navbar-collapse gap-3 ${menuAbierto ? "show" : ""}`}
+          id="navbarContenido"
+          onClick={handleClickMenu}
+        >
           {/* -------------------- Links -------------------- */}
           <ul className="navbar-nav">
             <li className="nav-item dropdown">

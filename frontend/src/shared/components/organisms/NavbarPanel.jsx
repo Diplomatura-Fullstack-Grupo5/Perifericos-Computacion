@@ -1,16 +1,27 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import "./Navbar.css";
 
 /**
  * Barra de navegación del panel de administración. Usa el mismo estilo que la del sitio público,
  * pero con las secciones del panel y un enlace para volver a la tienda. En pantallas chicas, las
- * secciones se pliegan en un menú (Bootstrap solo lo abre y cierra).
+ * secciones se pliegan en un menú que se abre con el botón y se cierra al elegir una sección.
  * @param {object} props
  * @param {{ to: string, texto: string, end?: boolean }[]} props.secciones Secciones del panel, en
  *   orden. Con `end`, la sección se marca como actual solo en su ruta exacta.
  * @returns {JSX.Element}
  */
 export function NavbarPanel({ secciones }) {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
+  /**
+   * Cierra el menú plegado (celular) al elegir un enlace, para que no tape la página nueva.
+   * @param {import("react").MouseEvent} evento
+   */
+  function handleClickMenu(evento) {
+    if (evento.target.closest("a")) setMenuAbierto(false);
+  }
+
   return (
     <nav
       className="navbar navbar-expand-md navbar-dark app-navbar sticky-top"
@@ -25,16 +36,21 @@ export function NavbarPanel({ secciones }) {
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarPanelContenido"
           aria-controls="navbarPanelContenido"
-          aria-expanded="false"
-          aria-label="Abrir menú"
+          aria-expanded={menuAbierto}
+          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          onClick={() => setMenuAbierto(!menuAbierto)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse gap-3" id="navbarPanelContenido">
+        {/* El menú se abre y se cierra con el estado de React (no con Bootstrap JS), así se puede
+            cerrar al navegar. */}
+        <div
+          className={`collapse navbar-collapse gap-3 ${menuAbierto ? "show" : ""}`}
+          id="navbarPanelContenido"
+          onClick={handleClickMenu}
+        >
           <ul className="navbar-nav me-auto">
             {secciones.map((seccion) => (
               <li key={seccion.to} className="nav-item">

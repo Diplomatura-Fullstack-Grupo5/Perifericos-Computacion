@@ -19,9 +19,21 @@ function topeDelEje(valor) {
 }
 
 /**
- * Gráfico de columnas con el TPV de cada día o semana del período. Al pasar el mouse por una
- * columna muestra el detalle (fecha, TPV y cantidad de pedidos). Para lectores de pantalla, los
- * mismos datos van en una tabla oculta.
+ * Calcula cuánto correr el tooltip hacia la izquierda (en % de su ancho) para que no se salga de la
+ * tarjeta: en el primer cuarto del gráfico no se corre, en el centro se centra sobre la columna y
+ * en el último cuarto queda entero a la izquierda.
+ * @param {number} posicion Posición de la columna, de 0 (izquierda) a 1 (derecha).
+ * @returns {number} Entre 0 y 100.
+ */
+function desplazamientoTooltip(posicion) {
+  const proporcion = posicion * 2 - 0.5;
+  return Math.min(1, Math.max(0, proporcion)) * 100;
+}
+
+/**
+ * Gráfico de columnas con el TPV de cada día o semana del período. Cada columna es un botón: al
+ * pasar el mouse o llegar con Tab muestra el detalle (fecha, TPV y cantidad de pedidos), y los
+ * lectores de pantalla leen ese mismo detalle en su `aria-label`.
  * @param {object} props
  * @param {{ inicio: string, tpv: number, tpn: number }[]} props.puntos De lo más viejo a lo más nuevo.
  * @param {"dia" | "semana"} props.agrupacion
@@ -32,82 +44,80 @@ export function GraficoEvolucionVentas({ puntos, agrupacion }) {
   const tope = topeDelEje(Math.max(...puntos.map((punto) => punto.tpv)));
   const cadaCuanto = Math.ceil(puntos.length / ETIQUETAS_EJE_X);
   const activo = indiceActivo === null ? null : puntos[indiceActivo];
+  const posicionActiva = indiceActivo === null ? 0 : (indiceActivo + 0.5) / puntos.length;
+
+  /**
+   * @param {{ inicio: string }} punto
+   * @returns {string} Ej. "24/11" o "Semana del 17/11".
+   */
   const nombrePunto = (punto) =>
-    agrupacion === "dia" ? formatearDiaCorto(punto.inicio) : `Semana del ${formatearDiaCorto(punto.inicio)}`;
+    agrupacion === "dia"
+      ? formatearDiaCorto(punto.inicio)
+      : `Semana del ${formatearDiaCorto(punto.inicio)}`;
+
+  /**
+   * @param {{ tpn: number }} punto
+   * @returns {string} Ej. "1 pedido" o "3 pedidos".
+   */
+  const textoPedidos = (punto) => `${punto.tpn} ${punto.tpn === 1 ? "pedido" : "pedidos"}`;
 
   return (
-    <>
-      <div className="grafico-evolucion" aria-hidden="true">
-        {/* Eje vertical: tope, mitad y cero, con su línea de guía */}
-        <div className="grafico-evolucion__guias">
-          {[tope, tope / 2, 0].map((valor) => (
-            <div key={valor} className="grafico-evolucion__guia">
-              <span>{formatearMontoCorto(valor)}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="grafico-evolucion__columnas" onMouseLeave={() => setIndiceActivo(null)}>
-          {puntos.map((punto, indice) => (
-            <div
-              key={punto.inicio}
-              className={`grafico-evolucion__columna ${indice === indiceActivo ? "is-activa" : ""}`}
-              onMouseEnter={() => setIndiceActivo(indice)}
-            >
-              <span
-                className="grafico-evolucion__barra"
-                style={{ height: `${(punto.tpv / tope) * 100}%` }}
-              />
-            </div>
-          ))}
-
-          {activo && (
-            <div
-              className="grafico-evolucion__tooltip"
-              style={{
-                left: `${((indiceActivo + 0.5) / puntos.length) * 100}%`,
-                // En los extremos se corre hacia adentro para no salirse de la tarjeta.
-                transform: `translateX(${-100 * Math.min(1, Math.max(0, (indiceActivo + 0.5) / puntos.length * 2 - 0.5))}%)`,
-              }}
-            >
-              <strong className="d-block">{nombrePunto(activo)}</strong>
-              {formatearPrecio(activo.tpv)}
-              <span className="text-secondary">
-                {" "}
-                · {activo.tpn} {activo.tpn === 1 ? "pedido" : "pedidos"}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="grafico-evolucion__eje-x">
-          {puntos.map((punto, indice) => (
-            <span key={punto.inicio}>
-              {indice % cadaCuanto === 0 ? formatearDiaCorto(punto.inicio) : ""}
-            </span>
-          ))}
-        </div>
+    <div className="grafico-evolucion">
+      {/* Eje vertical: tope, mitad y cero, con su línea de guía */}
+      <div className="grafico-evolucion__guias" aria-hidden="true">
+        {[tope, tope / 2, 0].map((valor) => (
+          <div key={valor} className="grafico-evolucion__guia">
+            <span>{formatearMontoCorto(valor)}</span>
+          </div>
+        ))}
       </div>
 
-      <table className="visually-hidden">
-        <caption>TPV por {agrupacion === "dia" ? "día" : "semana"}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{agrupacion === "dia" ? "Día" : "Semana"}</th>
-            <th scope="col">TPV</th>
-            <th scope="col">Pedidos</th>
-          </tr>
-        </thead>
-        <tbody>
-          {puntos.map((punto) => (
-            <tr key={punto.inicio}>
-              <th scope="row">{nombrePunto(punto)}</th>
-              <td>{formatearPrecio(punto.tpv)}</td>
-              <td>{punto.tpn}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+      <div
+        className="grafico-evolucion__columnas"
+        role="group"
+        aria-label={`TPV por ${agrupacion === "dia" ? "día" : "semana"}`}
+        onMouseLeave={() => setIndiceActivo(null)}
+      >
+        {puntos.map((punto, indice) => (
+          <button
+            key={punto.inicio}
+            type="button"
+            className={`grafico-evolucion__columna ${indice === indiceActivo ? "is-activa" : ""}`}
+            aria-label={`${nombrePunto(punto)}: ${formatearPrecio(punto.tpv)}, ${textoPedidos(punto)}`}
+            onMouseEnter={() => setIndiceActivo(indice)}
+            onFocus={() => setIndiceActivo(indice)}
+            onBlur={() => setIndiceActivo(null)}
+          >
+            <span
+              className="grafico-evolucion__barra"
+              style={{ height: `${(punto.tpv / tope) * 100}%` }}
+            />
+          </button>
+        ))}
+
+        {activo && (
+          <div
+            className="grafico-evolucion__tooltip"
+            aria-hidden="true"
+            style={{
+              left: `${posicionActiva * 100}%`,
+              transform: `translateX(-${desplazamientoTooltip(posicionActiva)}%)`,
+            }}
+          >
+            <strong className="d-block">{nombrePunto(activo)}</strong>
+            {formatearPrecio(activo.tpv)}
+            <span className="text-secondary"> · {textoPedidos(activo)}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="grafico-evolucion__eje-x" aria-hidden="true">
+        {puntos.map((punto, indice) => (
+          <span key={punto.inicio}>
+            {indice % cadaCuanto === 0 ? formatearDiaCorto(punto.inicio) : ""}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }

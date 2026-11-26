@@ -48,11 +48,20 @@
 /* Cada columna ocupa todo el alto: así el área para pasar el mouse es más grande que la barra. */
 .grafico-evolucion__columna {
   flex: 1 1 0;
+  min-width: 0;
   height: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   border-radius: 4px 4px 0 0;
+}
+
+.grafico-evolucion__columna:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 1px;
 }
 
 .grafico-evolucion__columna.is-activa {
@@ -76,7 +85,7 @@
   background-color: var(--bs-body-bg);
   border: 1px solid var(--bs-border-color);
   border-radius: 0.375rem;
-  box-shadow: 0 0.25rem 0.75rem rgba(15, 23, 42, 0.12);
+  box-shadow: var(--bs-box-shadow-sm);
   font-size: 0.8125rem;
   white-space: nowrap;
   pointer-events: none;
