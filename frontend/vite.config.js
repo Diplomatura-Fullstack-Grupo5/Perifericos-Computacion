@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
-import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMock.js'
+import {crearMiddlewareInicioSesion, crearMiddlewareRegistro,} from './src/features/auth/services/usuariosMock.js'
 
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
@@ -131,18 +131,20 @@ async function escribirColeccion(req, res) {
   return responder(res, 405, { message: 'Método no permitido' })
 }
 
-/*ESTA FUNCION servirRegistro SIRVE UNICAMENTE PARA PROBAR EL ALTA DE USUARIOS CON JSON DEBE BORRARSE CUANDO SE CREE EL BACKEND*/
 const archivoUsuarios = path.join(carpetaDatabase, 'usuarios.json')
-function servirRegistro() {
-  const middleware = crearMiddlewareRegistro(archivoUsuarios)
+function servirUsuarios() {
+  const middlewareRegistro = crearMiddlewareRegistro(archivoUsuarios)
+  const middlewareInicioSesion = crearMiddlewareInicioSesion(archivoUsuarios)
 
   return {
-    name: 'servir-registro-local',
+    name: 'servir-usuarios-local',
     configureServer(server) {
-      server.middlewares.use(middleware)
+      server.middlewares.use(middlewareRegistro)
+      server.middlewares.use(middlewareInicioSesion)
     },
     configurePreviewServer(server) {
-      server.middlewares.use(middleware)
+      server.middlewares.use(middlewareRegistro)
+      server.middlewares.use(middlewareInicioSesion)
     },
   }
 }
@@ -184,7 +186,7 @@ export default defineConfig({
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
-    servirRegistro(),
+    servirUsuarios(),
     servirDatabase(),
   ],
 })
