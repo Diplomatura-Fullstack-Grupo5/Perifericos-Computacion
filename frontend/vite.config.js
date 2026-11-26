@@ -8,8 +8,8 @@ import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMo
 
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
-/** Colecciones de /database que se pueden modificar con POST, PUT y DELETE. */
-const COLECCIONES_EDITABLES = ['productos']
+/** Colecciones de /database que se pueden modificar con POST, PUT, PATCH y DELETE. */
+const COLECCIONES_EDITABLES = ['productos', 'pedidos']
 
 /**
  * Lee el cuerpo JSON de un pedido.
@@ -47,21 +47,27 @@ function responder(res, status, datos) {
 }
 
 /**
- * Convierte una colección en texto con el mismo formato que los JSON de /database
- * (un objeto por bloque y los objetos anidados, como `specs`, en una sola línea).
+ * Convierte una colección en texto con el mismo formato que los JSON de /database: un objeto por
+ * bloque, los objetos anidados (como `specs`) en una sola línea y las listas de objetos (como los
+ * `items` de un pedido) con un objeto por línea.
  * @param {object[]} items
  * @returns {string}
  */
 function formatearColeccion(items) {
+  const esObjeto = (valor) => valor !== null && typeof valor === 'object' && !Array.isArray(valor)
   const valorEnLinea = (valor) =>
-    valor !== null && typeof valor === 'object' && !Array.isArray(valor)
+    esObjeto(valor)
       ? `{ ${Object.entries(valor).map(([clave, v]) => `${JSON.stringify(clave)}: ${JSON.stringify(v)}`).join(', ')} }`
       : JSON.stringify(valor)
+  const valorDeCampo = (valor) =>
+    Array.isArray(valor) && valor.length > 0 && valor.every(esObjeto)
+      ? `[\n${valor.map((v) => `      ${valorEnLinea(v)}`).join(',\n')}\n    ]`
+      : valorEnLinea(valor)
 
   const objetos = items.map(
     (item) =>
       `  {\n${Object.entries(item)
-        .map(([clave, valor]) => `    ${JSON.stringify(clave)}: ${valorEnLinea(valor)}`)
+        .map(([clave, valor]) => `    ${JSON.stringify(clave)}: ${valorDeCampo(valor)}`)
         .join(',\n')}\n  }`,
   )
   return `[\n${objetos.join(',\n')}\n]\n`
@@ -71,13 +77,16 @@ function formatearColeccion(items) {
  * Simula las escrituras de la API sobre una colección de /database, guardando en su archivo JSON:
  * `POST /database/<coleccion>` agrega (con el id siguiente), `PUT /database/<coleccion>/:id` reemplaza
  * los campos enviados y `DELETE /database/<coleccion>/:id` borra.
+ * `PATCH /database/<coleccion>/:id/<accion>` modifica solo los campos enviados, para las acciones
+ * puntuales de la API (ej. `PATCH /pedidos/:id/estado` con `{ "status": "enviado" }`).
  * Las reglas de negocio no van acá: las aplica el service de la feature, como hará el backend.
  * @param {import('node:http').IncomingMessage} req
  * @param {import('node:http').ServerResponse} res
  */
 async function escribirColeccion(req, res) {
-  const [, coleccion, idTexto] = req.url.split('?')[0].split('/')
-  if (!COLECCIONES_EDITABLES.includes(coleccion)) {
+  const [, coleccion, idTexto, accion] = req.url.split('?')[0].split('/')
+  const accionValida = req.method === 'PATCH' ? Boolean(accion) : accion === undefined
+  if (!COLECCIONES_EDITABLES.includes(coleccion) || !accionValida) {
     return responder(res, 404, { message: 'Colección no encontrada' })
   }
 
@@ -106,7 +115,7 @@ async function escribirColeccion(req, res) {
 
   if (indice === -1) return responder(res, 404, { message: 'No existe' })
 
-  if (req.method === 'PUT') {
+  if (req.method === 'PUT' || req.method === 'PATCH') {
     if (!cuerpoEsObjeto) return responder(res, 400, { message: 'Faltan los datos' })
     items[indice] = { ...items[indice], ...cuerpo, id }
     guardar()

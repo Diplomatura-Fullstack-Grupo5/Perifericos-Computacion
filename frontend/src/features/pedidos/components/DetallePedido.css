@@ -1,0 +1,5 @@
+/* La tabla toma el fondo gris de la fila del detalle en lugar del blanco de Bootstrap. */
+.detalle-pedido {
+  --bs-table-bg: transparent;
+  max-width: 48rem;
+}

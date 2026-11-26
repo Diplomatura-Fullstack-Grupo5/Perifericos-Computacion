@@ -20,7 +20,7 @@ export async function pedir(endpoint) {
  * Envía datos a la API (alta, modificación o baja) y devuelve la respuesta como JSON.
  * @param {string} endpoint Ruta relativa a URL_BASE (usar las de ENDPOINTS).
  * @param {object} [datos] Datos a enviar en el cuerpo, como JSON.
- * @param {"POST" | "PUT" | "DELETE"} [metodo]
+ * @param {"POST" | "PUT" | "PATCH" | "DELETE"} [metodo]
  * @returns {Promise<any>} Lo que devuelve el servidor, o `null` si responde sin contenido (204).
  * @throws {Error} Si la respuesta no es exitosa, con el mensaje que manda el servidor si lo hay y
  *   el código HTTP en `error.status`.

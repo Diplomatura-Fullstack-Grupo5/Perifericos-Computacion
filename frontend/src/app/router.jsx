@@ -14,6 +14,7 @@ import {
   AdminFormularioProductoPage,
 } from "../features/productos";
 import { AdminDashboardPage } from "../features/dashboard";
+import { AdminPedidosPage } from "../features/pedidos";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -76,6 +77,7 @@ export const router = createBrowserRouter([
       { path: "productos", element: <AdminProductosPage /> },
       { path: "productos/nuevo", element: <AdminFormularioProductoPage /> },
       { path: "productos/:id/editar", element: <AdminFormularioProductoPage /> },
+      { path: "pedidos", element: <AdminPedidosPage /> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

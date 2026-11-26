@@ -7,7 +7,6 @@ import { GraficoBarrasHorizontales } from "../components/GraficoBarrasHorizontal
 import { GraficoMediosDePago } from "../components/GraficoMediosDePago";
 import { ResumenEstados } from "../components/ResumenEstados";
 import { ListaProductosDashboard } from "../components/ListaProductosDashboard";
-import { TablaUltimosPedidos } from "../components/TablaUltimosPedidos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
@@ -31,8 +30,8 @@ function formatearFecha(dia) {
 /**
  * Página de inicio del panel de administración: indicadores del período elegido (TPV, TPN, ticket
  * promedio, unidades y cancelaciones, comparados con el período anterior), evolución de ventas,
- * ventas por categoría y por medio de pago, estado de los pedidos, más vendidos, stock bajo y
- * últimos pedidos. El período va en la URL (`?periodo=7|30|90`).
+ * ventas por categoría y por medio de pago, estado de los pedidos, más vendidos y stock bajo.
+ * Los pedidos se gestionan en su propia página (`/admin/pedidos`). El período va en la URL (`?periodo=7|30|90`).
  * @returns {JSX.Element}
  */
 export function AdminDashboardPage() {
@@ -135,7 +134,6 @@ export function AdminDashboardPage() {
     estados,
     masVendidos,
     stockBajo,
-    ultimosPedidos,
   } = dashboard;
   const sinVentas = indicadores.tpn.valor === 0;
 
@@ -283,26 +281,17 @@ export function AdminDashboardPage() {
         </div>
         <div className="col-lg-4">
           <section className="card h-100 overflow-hidden" aria-labelledby="dashboard-estados">
-            <h2 id="dashboard-estados" className="card-body flex-grow-0 fs-5 mb-0 pb-2">
-              Estado de los pedidos
-            </h2>
+            <div className="card-body flex-grow-0 pb-2 d-flex justify-content-between align-items-baseline gap-2">
+              <h2 id="dashboard-estados" className="fs-5 mb-0">
+                Estado de los pedidos
+              </h2>
+              <Link to="/admin/pedidos" className="small">
+                Ver pedidos
+              </Link>
+            </div>
             <ResumenEstados estados={estados} />
           </section>
         </div>
-      </div>
-
-      {/* -------------------- Últimos pedidos -------------------- */}
-      <div className="mb-4">
-        <section className="card overflow-hidden" aria-labelledby="dashboard-pedidos">
-          <h2 id="dashboard-pedidos" className="card-body flex-grow-0 fs-5 mb-0 pb-2">
-            Últimos pedidos
-          </h2>
-          {ultimosPedidos.length === 0 ? (
-            <MensajeVacio>Todavía no hay pedidos.</MensajeVacio>
-          ) : (
-            <TablaUltimosPedidos pedidos={ultimosPedidos} />
-          )}
-        </section>
       </div>
 
       {/* -------------------- Stock bajo -------------------- */}

@@ -1,4 +1,5 @@
-import { formatearEstadoPedido, formatearPorcentaje } from "../utils/formatos";
+import { formatearEstadoPedido } from "../../../shared/utils/formatearEstadoPedido";
+import { formatearPorcentaje } from "../utils/formatos";
 
 /**
  * Cantidad de pedidos del período en cada estado, con su porcentaje sobre el total.
