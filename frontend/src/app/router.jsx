@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter } from "react-router";
 import { LayoutPublico } from "./layouts/LayoutPublico";
 import { LayoutPrivado } from "./layouts/LayoutPrivado";
 import { InicioPage } from "../features/inicio";
@@ -10,6 +10,7 @@ import { Legales } from "../features/legal";
 import { ProductoPage } from "../features/producto";
 import { ComparadorPage } from "../features/comparador";
 import { ListadoProductosPage, FormularioProductoPage } from "../features/productos";
+import { DashboardPage } from "../features/dashboard";
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -67,8 +68,7 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: <LayoutPrivado />,
     children: [
-      // Hasta que exista el dashboard, el panel abre en productos.
-      { index: true, element: <Navigate to="productos" replace /> },
+      { index: true, element: <DashboardPage /> },
       { path: "productos", element: <ListadoProductosPage /> },
       { path: "productos/nuevo", element: <FormularioProductoPage /> },
       { path: "productos/:id/editar", element: <FormularioProductoPage /> },

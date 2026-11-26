@@ -2,8 +2,15 @@ import { Outlet } from "react-router";
 import { Footer } from "../../shared/components/organisms/Footer";
 import { NavbarPanel } from "../../shared/components/organisms/NavbarPanel";
 
-/** Secciones del panel que aparecen en la barra. Cada issue de admin suma la suya. */
-const SECCIONES_PANEL = [{ to: "/admin/productos", texto: "Productos" }];
+/**
+ * Secciones del panel que aparecen en la barra. Cada issue de admin suma la suya.
+ * `end` marca la sección como actual solo en su ruta exacta (el dashboard es `/admin`, que si no
+ * quedaría marcado en todas las secciones).
+ */
+const SECCIONES_PANEL = [
+  { to: "/admin", texto: "Dashboard", end: true },
+  { to: "/admin/productos", texto: "Productos" },
+];
 
 /**
  * Estructura común de las páginas del panel de administración: la barra del panel (con el mismo

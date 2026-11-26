@@ -28,7 +28,8 @@ Sitio público (clientes):
 
 Panel de administración:
 
-- Dashboard: ventas, pedidos, ticket promedio, productos más comparados y alertas de stock bajo.
+- Dashboard: TPV, TPN, ticket promedio, ventas por categoría y medio de pago, más vendidos y
+  alertas de stock bajo.
 - ABM de productos con sus especificaciones, categorías y marcas.
 - Gestión de pedidos y cambio de estado.
 - Gestión de usuarios y roles (`cliente` / `administrador`).
@@ -153,6 +154,10 @@ que se cargan probando no se commitean: descartarlos con `git checkout database/
   (se muestra en la tarjeta), `rule` (`"higher"` / `"lower"` para el mejor valor del comparador;
   sin `rule` no hay ganador) y `filter` (`"checkbox"` / `"range"`; sin `filter` no se filtra). El
   orden de las claves es el orden en que se muestran.
+- `pedidos.json`: pedidos con `customer`, `createdAt` (ISO), `status` (`"pendiente"` / `"enviado"`
+  / `"entregado"` / `"cancelado"`), `paymentMethod` (`"Tarjeta de crédito"` / `"Mercado Pago"` /
+  `"Tarjeta de débito"` / `"Transferencia"`), `items` (`productId`, `name`, `price`, `quantity`: copia del
+  producto al momento de la compra) y `total`. Los cancelados no suman ventas.
 - `marcas.json`: marcas por categoría. Se mantiene a mano: una marca nueva en `productos.json`
   también va aquí.
 - Las imágenes de producto están en `frontend/public/images/products/`, en `.webp`. Deben tener
