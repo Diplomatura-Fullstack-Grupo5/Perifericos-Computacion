@@ -1,153 +1,330 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import { obtenerDashboard } from "../services/dashboardService";
+import { Fragment, useEffect, useId, useState } from "react";
+import { Link, useSearchParams } from "react-router";
+import { obtenerDashboard, PERIODOS } from "../services/dashboardService";
+import { SeccionDashboard } from "../components/SeccionDashboard";
 import { TarjetaIndicador } from "../components/TarjetaIndicador";
-import { GraficoVentasSemanales } from "../components/GraficoVentasSemanales";
-import { ListaMasComparados } from "../components/ListaMasComparados";
-import { ListaStockBajo } from "../components/ListaStockBajo";
+import { GraficoEvolucionVentas } from "../components/GraficoEvolucionVentas";
+import { GraficoBarrasHorizontales } from "../components/GraficoBarrasHorizontales";
+import { GraficoMediosDePago } from "../components/GraficoMediosDePago";
+import { ResumenEstados } from "../components/ResumenEstados";
+import { ListaProductosDashboard } from "../components/ListaProductosDashboard";
 import { TablaUltimosPedidos } from "../components/TablaUltimosPedidos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
+import { formatearMontoCorto, formatearPorcentaje } from "../utils/formatos";
+
+/** Período que se muestra si la URL no indica otro. */
+const PERIODO_INICIAL = 30;
+
+const formatoFecha = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "short" });
 
 /**
- * Página de inicio del panel de administración: indicadores de ventas y pedidos, ventas por semana,
- * productos más comparados, alertas de stock bajo y últimos pedidos.
+ * Convierte un día `"AAAA-MM-DD"` en un texto como "26 nov.", en hora local.
+ * @param {string} dia
+ * @returns {string}
+ */
+function formatearFecha(dia) {
+  const [anio, mes, numero] = dia.split("-").map(Number);
+  return formatoFecha.format(new Date(anio, mes - 1, numero));
+}
+
+/**
+ * Página de inicio del panel de administración: indicadores del período elegido (TPV, TPN, ticket
+ * promedio, unidades y cancelaciones, comparados con el período anterior), evolución de ventas,
+ * ventas por categoría y por medio de pago, estado de los pedidos, más vendidos, más comparados,
+ * stock bajo y últimos pedidos. El período va en la URL (`?periodo=7|30|90`).
  * @returns {JSX.Element}
  */
 export function DashboardPage() {
-  const [dashboard, setDashboard] = useState(null);
-  const [error, setError] = useState(null);
+  const idBase = useId();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const periodoUrl = Number(searchParams.get("periodo"));
+  const periodo = PERIODOS.includes(periodoUrl) ? periodoUrl : PERIODO_INICIAL;
+
+  const [resultado, setResultado] = useState({ periodo: null, dashboard: null, error: null });
+  const cargando = resultado.periodo !== periodo;
 
   useEffect(() => {
     let ignoreResponse = false;
 
-    obtenerDashboard()
-      .then((datos) => {
-        if (!ignoreResponse) setDashboard(datos);
+    obtenerDashboard(periodo)
+      .then((dashboard) => {
+        if (!ignoreResponse) setResultado({ periodo, dashboard, error: null });
       })
       .catch((err) => {
         if (ignoreResponse) return;
         console.error("Error al obtener el dashboard:", err);
-        setError("No se pudo cargar el dashboard. Por favor, intentá de nuevo.");
+        setResultado({
+          periodo,
+          dashboard: null,
+          error: "No se pudo cargar el dashboard. Por favor, intentá de nuevo.",
+        });
       });
 
     return () => {
       ignoreResponse = true;
     };
-  }, []);
+  }, [periodo]);
 
-  if (error) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        {error}
+  /**
+   * Cambia el período en la URL. Reemplaza la entrada del historial, como los filtros del panel.
+   * @param {number} dias
+   */
+  function cambiarPeriodo(dias) {
+    const params = new URLSearchParams(searchParams);
+    if (dias === PERIODO_INICIAL) params.delete("periodo");
+    else params.set("periodo", String(dias));
+    setSearchParams(params, { replace: true });
+  }
+
+  const { dashboard, error } = resultado;
+
+  const encabezado = (
+    <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <div>
+        <h1 className="fs-3 mb-0">Dashboard</h1>
+        {!cargando && dashboard && (
+          <p className="small text-secondary mb-0">
+            Del {formatearFecha(dashboard.periodo.desde)} al{" "}
+            {formatearFecha(dashboard.periodo.hasta)}
+          </p>
+        )}
       </div>
+
+      <div className="btn-group" role="group" aria-label="Período">
+        {PERIODOS.map((dias) => (
+          <Fragment key={dias}>
+            <input
+              type="radio"
+              className="btn-check"
+              name={`${idBase}-periodo`}
+              id={`${idBase}-periodo-${dias}`}
+              checked={periodo === dias}
+              onChange={() => cambiarPeriodo(dias)}
+            />
+            <label className="btn btn-outline-primary btn-sm" htmlFor={`${idBase}-periodo-${dias}`}>
+              {dias} días
+            </label>
+          </Fragment>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (cargando || error) {
+    return (
+      <>
+        {encabezado}
+        {cargando ? (
+          <Spinner />
+        ) : (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+      </>
     );
   }
 
-  if (!dashboard) return <Spinner />;
-
-  const { indicadores, ventasPorSemana, masComparados, stockBajo, ultimosPedidos } = dashboard;
+  const {
+    indicadores,
+    pendientes,
+    evolucion,
+    porCategoria,
+    mediosDePago,
+    estados,
+    masVendidos,
+    masComparados,
+    stockBajo,
+    ultimosPedidos,
+  } = dashboard;
+  const sinVentas = indicadores.tpn.valor === 0;
 
   return (
     <>
-      <h1 className="fs-3 mb-3">Dashboard</h1>
+      {encabezado}
 
       {/* -------------------- Indicadores -------------------- */}
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 mb-4">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 mb-4">
         <div className="col">
           <TarjetaIndicador
-            titulo="Ventas"
-            valor={formatearPrecio(indicadores.ventas)}
+            titulo="TPV"
+            descripcion="Volumen total de pagos"
+            valor={formatearPrecio(indicadores.tpv.valor)}
+            variacion={indicadores.tpv.variacion}
             icono="cash-stack"
-            detalle="Sin pedidos cancelados"
           />
         </div>
         <div className="col">
-          <TarjetaIndicador titulo="Pedidos" valor={indicadores.pedidos} icono="bag-check" />
+          <TarjetaIndicador
+            titulo="TPN"
+            descripcion="Cantidad de pagos (pedidos)"
+            valor={indicadores.tpn.valor}
+            variacion={indicadores.tpn.variacion}
+            icono="credit-card"
+          />
         </div>
         <div className="col">
           <TarjetaIndicador
             titulo="Ticket promedio"
-            valor={formatearPrecio(indicadores.ticketPromedio)}
+            descripcion="TPV ÷ TPN"
+            valor={formatearPrecio(indicadores.ticketPromedio.valor)}
+            variacion={indicadores.ticketPromedio.variacion}
             icono="receipt"
           />
         </div>
         <div className="col">
           <TarjetaIndicador
+            titulo="Unidades vendidas"
+            valor={indicadores.unidades.valor}
+            variacion={indicadores.unidades.variacion}
+            icono="box-seam"
+          />
+        </div>
+        <div className="col">
+          <TarjetaIndicador
+            titulo="Tasa de cancelación"
+            descripcion="Pedidos cancelados del período"
+            valor={formatearPorcentaje(indicadores.tasaCancelacion.valor)}
+            variacion={indicadores.tasaCancelacion.variacion}
+            mejorSiBaja
+            variacionEnPuntos
+            icono="x-circle"
+          />
+        </div>
+        <div className="col">
+          <TarjetaIndicador
             titulo="Pedidos pendientes"
-            valor={indicadores.pendientes}
+            descripcion="Por preparar (estado actual)"
+            valor={pendientes}
             icono="hourglass-split"
           />
         </div>
       </div>
 
+      {/* -------------------- Evolución y medios de pago -------------------- */}
       <div className="row g-3 mb-4">
-        {/* -------------------- Ventas por semana -------------------- */}
-        <section className="col-lg-7" aria-labelledby="dashboard-ventas">
-          <div className="card h-100">
-            <div className="card-body">
-              <h2 id="dashboard-ventas" className="fs-5 mb-3">
-                Ventas por semana
-              </h2>
-              {ventasPorSemana.length === 0 ? (
-                <MensajeVacio>Todavía no hay ventas.</MensajeVacio>
-              ) : (
-                <GraficoVentasSemanales semanas={ventasPorSemana} />
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------- Más comparados -------------------- */}
-        <section className="col-lg-5" aria-labelledby="dashboard-comparados">
-          <div className="card h-100">
-            <div className="card-body flex-grow-0 pb-0">
-              <h2 id="dashboard-comparados" className="fs-5 mb-0">
-                Más comparados
-              </h2>
-            </div>
-            <ListaMasComparados productos={masComparados} />
-          </div>
-        </section>
+        <div className="col-lg-8">
+          <SeccionDashboard
+            titulo={`TPV por ${evolucion.agrupacion === "dia" ? "día" : "semana"}`}
+          >
+            {sinVentas ? (
+              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+            ) : (
+              <GraficoEvolucionVentas puntos={evolucion.puntos} agrupacion={evolucion.agrupacion} />
+            )}
+          </SeccionDashboard>
+        </div>
+        <div className="col-lg-4">
+          <SeccionDashboard titulo="Medios de pago">
+            {sinVentas ? (
+              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+            ) : (
+              <GraficoMediosDePago medios={mediosDePago} />
+            )}
+          </SeccionDashboard>
+        </div>
       </div>
 
-      <div className="row g-3 align-items-start">
-        {/* -------------------- Últimos pedidos -------------------- */}
-        <section className="col-lg-7" aria-labelledby="dashboard-pedidos">
-          <div className="card overflow-hidden">
-            <div className="card-body flex-grow-0">
-              <h2 id="dashboard-pedidos" className="fs-5 mb-0">
-                Últimos pedidos
-              </h2>
-            </div>
-            {ultimosPedidos.length === 0 ? (
-              <MensajeVacio>Todavía no hay pedidos.</MensajeVacio>
+      {/* -------------------- Categorías, estados y más vendidos -------------------- */}
+      <div className="row g-3 mb-4">
+        <div className="col-lg-4">
+          <SeccionDashboard titulo="Ventas por categoría">
+            {sinVentas ? (
+              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
             ) : (
-              <TablaUltimosPedidos pedidos={ultimosPedidos} />
+              <GraficoBarrasHorizontales
+                filas={porCategoria.map((fila) => ({
+                  clave: fila.categoria,
+                  etiqueta: fila.categoria,
+                  valor: fila.tpv,
+                  texto: formatearMontoCorto(fila.tpv),
+                  detalle: `${formatearPorcentaje(fila.porcentaje)} · ${fila.unidades} u.`,
+                }))}
+              />
             )}
-          </div>
-        </section>
+          </SeccionDashboard>
+        </div>
+        <div className="col-lg-4">
+          <SeccionDashboard titulo="Más vendidos" sinMargen>
+            {masVendidos.length === 0 ? (
+              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+            ) : (
+              <ListaProductosDashboard
+                numerada
+                productos={masVendidos}
+                enlace={(producto) => `/producto/${producto.id}`}
+                dato={(producto) => (
+                  <>
+                    <strong>{producto.unidades}</strong> u.
+                  </>
+                )}
+              />
+            )}
+          </SeccionDashboard>
+        </div>
+        <div className="col-lg-4">
+          <SeccionDashboard titulo="Estado de los pedidos" sinMargen>
+            <ResumenEstados estados={estados} />
+          </SeccionDashboard>
+        </div>
+      </div>
 
-        {/* -------------------- Stock bajo -------------------- */}
-        <section className="col-lg-5" aria-labelledby="dashboard-stock">
-          <div className="card">
-            <div className="card-body flex-grow-0 pb-0 d-flex justify-content-between align-items-baseline gap-2">
-              <h2 id="dashboard-stock" className="fs-5 mb-0">
-                Stock bajo
-                <span className="badge rounded-pill text-bg-light ms-2">{stockBajo.length}</span>
-              </h2>
+      {/* -------------------- Últimos pedidos -------------------- */}
+      <div className="mb-4">
+        <SeccionDashboard titulo="Últimos pedidos" sinMargen>
+          {ultimosPedidos.length === 0 ? (
+            <MensajeVacio>Todavía no hay pedidos.</MensajeVacio>
+          ) : (
+            <TablaUltimosPedidos pedidos={ultimosPedidos} />
+          )}
+        </SeccionDashboard>
+      </div>
+
+      {/* -------------------- Más comparados y stock bajo -------------------- */}
+      <div className="row g-3">
+        <div className="col-lg-6">
+          <SeccionDashboard titulo="Más comparados" sinMargen>
+            <ListaProductosDashboard
+              numerada
+              productos={masComparados}
+              enlace={(producto) => `/producto/${producto.id}`}
+              dato={(producto) => (
+                <>
+                  <strong>{producto.compared}</strong> comparaciones
+                </>
+              )}
+            />
+          </SeccionDashboard>
+        </div>
+        <div className="col-lg-6">
+          <SeccionDashboard
+            titulo={`Stock bajo (${stockBajo.length})`}
+            sinMargen
+            accion={
               <Link to="/admin/productos?orden=stock_asc" className="small">
                 Ver productos
               </Link>
-            </div>
+            }
+          >
             {stockBajo.length === 0 ? (
               <MensajeVacio>Todos los productos tienen stock suficiente.</MensajeVacio>
             ) : (
-              <ListaStockBajo productos={stockBajo} />
+              <ListaProductosDashboard
+                productos={stockBajo}
+                enlace={(producto) => `/admin/productos/${producto.id}/editar`}
+                dato={(producto) => (
+                  <span
+                    className={`badge ${producto.stock <= 0 ? "text-bg-danger" : "text-bg-warning"}`}
+                  >
+                    {producto.stock <= 0 ? "Sin stock" : `${producto.stock} u.`}
+                  </span>
+                )}
+              />
             )}
-          </div>
-        </section>
+          </SeccionDashboard>
+        </div>
       </div>
     </>
   );

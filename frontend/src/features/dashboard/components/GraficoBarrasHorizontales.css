@@ -1,0 +1,18 @@
+.barras-horizontales__fila + .barras-horizontales__fila {
+  margin-top: 0.875rem;
+}
+
+.barras-horizontales__pista {
+  display: block;
+  height: 0.625rem;
+  background-color: var(--bs-tertiary-bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barras-horizontales__barra {
+  display: block;
+  height: 100%;
+  background-color: var(--bs-primary);
+  border-radius: 4px;
+}

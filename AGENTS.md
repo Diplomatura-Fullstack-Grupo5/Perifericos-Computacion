@@ -157,7 +157,8 @@ que se cargan probando no se commitean: descartarlos con `git checkout database/
   `compared` (veces que se agregó al comparador, para "más comparados" del dashboard). Ambos los
   calcula el sistema: el ABM los inicia en 0 y no los edita.
 - `pedidos.json`: pedidos con `customer`, `createdAt` (ISO), `status` (`"pendiente"` / `"enviado"`
-  / `"entregado"` / `"cancelado"`), `items` (`productId`, `name`, `price`, `quantity`: copia del
+  / `"entregado"` / `"cancelado"`), `paymentMethod` (`"Tarjeta de crédito"` / `"Mercado Pago"` /
+  `"Tarjeta de débito"` / `"Transferencia"`), `items` (`productId`, `name`, `price`, `quantity`: copia del
   producto al momento de la compra) y `total`. Los cancelados no suman ventas.
 - `marcas.json`: marcas por categoría. Se mantiene a mano: una marca nueva en `productos.json`
   también va aquí.

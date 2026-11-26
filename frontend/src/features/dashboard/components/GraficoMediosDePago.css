@@ -1,0 +1,35 @@
+/* Colores categóricos, en orden fijo: cada medio de pago conserva el suyo. */
+.medios-pago--serie-1 {
+  background-color: #2a78d6;
+}
+.medios-pago--serie-2 {
+  background-color: #eb6834;
+}
+.medios-pago--serie-3 {
+  background-color: #1baf7a;
+}
+.medios-pago--serie-4 {
+  background-color: #eda100;
+}
+
+/* Barra apilada: 2px de separación entre segmentos y extremos redondeados. */
+.medios-pago__barra {
+  display: flex;
+  gap: 2px;
+  height: 1rem;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.medios-pago__segmento {
+  display: block;
+  height: 100%;
+}
+
+.medios-pago__muestra {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
