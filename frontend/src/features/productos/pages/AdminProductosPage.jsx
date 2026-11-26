@@ -15,7 +15,7 @@ import { ModalConfirmacion } from "../../../shared/components/molecules/ModalCon
  * (en la URL: `?busqueda=&categoria=&orden=`) y acceso a crear, editar y eliminar (con confirmación).
  * @returns {JSX.Element}
  */
-export function ListadoProductosPage() {
+export function AdminProductosPage() {
   const idBase = useId();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();

@@ -35,7 +35,7 @@ function formatearFecha(dia) {
  * últimos pedidos. El período va en la URL (`?periodo=7|30|90`).
  * @returns {JSX.Element}
  */
-export function DashboardPage() {
+export function AdminDashboardPage() {
   const idBase = useId();
   const [searchParams, setSearchParams] = useSearchParams();
   const periodoUrl = Number(searchParams.get("periodo"));

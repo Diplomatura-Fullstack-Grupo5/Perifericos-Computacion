@@ -33,7 +33,7 @@ async function cargarFormulario(id) {
  * (`/admin/productos/:id/editar`). Al guardar vuelve al listado con un aviso.
  * @returns {JSX.Element}
  */
-export function FormularioProductoPage() {
+export function AdminFormularioProductoPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const clave = id ?? "nuevo";
