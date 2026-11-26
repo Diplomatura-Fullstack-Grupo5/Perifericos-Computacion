@@ -1,5 +1,5 @@
-import { BadgeEstado } from "./BadgeEstado";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
+import { formatearEstadoPedido } from "../utils/formatos";
 
 const formatoFecha = new Intl.DateTimeFormat("es-AR", {
   day: "2-digit",
@@ -32,22 +32,25 @@ export function TablaUltimosPedidos({ pedidos }) {
           </tr>
         </thead>
         <tbody>
-          {pedidos.map((pedido) => (
-            <tr key={pedido.id}>
-              <td className="ps-3">#{pedido.id}</td>
-              <td className="text-nowrap">{pedido.customer}</td>
-              <td>
-                <time dateTime={pedido.createdAt}>
-                  {formatoFecha.format(new Date(pedido.createdAt))}
-                </time>
-              </td>
-              <td className="text-nowrap">{pedido.paymentMethod}</td>
-              <td>
-                <BadgeEstado estado={pedido.status} />
-              </td>
-              <td className="text-end text-nowrap pe-3">{formatearPrecio(pedido.total)}</td>
-            </tr>
-          ))}
+          {pedidos.map((pedido) => {
+            const estado = formatearEstadoPedido(pedido.status);
+            return (
+              <tr key={pedido.id}>
+                <td className="ps-3">#{pedido.id}</td>
+                <td className="text-nowrap">{pedido.customer}</td>
+                <td>
+                  <time dateTime={pedido.createdAt}>
+                    {formatoFecha.format(new Date(pedido.createdAt))}
+                  </time>
+                </td>
+                <td className="text-nowrap">{pedido.paymentMethod}</td>
+                <td>
+                  <span className={`badge ${estado.clases}`}>{estado.texto}</span>
+                </td>
+                <td className="text-end text-nowrap pe-3">{formatearPrecio(pedido.total)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

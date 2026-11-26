@@ -1,5 +1,4 @@
 import { formatearPorcentaje, formatearPuntosPorcentuales } from "../utils/formatos";
-import "./TarjetaIndicador.css";
 
 /**
  * Tarjeta con un indicador del dashboard: título, valor destacado, ícono y, si se pasa, la
@@ -34,7 +33,10 @@ export function TarjetaIndicador({
   return (
     <div className="card h-100">
       <div className="card-body d-flex align-items-start gap-3">
-        <span className="tarjeta-indicador__icono" aria-hidden="true">
+        <span
+          className="d-inline-flex flex-shrink-0 p-2 rounded-circle bg-primary-subtle text-primary fs-5 lh-1"
+          aria-hidden="true"
+        >
           <i className={`bi bi-${icono}`} />
         </span>
         <div>

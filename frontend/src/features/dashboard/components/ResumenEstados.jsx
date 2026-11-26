@@ -1,6 +1,4 @@
-import { BadgeEstado } from "./BadgeEstado";
-import { formatearPorcentaje } from "../utils/formatos";
-import "./ResumenEstados.css";
+import { formatearEstadoPedido, formatearPorcentaje } from "../utils/formatos";
 
 /**
  * Cantidad de pedidos del período en cada estado, con su porcentaje sobre el total.
@@ -13,17 +11,18 @@ export function ResumenEstados({ estados }) {
 
   return (
     <ul className="list-group list-group-flush">
-      {estados.map(({ estado, cantidad }) => (
-        <li key={estado} className="list-group-item d-flex align-items-center gap-2">
-          <span className="flex-grow-1">
-            <BadgeEstado estado={estado} />
-          </span>
-          <strong>{cantidad}</strong>
-          <span className="small text-secondary text-end resumen-estados__porcentaje">
-            {formatearPorcentaje(total ? (cantidad / total) * 100 : 0)}
-          </span>
-        </li>
-      ))}
+      {estados.map(({ estado, cantidad }) => {
+        const { texto, clases } = formatearEstadoPedido(estado);
+        return (
+          <li key={estado} className="list-group-item d-flex align-items-center gap-2">
+            <span className={`badge ${clases} me-auto`}>{texto}</span>
+            <strong>{cantidad}</strong>
+            <span className="small text-secondary">
+              ({formatearPorcentaje(total ? (cantidad / total) * 100 : 0)})
+            </span>
+          </li>
+        );
+      })}
     </ul>
   );
 }

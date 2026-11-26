@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useId, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { obtenerDashboard, PERIODOS } from "../services/dashboardService";
-import { SeccionDashboard } from "../components/SeccionDashboard";
 import { TarjetaIndicador } from "../components/TarjetaIndicador";
 import { GraficoEvolucionVentas } from "../components/GraficoEvolucionVentas";
 import { GraficoBarrasHorizontales } from "../components/GraficoBarrasHorizontales";
@@ -205,48 +204,67 @@ export function DashboardPage() {
       {/* -------------------- Evolución y medios de pago -------------------- */}
       <div className="row g-3 mb-4">
         <div className="col-lg-8">
-          <SeccionDashboard
-            titulo={`TPV por ${evolucion.agrupacion === "dia" ? "día" : "semana"}`}
-          >
-            {sinVentas ? (
-              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
-            ) : (
-              <GraficoEvolucionVentas puntos={evolucion.puntos} agrupacion={evolucion.agrupacion} />
-            )}
-          </SeccionDashboard>
+          <section className="card h-100" aria-labelledby="dashboard-evolucion">
+            <div className="card-body">
+              <h2 id="dashboard-evolucion" className="fs-5 mb-3">
+                TPV por {evolucion.agrupacion === "dia" ? "día" : "semana"}
+              </h2>
+              {sinVentas ? (
+                <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+              ) : (
+                <GraficoEvolucionVentas
+                  puntos={evolucion.puntos}
+                  agrupacion={evolucion.agrupacion}
+                />
+              )}
+            </div>
+          </section>
         </div>
         <div className="col-lg-4">
-          <SeccionDashboard titulo="Medios de pago">
-            {sinVentas ? (
-              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
-            ) : (
-              <GraficoMediosDePago medios={mediosDePago} />
-            )}
-          </SeccionDashboard>
+          <section className="card h-100" aria-labelledby="dashboard-medios">
+            <div className="card-body">
+              <h2 id="dashboard-medios" className="fs-5 mb-3">
+                Medios de pago
+              </h2>
+              {sinVentas ? (
+                <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+              ) : (
+                <GraficoMediosDePago medios={mediosDePago} />
+              )}
+            </div>
+          </section>
         </div>
       </div>
 
       {/* -------------------- Categorías, estados y más vendidos -------------------- */}
       <div className="row g-3 mb-4">
         <div className="col-lg-4">
-          <SeccionDashboard titulo="Ventas por categoría">
-            {sinVentas ? (
-              <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
-            ) : (
-              <GraficoBarrasHorizontales
-                filas={porCategoria.map((fila) => ({
-                  clave: fila.categoria,
-                  etiqueta: fila.categoria,
-                  valor: fila.tpv,
-                  texto: formatearMontoCorto(fila.tpv),
-                  detalle: `${formatearPorcentaje(fila.porcentaje)} · ${fila.unidades} u.`,
-                }))}
-              />
-            )}
-          </SeccionDashboard>
+          <section className="card h-100" aria-labelledby="dashboard-categorias">
+            <div className="card-body">
+              <h2 id="dashboard-categorias" className="fs-5 mb-3">
+                Ventas por categoría
+              </h2>
+              {sinVentas ? (
+                <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
+              ) : (
+                <GraficoBarrasHorizontales
+                  filas={porCategoria.map((fila) => ({
+                    clave: fila.categoria,
+                    etiqueta: fila.categoria,
+                    valor: fila.tpv,
+                    texto: formatearMontoCorto(fila.tpv),
+                    detalle: `${formatearPorcentaje(fila.porcentaje)} · ${fila.unidades} u.`,
+                  }))}
+                />
+              )}
+            </div>
+          </section>
         </div>
         <div className="col-lg-4">
-          <SeccionDashboard titulo="Más vendidos" sinMargen>
+          <section className="card h-100 overflow-hidden" aria-labelledby="dashboard-vendidos">
+            <h2 id="dashboard-vendidos" className="card-body flex-grow-0 fs-5 mb-0 pb-2">
+              Más vendidos
+            </h2>
             {masVendidos.length === 0 ? (
               <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
             ) : (
@@ -261,36 +279,42 @@ export function DashboardPage() {
                 )}
               />
             )}
-          </SeccionDashboard>
+          </section>
         </div>
         <div className="col-lg-4">
-          <SeccionDashboard titulo="Estado de los pedidos" sinMargen>
+          <section className="card h-100 overflow-hidden" aria-labelledby="dashboard-estados">
+            <h2 id="dashboard-estados" className="card-body flex-grow-0 fs-5 mb-0 pb-2">
+              Estado de los pedidos
+            </h2>
             <ResumenEstados estados={estados} />
-          </SeccionDashboard>
+          </section>
         </div>
       </div>
 
       {/* -------------------- Últimos pedidos -------------------- */}
       <div className="mb-4">
-        <SeccionDashboard titulo="Últimos pedidos" sinMargen>
+        <section className="card overflow-hidden" aria-labelledby="dashboard-pedidos">
+          <h2 id="dashboard-pedidos" className="card-body flex-grow-0 fs-5 mb-0 pb-2">
+            Últimos pedidos
+          </h2>
           {ultimosPedidos.length === 0 ? (
             <MensajeVacio>Todavía no hay pedidos.</MensajeVacio>
           ) : (
             <TablaUltimosPedidos pedidos={ultimosPedidos} />
           )}
-        </SeccionDashboard>
+        </section>
       </div>
 
       {/* -------------------- Stock bajo -------------------- */}
-      <SeccionDashboard
-        titulo={`Stock bajo (${stockBajo.length})`}
-        sinMargen
-        accion={
+      <section className="card overflow-hidden" aria-labelledby="dashboard-stock">
+        <div className="card-body pb-2 d-flex justify-content-between align-items-baseline gap-2">
+          <h2 id="dashboard-stock" className="fs-5 mb-0">
+            Stock bajo ({stockBajo.length})
+          </h2>
           <Link to="/admin/productos?orden=stock_asc" className="small">
             Ver productos
           </Link>
-        }
-      >
+        </div>
         {stockBajo.length === 0 ? (
           <MensajeVacio>Todos los productos tienen stock suficiente.</MensajeVacio>
         ) : (
@@ -306,7 +330,7 @@ export function DashboardPage() {
             )}
           />
         )}
-      </SeccionDashboard>
+      </section>
     </>
   );
 }
