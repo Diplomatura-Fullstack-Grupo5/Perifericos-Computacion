@@ -1,0 +1,26 @@
+.resumen-pedido-miniatura {
+  flex: 0 0 3.5rem;
+  height: 3.5rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  background-color: #f1f3f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resumen-pedido-miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Funde el fondo blanco de la foto con el recuadro. */
+  mix-blend-mode: multiply;
+}
+
+/* En pantallas anchas el resumen acompaña al scroll del formulario. */
+@media (min-width: 992px) {
+  .resumen-pedido {
+    position: sticky;
+    top: 5rem;
+  }
+}

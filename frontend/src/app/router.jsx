@@ -16,7 +16,7 @@ import {
   AdminFormularioProductoPage,
 } from "../features/productos";
 import { AdminDashboardPage } from "../features/dashboard";
-import { AdminPedidosPage } from "../features/pedidos";
+import { AdminPedidosPage, FinalizarCompraPage } from "../features/pedidos";
 import { AdminUsuariosPage } from "../features/usuarios";
 
 /**
@@ -39,7 +39,6 @@ async function cargarLayoutPublico() {
  * Al crear la página real, quitarla de esta lista y agregar su ruta abajo.
  */
 const PAGINAS_EN_CONSTRUCCION = [
-  "finalizar-compra",
   "iniciar-sesion",
   "mis-pedidos",
 ];
@@ -59,6 +58,7 @@ export const router = createBrowserRouter([
       { path: "catalogo", element: <CatalogoPage /> },
       { path: "producto/:id", element: <ProductoPage /> },
       { path: "comparador", element: <ComparadorPage /> },
+      { path: "finalizar-compra", element: <FinalizarCompraPage /> },
       { path: "legales", element: <Legales /> },
       { path: "nosotros", element: <NosotrosPage /> },
       { path: "contacto", element: <ContactoPage /> },

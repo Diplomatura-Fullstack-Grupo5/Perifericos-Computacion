@@ -19,6 +19,7 @@ import { CarritoContext } from "./carritoContext";
  *   subtotal: number,
  *   agregar: (producto: {id: number, name: string, price: number, image?: string, stock: number}) => void,
  *   cambiarCantidad: (id: number, cantidad: number) => void,
+ *   actualizarProductos: (productosActuales: {id: number, name: string, price: number, image?: string, stock: number}[]) => void,
  *   quitar: (id: number) => void,
  *   vaciar: () => void,
  *   panelAbierto: boolean,

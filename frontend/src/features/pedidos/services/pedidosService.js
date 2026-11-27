@@ -92,3 +92,108 @@ export async function cambiarEstadoPedido(pedido, estadoNuevo) {
   }
   return enviar(ENDPOINTS.estadoPedido(pedido.id), { status: estadoNuevo }, "PATCH");
 }
+
+/**
+ * @typedef {object} CambioCarrito Diferencia entre el carrito y los productos actuales.
+ * @property {"precio" | "stock" | "sinStock" | "eliminado"} tipo `stock`: no alcanza para la
+ *   cantidad elegida; `sinStock`: no queda ninguna unidad; `eliminado`: el producto ya no existe.
+ * @property {string} name Nombre del producto.
+ * @property {number} [price] Precio nuevo (solo en `precio`).
+ */
+
+/**
+ * Compara el carrito con los productos actuales y lista lo que cambió desde que se agregaron.
+ * @param {{id: number, name: string, price: number, quantity: number}[]} items Productos del carrito.
+ * @param {Map<number, object>} productosPorId Productos actuales.
+ * @returns {CambioCarrito[]} Vacío si el pedido se puede confirmar tal cual.
+ */
+function buscarCambios(items, productosPorId) {
+  const cambios = [];
+  items.forEach((item) => {
+    const actual = productosPorId.get(item.id);
+    if (!actual) {
+      cambios.push({ tipo: "eliminado", name: item.name });
+      return;
+    }
+    if (actual.stock <= 0) {
+      cambios.push({ tipo: "sinStock", name: actual.name });
+      return;
+    }
+    if (actual.stock < item.quantity) cambios.push({ tipo: "stock", name: actual.name });
+    if (actual.price !== item.price) {
+      cambios.push({ tipo: "precio", name: actual.name, price: actual.price });
+    }
+  });
+  return cambios;
+}
+
+/**
+ * Crea un pedido con los productos del carrito. Simula `POST /api/pedidos`, que en el backend hará
+ * todo dentro de una transacción.
+ *
+ * Antes de guardar revisa los productos actuales: si alguno cambió de precio, no tiene stock
+ * suficiente o ya no existe, **no guarda nada** y devuelve los cambios junto con los datos actuales,
+ * para que el cliente revise el carrito y vuelva a confirmar. Si está todo bien, guarda el pedido
+ * como "pendiente" con los precios actuales y descuenta el stock de cada producto.
+ * @param {object} comprador Datos del formulario.
+ * @param {string} comprador.name
+ * @param {string} comprador.email
+ * @param {string} comprador.phone
+ * @param {string} comprador.address
+ * @param {string} comprador.city
+ * @param {string} comprador.postalCode
+ * @param {string} comprador.paymentMethod Uno de `MEDIOS_DE_PAGO`.
+ * @param {{id: number, name: string, price: number, quantity: number}[]} items Productos del carrito.
+ * @returns {Promise<{ pedido: object } | { cambios: CambioCarrito[], productosActuales: object[] }>}
+ * @throws {Error} Si el carrito está vacío, el medio de pago no es válido o falla el servidor.
+ */
+export async function crearPedido(comprador, items) {
+  if (items.length === 0) throw new Error("El carrito está vacío.");
+  if (!MEDIOS_DE_PAGO.includes(comprador.paymentMethod)) {
+    throw new Error("Elegí un medio de pago válido.");
+  }
+
+  const productos = await pedir(ENDPOINTS.productos);
+  const productosPorId = new Map(productos.map((producto) => [producto.id, producto]));
+
+  const cambios = buscarCambios(items, productosPorId);
+  if (cambios.length > 0) {
+    const productosActuales = items
+      .map((item) => productosPorId.get(item.id))
+      .filter(Boolean);
+    return { cambios, productosActuales };
+  }
+
+  const itemsPedido = items.map(({ id, quantity }) => {
+    const { name, price } = productosPorId.get(id);
+    return { productId: id, name, price, quantity };
+  });
+
+  const pedido = await enviar(ENDPOINTS.crearPedido, {
+    customer: comprador.name,
+    email: comprador.email,
+    phone: comprador.phone,
+    shipping: {
+      address: comprador.address,
+      city: comprador.city,
+      postalCode: comprador.postalCode,
+    },
+    createdAt: new Date().toISOString(),
+    status: "pendiente",
+    paymentMethod: comprador.paymentMethod,
+    items: itemsPedido,
+    total: itemsPedido.reduce((total, item) => total + item.price * item.quantity, 0),
+  });
+
+  await Promise.all(
+    itemsPedido.map(({ productId, quantity }) =>
+      enviar(
+        ENDPOINTS.producto(productId),
+        { stock: productosPorId.get(productId).stock - quantity },
+        "PUT",
+      ),
+    ),
+  );
+
+  return { pedido };
+}

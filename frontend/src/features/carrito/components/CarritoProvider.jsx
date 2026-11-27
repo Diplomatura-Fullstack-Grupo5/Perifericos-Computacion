@@ -81,6 +81,23 @@ export function CarritoProvider({ children }) {
     );
   }
 
+  /**
+   * Actualiza la copia de datos del carrito con los productos actuales (ej. al confirmar el pedido):
+   * nombre, precio, imagen y stock. Baja las cantidades que superan el stock y quita los productos
+   * que ya no existen o no tienen stock.
+   * @param {{id: number, name: string, price: number, image?: string, stock: number}[]} productosActuales
+   */
+  function actualizarProductos(productosActuales) {
+    setItems((prev) =>
+      prev.flatMap((item) => {
+        const actual = productosActuales.find((producto) => producto.id === item.id);
+        if (!actual || actual.stock <= 0) return [];
+        const { name, price, image, stock } = actual;
+        return [{ ...item, name, price, image, stock, quantity: Math.min(item.quantity, stock) }];
+      }),
+    );
+  }
+
   function quitar(id) {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }
@@ -95,6 +112,7 @@ export function CarritoProvider({ children }) {
     subtotal,
     agregar,
     cambiarCantidad,
+    actualizarProductos,
     quitar,
     vaciar,
     panelAbierto,
