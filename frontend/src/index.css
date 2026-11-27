@@ -8,3 +8,13 @@
   --bs-btn-active-border-color: var(--bs-danger);
   --bs-btn-active-color: #fff;
 }
+
+/* Encabezado de las tablas del panel (productos, pedidos, usuarios): línea inferior marcada para
+   separarlo de las filas, texto chico en mayúsculas y gris. Va con `table-light` en el <thead>. */
+.tabla-panel-encabezado th {
+  border-bottom: 2px solid var(--bs-border-color);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--bs-secondary-color);
+}

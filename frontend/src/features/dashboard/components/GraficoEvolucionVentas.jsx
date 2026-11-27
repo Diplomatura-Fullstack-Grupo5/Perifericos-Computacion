@@ -64,16 +64,16 @@ export function GraficoEvolucionVentas({ puntos, agrupacion }) {
   return (
     <div className="grafico-evolucion">
       {/* Eje vertical: tope, mitad y cero, con su línea de guía */}
-      <div className="grafico-evolucion__guias" aria-hidden="true">
+      <div className="grafico-evolucion-guias" aria-hidden="true">
         {[tope, tope / 2, 0].map((valor) => (
-          <div key={valor} className="grafico-evolucion__guia">
+          <div key={valor} className="grafico-evolucion-guia">
             <span>{formatearMontoCorto(valor)}</span>
           </div>
         ))}
       </div>
 
       <div
-        className="grafico-evolucion__columnas"
+        className="grafico-evolucion-columnas"
         role="group"
         aria-label={`TPV por ${agrupacion === "dia" ? "día" : "semana"}`}
         onMouseLeave={() => setIndiceActivo(null)}
@@ -82,14 +82,14 @@ export function GraficoEvolucionVentas({ puntos, agrupacion }) {
           <button
             key={punto.inicio}
             type="button"
-            className={`grafico-evolucion__columna ${indice === indiceActivo ? "is-activa" : ""}`}
+            className={`grafico-evolucion-columna ${indice === indiceActivo ? "grafico-evolucion-columna-activa" : ""}`}
             aria-label={`${nombrePunto(punto)}: ${formatearPrecio(punto.tpv)}, ${textoPedidos(punto)}`}
             onMouseEnter={() => setIndiceActivo(indice)}
             onFocus={() => setIndiceActivo(indice)}
             onBlur={() => setIndiceActivo(null)}
           >
             <span
-              className="grafico-evolucion__barra"
+              className="grafico-evolucion-barra"
               style={{ height: `${(punto.tpv / tope) * 100}%` }}
             />
           </button>
@@ -97,7 +97,7 @@ export function GraficoEvolucionVentas({ puntos, agrupacion }) {
 
         {activo && (
           <div
-            className="grafico-evolucion__tooltip"
+            className="grafico-evolucion-tooltip"
             aria-hidden="true"
             style={{
               left: `${posicionActiva * 100}%`,
@@ -111,7 +111,7 @@ export function GraficoEvolucionVentas({ puntos, agrupacion }) {
         )}
       </div>
 
-      <div className="grafico-evolucion__eje-x" aria-hidden="true">
+      <div className="grafico-evolucion-eje-x" aria-hidden="true">
         {puntos.map((punto, indice) => (
           <span key={punto.inicio}>
             {indice % cadaCuanto === 0 ? formatearDiaCorto(punto.inicio) : ""}

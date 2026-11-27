@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { CampoSpec } from "./CampoSpec";
 import {
@@ -30,7 +30,6 @@ export function FormularioProducto({
   error = null,
   onGuardar,
 }) {
-  const idBase = useId();
   const [formulario, setFormulario] = useState(() => productoAFormulario(producto));
   const [validado, setValidado] = useState(false);
 
@@ -40,21 +39,21 @@ export function FormularioProducto({
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setFormulario({ ...formulario, [name]: value });
+    setFormulario((prev) => ({ ...prev, [name]: value }));
   }
 
   function handleCambiarCategoria(e) {
     const category = e.target.value;
-    setFormulario({
-      ...formulario,
+    setFormulario((prev) => ({
+      ...prev,
       category,
       brand: "",
       specs: armarSpecsVacias(definiciones[category]),
-    });
+    }));
   }
 
   function handleCambiarSpec(clave, value) {
-    setFormulario({ ...formulario, specs: { ...formulario.specs, [clave]: value } });
+    setFormulario((prev) => ({ ...prev, specs: { ...prev.specs, [clave]: value } }));
   }
 
   function handleSubmit(e) {
@@ -72,17 +71,16 @@ export function FormularioProducto({
       noValidate
       onSubmit={handleSubmit}
     >
-      {/* -------------------- Datos generales -------------------- */}
       <fieldset className="row g-3 mb-4">
         <legend className="fs-5">Datos generales</legend>
         <p className="form-text mt-0">Todos los datos generales son obligatorios.</p>
 
         <div className="col-12">
-          <label htmlFor={`${idBase}-name`} className="form-label">
+          <label htmlFor="producto-name" className="form-label">
             Nombre
           </label>
           <input
-            id={`${idBase}-name`}
+            id="producto-name"
             name="name"
             type="text"
             className="form-control"
@@ -95,11 +93,11 @@ export function FormularioProducto({
         </div>
 
         <div className="col-12">
-          <label htmlFor={`${idBase}-description`} className="form-label">
+          <label htmlFor="producto-description" className="form-label">
             Descripción
           </label>
           <textarea
-            id={`${idBase}-description`}
+            id="producto-description"
             name="description"
             className="form-control"
             rows={2}
@@ -112,11 +110,11 @@ export function FormularioProducto({
         </div>
 
         <div className="col-md-6">
-          <label htmlFor={`${idBase}-category`} className="form-label">
+          <label htmlFor="producto-category" className="form-label">
             Categoría
           </label>
           <select
-            id={`${idBase}-category`}
+            id="producto-category"
             name="category"
             className="form-select"
             required
@@ -134,11 +132,11 @@ export function FormularioProducto({
         </div>
 
         <div className="col-md-6">
-          <label htmlFor={`${idBase}-brand`} className="form-label">
+          <label htmlFor="producto-brand" className="form-label">
             Marca
           </label>
           <select
-            id={`${idBase}-brand`}
+            id="producto-brand"
             name="brand"
             className="form-select"
             required
@@ -159,13 +157,13 @@ export function FormularioProducto({
         </div>
 
         <div className="col-md-6">
-          <label htmlFor={`${idBase}-price`} className="form-label">
+          <label htmlFor="producto-price" className="form-label">
             Precio
           </label>
           <div className="input-group has-validation">
             <span className="input-group-text">$</span>
             <input
-              id={`${idBase}-price`}
+              id="producto-price"
               name="price"
               type="number"
               className="form-control"
@@ -180,11 +178,11 @@ export function FormularioProducto({
         </div>
 
         <div className="col-md-6">
-          <label htmlFor={`${idBase}-stock`} className="form-label">
+          <label htmlFor="producto-stock" className="form-label">
             Stock
           </label>
           <input
-            id={`${idBase}-stock`}
+            id="producto-stock"
             name="stock"
             type="number"
             className="form-control"
@@ -198,22 +196,22 @@ export function FormularioProducto({
         </div>
 
         <div className="col-12">
-          <label htmlFor={`${idBase}-image`} className="form-label">
+          <label htmlFor="producto-image" className="form-label">
             Imagen
           </label>
           <input
-            id={`${idBase}-image`}
+            id="producto-image"
             name="image"
             type="text"
             className="form-control"
             required
             pattern="/images/products/.+\.webp"
             placeholder="/images/products/mouse-1.webp"
-            aria-describedby={`${idBase}-image-ayuda`}
+            aria-describedby="producto-image-ayuda"
             value={formulario.image}
             onChange={handleChange}
           />
-          <div id={`${idBase}-image-ayuda`} className="form-text">
+          <div id="producto-image-ayuda" className="form-text">
             Ruta de una imagen .webp de <code>public/images/products/</code>, con fondo blanco o
             transparente.
           </div>
@@ -223,7 +221,6 @@ export function FormularioProducto({
         </div>
       </fieldset>
 
-      {/* -------------------- Especificaciones técnicas -------------------- */}
       <fieldset className="row g-3 mb-4">
         <legend className="fs-5">Especificaciones técnicas</legend>
         {formulario.category ? (
@@ -234,7 +231,7 @@ export function FormularioProducto({
             {Object.entries(definicionesCategoria).map(([clave, definicion]) => (
               <CampoSpec
                 key={clave}
-                id={`${idBase}-spec-${clave}`}
+                id={`producto-spec-${clave}`}
                 definicion={definicion}
                 value={formulario.specs[clave] ?? ""}
                 sugerencias={valoresSpecs[formulario.category]?.[clave]}
@@ -255,16 +252,12 @@ export function FormularioProducto({
         </div>
       )}
 
-      {/* -------------------- Acciones -------------------- */}
       <div className="d-flex gap-2 justify-content-end">
         <Link to="/admin/productos" className="btn btn-outline-secondary">
           Cancelar
         </Link>
         <button type="submit" className="btn btn-primary" disabled={guardando}>
-          {guardando && (
-            <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
-          )}
-          Guardar producto
+          {guardando ? "Guardando..." : "Guardar producto"}
         </button>
       </div>
     </form>

@@ -1,17 +1,10 @@
 import { pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
+import { ESTADOS_PEDIDO, MEDIOS_DE_PAGO } from "../../pedidos";
+import { LIMITE_STOCK_BAJO } from "../../productos";
 
 /** Períodos que se pueden elegir, en días. */
 export const PERIODOS = [7, 30, 90];
-
-/** Medios de pago, en un orden fijo (así cada uno conserva su color en el gráfico). */
-export const MEDIOS_DE_PAGO = ["Tarjeta de crédito", "Mercado Pago", "Tarjeta de débito", "Transferencia"];
-
-/** Estados de un pedido, en el orden en que avanza. */
-export const ESTADOS_PEDIDO = ["pendiente", "enviado", "entregado", "cancelado"];
-
-/** Con esta cantidad de unidades o menos, un producto entra en las alertas de stock bajo. */
-const LIMITE_STOCK_BAJO = 5;
 
 /** Cantidad de productos de la lista de más vendidos. */
 const LIMITE_LISTAS = 5;
@@ -91,48 +84,59 @@ function calcularTotales(pedidos) {
  * @returns {{ inicio: string, tpv: number, tpn: number }[]} `inicio` = día o lunes (`"AAAA-MM-DD"`).
  */
 function calcularEvolucion(validos, desde, hasta, agrupacion) {
-  const claveDe = (fecha) =>
-    formatearDia(agrupacion === "dia" ? fecha : inicioDeSemana(fecha));
+  const porSemana = agrupacion === "semana";
+  const inicioDelGrupo = (fecha) => formatearDia(porSemana ? inicioDeSemana(fecha) : fecha);
 
-  const grupos = new Map();
-  const paso = agrupacion === "dia" ? 1 : 7;
-  for (let fecha = agrupacion === "dia" ? desde : inicioDeSemana(desde); fecha < hasta; fecha = inicioDelDia(fecha, paso)) {
-    grupos.set(formatearDia(fecha), { inicio: formatearDia(fecha), tpv: 0, tpn: 0 });
+  const puntos = [];
+  let fecha = porSemana ? inicioDeSemana(desde) : desde;
+  while (fecha < hasta) {
+    puntos.push({ inicio: formatearDia(fecha), tpv: 0, tpn: 0 });
+    fecha = inicioDelDia(fecha, porSemana ? 7 : 1);
   }
 
   validos.forEach((pedido) => {
-    const grupo = grupos.get(claveDe(new Date(pedido.createdAt)));
-    if (!grupo) return;
-    grupo.tpv += pedido.total;
-    grupo.tpn += 1;
+    const punto = puntos.find(({ inicio }) => inicio === inicioDelGrupo(new Date(pedido.createdAt)));
+    if (!punto) return;
+    punto.tpv += pedido.total;
+    punto.tpn += 1;
   });
 
-  return [...grupos.values()];
+  return puntos;
+}
+
+/**
+ * Busca un producto del catálogo por su id.
+ * @param {object[]} productos
+ * @param {number} id
+ * @returns {object | undefined} `undefined` si el producto ya no existe.
+ */
+function buscarProducto(productos, id) {
+  return productos.find((producto) => producto.id === id);
 }
 
 /**
  * Suma las ventas del período por categoría de producto, de mayor a menor.
  * @param {object[]} validos Pedidos no cancelados del período.
- * @param {Map<number, object>} productosPorId
+ * @param {object[]} productos
  * @returns {{ categoria: string, tpv: number, unidades: number, porcentaje: number }[]}
  */
-function calcularPorCategoria(validos, productosPorId) {
-  const categorias = new Map();
+function calcularPorCategoria(validos, productos) {
+  const categorias = {};
   let total = 0;
 
   validos.forEach((pedido) =>
     pedido.items.forEach((item) => {
       // Un producto borrado del catálogo ya no tiene categoría.
-      const categoria = productosPorId.get(item.productId)?.category ?? "Otros";
-      const fila = categorias.get(categoria) ?? { categoria, tpv: 0, unidades: 0 };
+      const categoria = buscarProducto(productos, item.productId)?.category ?? "Otros";
+      const fila = categorias[categoria] ?? { categoria, tpv: 0, unidades: 0 };
       fila.tpv += item.price * item.quantity;
       fila.unidades += item.quantity;
       total += item.price * item.quantity;
-      categorias.set(categoria, fila);
+      categorias[categoria] = fila;
     }),
   );
 
-  return [...categorias.values()]
+  return Object.values(categorias)
     .map((fila) => ({ ...fila, porcentaje: total ? (fila.tpv / total) * 100 : 0 }))
     .sort((a, b) => b.tpv - a.tpv);
 }
@@ -155,16 +159,16 @@ function calcularMediosDePago(validos) {
 /**
  * Devuelve los productos con más unidades vendidas en el período.
  * @param {object[]} validos Pedidos no cancelados del período.
- * @param {Map<number, object>} productosPorId
+ * @param {object[]} productos
  * @returns {{ id: number, name: string, image?: string, category: string, unidades: number, tpv: number }[]}
  */
-function calcularMasVendidos(validos, productosPorId) {
-  const vendidos = new Map();
+function calcularMasVendidos(validos, productos) {
+  const vendidos = {};
 
   validos.forEach((pedido) =>
     pedido.items.forEach((item) => {
-      const producto = productosPorId.get(item.productId);
-      const fila = vendidos.get(item.productId) ?? {
+      const producto = buscarProducto(productos, item.productId);
+      const fila = vendidos[item.productId] ?? {
         id: item.productId,
         name: item.name,
         image: producto?.image,
@@ -174,11 +178,11 @@ function calcularMasVendidos(validos, productosPorId) {
       };
       fila.unidades += item.quantity;
       fila.tpv += item.price * item.quantity;
-      vendidos.set(item.productId, fila);
+      vendidos[item.productId] = fila;
     }),
   );
 
-  return [...vendidos.values()].sort((a, b) => b.unidades - a.unidades).slice(0, LIMITE_LISTAS);
+  return Object.values(vendidos).sort((a, b) => b.unidades - a.unidades).slice(0, LIMITE_LISTAS);
 }
 
 /**
@@ -200,7 +204,6 @@ export async function obtenerDashboard(dias = 30) {
     pedir(ENDPOINTS.pedidos),
     pedir(ENDPOINTS.productos),
   ]);
-  const productosPorId = new Map(productos.map((producto) => [producto.id, producto]));
 
   const masReciente = pedidos.length
     ? new Date(Math.max(...pedidos.map((pedido) => new Date(pedido.createdAt).getTime())))
@@ -235,13 +238,13 @@ export async function obtenerDashboard(dias = 30) {
     indicadores,
     pendientes: pedidos.filter((pedido) => pedido.status === "pendiente").length,
     evolucion: { agrupacion, puntos: calcularEvolucion(validos, desde, hasta, agrupacion) },
-    porCategoria: calcularPorCategoria(validos, productosPorId),
+    porCategoria: calcularPorCategoria(validos, productos),
     mediosDePago: calcularMediosDePago(validos),
     estados: ESTADOS_PEDIDO.map((estado) => ({
       estado,
       cantidad: delPeriodo.filter((pedido) => pedido.status === estado).length,
     })),
-    masVendidos: calcularMasVendidos(validos, productosPorId),
+    masVendidos: calcularMasVendidos(validos, productos),
     stockBajo: productos
       .filter((producto) => producto.stock <= LIMITE_STOCK_BAJO)
       .sort((a, b) => a.stock - b.stock),
