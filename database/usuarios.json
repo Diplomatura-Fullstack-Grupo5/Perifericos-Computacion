@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Mariana Quiroga",
     "email": "mariana@puntotech.com.ar",
-    "passwordHash": "scrypt$77dada0f4652c727f8d8acac8dab818e$9cb6c088738453ca442edefdb9953e783c1e445a5444b7d1ecc21521969cffd148fb0dd049c3452fd6fda0c2a375736583dc90b85c89140cbeca86c7956ab37b",
+    "passwordHash": "scrypt$de40fde78ad4177102d6adfbf0d21d5e$4d583b337c70f7393e54bb8286a147ee4bdd67f11ca7093cda33219c16f90ae5e6c18afefa3d658f31f87c7d9c97b5699f3df99f8a9dcb4ab9b298ec21afca46",
     "role": "administrador",
     "createdAt": "2026-01-08T13:00:00.000Z"
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Ezequiel Paz",
     "email": "ezequiel@puntotech.com.ar",
-    "passwordHash": "scrypt$95ec253a310bb3278ef51441ea3fae34$bf97affe54d4e4e306570cc2926aa29cadc799923722cca737e6a77d389084ea6f7df6e848610fd2207fd19cad92460806b747ae592b8b3b3165f187ec8a542a",
+    "passwordHash": "scrypt$cb0a419244da067bb6b945d5d6315ab8$872bd92cbf6a9aad46e530a1ec0eb6c412046fb4f621a0858207e4a9fdc33a863f65e0fd8bea30f777fb38b719296b644cbbd73f7b51c3e17e1847ad729003d5",
     "role": "administrador",
     "createdAt": "2026-01-22T23:55:37.182Z"
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "name": "Diego Funes",
     "email": "diego.funes@example.com",
-    "passwordHash": "scrypt$7b5d0722baa85d2b6efd7c1c01624085$b318d6f3bfcbe8182dde2f0f2bade8c082e579d1d887a785a6b12dc4581f638fb0c53c3b13db9dde169b373b1063e8401502315dba6ba4369ace2e29e44e8164",
+    "passwordHash": "scrypt$cbe847ad36d7e199032bcf6c9cdf75ef$3d09e9683c970674c5278a47991e0f014e107df03b9746053afb53f5742b9b5997733bff28fdce3e70ca7ed4d6ecf4f3b08ae8c02a06e27b04ab8501ca69a034",
     "role": "cliente",
     "createdAt": "2026-02-06T10:51:14.364Z"
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "name": "Florencia Arias",
     "email": "florencia.arias@example.com",
-    "passwordHash": "scrypt$340f8d4f61225afae359aa3909d6053b$30378c153efd14215d9c4ddc0c32fe3015deda632b04a4474ba9cb7b1de799eb9c7b843a2c8247e9a78c10f45b4f0811356b3518abfcd7498ad5f7e487ba9b28",
+    "passwordHash": "scrypt$a59e0351708c58d5779ee94032214707$edf377d394e64ef41b271c978b7696576b91e9fee0a9a72e6d667cc781a134012fd7ce8b1ab872289ee0edba7427ec166f499a6fc23a8d1cc1cf06b315d1619b",
     "role": "cliente",
     "createdAt": "2026-02-20T21:46:51.545Z"
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "name": "Nicolás Castro",
     "email": "nicolas.castro@example.com",
-    "passwordHash": "scrypt$4eb25b58931eb6d40fdf5403e6917b85$0ee62642d5b868f07622c3e21bb020751ec263e8376a3d38a1cf441d6b01ed5b52189feee6031ec8762dd92799489aa1a098a8563db956d38bd2001992986c17",
+    "passwordHash": "scrypt$5bf2e6965cd55bfb8ca91b1984041d3c$4a1acf2db3bce9d0405853157df7523e4181c13f0baeb1f0f54b40b31e8cefe6eec74923397da22174f9b43943c6c48633a66b75801754c4ff4257bd834f4f09",
     "role": "cliente",
     "createdAt": "2026-03-07T08:42:28.727Z"
   },
@@ -43,7 +43,7 @@
     "id": 6,
     "name": "Federico Ruiz",
     "email": "federico.ruiz@example.com",
-    "passwordHash": "scrypt$e3b5bcc80a768652245e8eb0fcd94c3c$934d770bcefdeacccbb0b65674a70001806ad57a6f245e47a7324cfe2a6599c8b8366912c9e0fb11403858f84ddafe9449fe3a9fc8d2a516bade766476efdade",
+    "passwordHash": "scrypt$8c976c57cf64716777d6fc907a42b633$983ddb8198affcfe22e396e530e287a3d2b794a7416c11f906d274fc987956d36fdfc89762f4116c61663e2f5fed62dcd0c6ca230491e96aac5512d610803c7f",
     "role": "cliente",
     "createdAt": "2026-03-21T09:38:05.909Z"
   },
@@ -51,7 +51,7 @@
     "id": 7,
     "name": "Bruno Medina",
     "email": "bruno.medina@example.com",
-    "passwordHash": "scrypt$05385d75c3a0d9e1fd374004614203e4$886c71e918cf3244418d55d904cbdedbf0861cf4927e602b838aa074e83c9b69ea21f783f580eb40b2e35f5b1a7fc628ea385cbb38ee809c10e94eef5c5d0229",
+    "passwordHash": "scrypt$cbe9c5e12caf4d3e8ed3577b200e0cd6$f97869b065d774893de77d92bee920fc2b6ae204ce44105b97af2c257aec6fc4eb9341d3aff8df48d7fd2757e87662aa26d0fab9ff89e59ea179f5730869aee4",
     "role": "cliente",
     "createdAt": "2026-04-04T20:33:43.091Z"
   },
@@ -59,7 +59,7 @@
     "id": 8,
     "name": "Valentina Rossi",
     "email": "valentina.rossi@example.com",
-    "passwordHash": "scrypt$4e88dfbd15eb48323eb5b45aec1c6ab6$286db8a5adff7eab2afeb65dfa71637c5633974942bd407ff9638c2972e9cce9f9543fff23a95bfa722318abb93a7b932bb313760e6636f688e2163bc9d0c359",
+    "passwordHash": "scrypt$8ff1a30fdf36aa8691ff0fceef3e9282$a04c500f2d7788edf75c21e412346760f968c232cc62f95325767049ce04a975cb00b449fd1fdab9ac4063c230ad1f33f56b75755dbf5d6ccf0d4c1163c17e09",
     "role": "cliente",
     "createdAt": "2026-04-19T07:29:20.273Z"
   },
@@ -67,7 +67,7 @@
     "id": 9,
     "name": "Santiago Ortiz",
     "email": "santiago.ortiz@example.com",
-    "passwordHash": "scrypt$a0d80a74c392f9fe983676aad65bf87a$dcf68cb37fd56326fc467da9e1b67f1c1f1a1b2ff942853b51f99372f7563e2b9dd21ab31947549935c0ec1361403bb8a75950623a2aca6a0c200be0d3c298e3",
+    "passwordHash": "scrypt$18a6129051c39b5ae1ae340e4ccf2366$9392842d942fd03f1fc930c75a40b19f9939c9f043d882bf52b519dffc685c142a11e95d00dd3e918a0a90ea7cc1b01bb8dcf3eb3343b7f52dd6bce2b7a68976",
     "role": "cliente",
     "createdAt": "2026-05-03T18:24:57.455Z"
   },
@@ -75,7 +75,7 @@
     "id": 10,
     "name": "Carolina Ledesma",
     "email": "carolina.ledesma@example.com",
-    "passwordHash": "scrypt$6a04bf536344368709044513bf4f6730$8cc23a97550a5d21c26364143dd0f5a0bdcbc3c9c7f0cfe1722135e4250f58f29e7fc98a2b6665db2baa93cfcdcdc7cd66efae0514003d16d1c7a5f4c1b7390b",
+    "passwordHash": "scrypt$951213a5d8a9d42327e5210d03dcefe8$6a883df18c5517e343f02c73d15b6352f23e80ede9496f7da1da762848b56b2a423fcb0deb4c4996fb92be73a6fb61fea0eb94c60975a1945d1ab8e72ae9e477",
     "role": "cliente",
     "createdAt": "2026-05-18T05:20:34.636Z"
   },
@@ -83,7 +83,7 @@
     "id": 11,
     "name": "Agustina Molina",
     "email": "agustina.molina@example.com",
-    "passwordHash": "scrypt$c954dcc9c4f2fa241d712e81c12779f8$f205f7095821c13656aeea5e12ec8ea4267151f2be93f5a54f174f076c587328223d73086279df3c7420784444c90222069342ee9e6b4382ce300bdb52cafde6",
+    "passwordHash": "scrypt$d92d121ca13bc7f71586725d0f302ca4$4bcc885e16a8b49c4084ea4dd78be910d11e70d2fc38d8a5c1beff21b7cfe683395b7c0d2f253b6156cfad5f8683d7d87bd3a948f3cca1ca3316ac59c0b707ec",
     "role": "cliente",
     "createdAt": "2026-06-01T06:16:11.818Z"
   },
@@ -91,7 +91,7 @@
     "id": 12,
     "name": "Camila Sosa",
     "email": "camila.sosa@example.com",
-    "passwordHash": "scrypt$afbde72989a3be7d9a8a58318b5fef39$c0355944743f4f620219509936914f727598adf216641777ccce24f331033fedb8e4bdc451fccf2b81d1c1e992771503702bb5278e4a188b3a1fa20997b8a64c",
+    "passwordHash": "scrypt$0c4a2dd749aae49bf2265ab1123372b6$79bdc92d317a316edf5771574139ed6ccfa53552e1e40f035ad2f590127303052c474b928072b2f9a94a71a2398763f705b7290928fc814b1853f0f667e3c176",
     "role": "cliente",
     "createdAt": "2026-06-15T17:11:49.000Z"
   },
@@ -99,7 +99,7 @@
     "id": 13,
     "name": "Paula Benítez",
     "email": "paula.benitez@example.com",
-    "passwordHash": "scrypt$a6b3eb541ce4ee39ca13b030ce46f1a0$c16c28778dece670698a2fdcedad8d5029c212877e9726d757d9dda0e8e0badbbcaf378f9e542b90d1d81f5c8f155670cb15b7e308606507bcc1085cb9164420",
+    "passwordHash": "scrypt$47f23f44febd20a4e375bb3e8d294249$893291a4bb9fcb9aab4b6bd0f8b7a1e2846ee54f639b23b5507871aa02b2541416ec3982b5a85244cce9948b10ee18ca44a16f06f4247d00ca84c1d68d96b8fa",
     "role": "cliente",
     "createdAt": "2026-06-30T04:07:26.182Z"
   },
@@ -107,7 +107,7 @@
     "id": 14,
     "name": "Juan Ignacio Díaz",
     "email": "juan.diaz@example.com",
-    "passwordHash": "scrypt$38db4efad197d91d32bfb234287990e9$23ddedde88687ab28ffe85102302ef871784f1268c778977b39fc1944a889f84d86c24e171c5e0c72b8d91d3c0da8d4bb2a080b4f33d89c85ffd3762e17f948b",
+    "passwordHash": "scrypt$6ec4eba785613ee0a3d6af89ccc3940a$bea344b0ec76ca956f74d51378377cc1fcbaefa7b78f1485457a7c31ee90329632e65ab438fb9e9b4363b1c775b9db25b79c2fc58857ced67f4235df3dca305e",
     "role": "cliente",
     "createdAt": "2026-07-14T15:03:03.364Z"
   },
@@ -115,7 +115,7 @@
     "id": 15,
     "name": "Tomás Herrera",
     "email": "tomas.herrera@example.com",
-    "passwordHash": "scrypt$0fd24c5a0b4fc26cf516d950654bb6e3$3970d49eb25e2318fc6e25b69301212e9e5445c34bb750cae51e44965ae279e148eb120b807af34f22b2234746e2945711c5c9856b8154c1b5cac93336a2767c",
+    "passwordHash": "scrypt$d4e8c50bfac98eedfc23394619d5c99b$e992350b36a92b83e374ac1cd4851d6023ca174d94b4bac5c6cfa2a682ce313cdb56ed8720c7774a650c2aa2b02e8563bd2306b9775d1141efd44977f4c5f41c",
     "role": "cliente",
     "createdAt": "2026-07-28T15:58:40.545Z"
   },
@@ -123,7 +123,7 @@
     "id": 16,
     "name": "Micaela Vera",
     "email": "micaela.vera@example.com",
-    "passwordHash": "scrypt$1fae4a916a84c57ec25af38beaed71b4$2f3b53e19a606f980c4cf57bcc4a010be42e3f17f5fa0a2a233ae265d53e06b434956769e09a5343cfbff788e8275d51767c680ca1c82101eb954f698bc3aa93",
+    "passwordHash": "scrypt$dde63147f191e77da1e6405453061e9e$5bd3facde41759861084274a955d88e605459f01bbd416730281d0a629468e887aaa6b2bdf9ae3b32da04acbd65232b55c0403774ea30b7ae7cae4f9db450044",
     "role": "cliente",
     "createdAt": "2026-08-12T02:54:17.727Z"
   },
@@ -131,7 +131,7 @@
     "id": 17,
     "name": "Martín Gómez",
     "email": "martin.gomez@example.com",
-    "passwordHash": "scrypt$0a153a1097781c21dc54c7be55359d1c$bb914672c4a1446e15d42892c1e357c1cfbd2c74bda1302f350be2d36d639d8ea71c6caabc7bb4deb23238a34608496041df5c74ae8bbfb1a95c6376878a21cf",
+    "passwordHash": "scrypt$8b37b4662fa1aa9fe1bdfcecb22a238b$01722da8a31368c08d9e27fa295ff9e1dbcc5109f014204d34b8b09a504d3aa1737481a50e2312745dff9734cf1796e4d6960fd3d22274ec362ad320eb7da687",
     "role": "cliente",
     "createdAt": "2026-08-26T13:49:54.909Z"
   },
@@ -139,7 +139,7 @@
     "id": 18,
     "name": "Julieta Romero",
     "email": "julieta.romero@example.com",
-    "passwordHash": "scrypt$b0473d1a10f777c3045c11fd6b5a9fa1$406204120e4dbf3e5018ae5c426a9cf3ccfad858407979ebeb0c17c7d1ed1369ef91cc525843d80c3d0661b48797dcd84137f293f085e9454375bc5d3d96a97d",
+    "passwordHash": "scrypt$fb3bb1296dd6bdd6a62808d9e14b3574$9a4230e78ea82b7d6de859d21c4b45b43129fb5780d2bf89dfe77aafcc3d19e1e166c948ea374f40b573f68588661f58c76b44bfa9533a14fbb8df8573f8e918",
     "role": "cliente",
     "createdAt": "2026-09-10T00:45:32.091Z"
   },
@@ -147,7 +147,7 @@
     "id": 19,
     "name": "Lautaro Quiroga",
     "email": "lautaro.quiroga@example.com",
-    "passwordHash": "scrypt$bf140d5c93270cd10b9710fda22cc1a3$793f0270c2d747d97f5195c0bc7586794ba4d5a83e636c24ccfa9e1dd1e74addd871f435c863f75fcfcf345f328ce870b6f6dbcf28ff3fd1504eb4da553ecff5",
+    "passwordHash": "scrypt$f26a7f487245bf282ffe84890df75da3$e77c78c81e0fc42515897532025fca5f151711b16c93becd26b14ac306bdfc14d82b862741218e61950d644b5e6278fc2dc2f237b417906b9f27b24aa452ebe3",
     "role": "cliente",
     "createdAt": "2026-09-24T11:41:09.273Z"
   },
@@ -155,7 +155,7 @@
     "id": 20,
     "name": "Sofía Pereyra",
     "email": "sofia.pereyra@example.com",
-    "passwordHash": "scrypt$061f8a0af5818432095ef047b692ecd6$d02c24fe2e0a0e76c1dd5dfeda1d34531549be8a31563adeb931dd70dc65311af13149d1b176f7821c394508bd529d58bcd813dc1e849a46a3529ae20c8f68d3",
+    "passwordHash": "scrypt$fec91bf214b4999cbf8811ec1ac14c5c$68ac777ed7091178ae506a30639da83fd15f5db705266f6e53918e0d60368fd45ffda7bd8dda83e9c7ac54c1da1d98dfd9db43f9a9cc0e905c43d2765ca0da87",
     "role": "cliente",
     "createdAt": "2026-10-08T12:36:46.455Z"
   },
@@ -163,7 +163,7 @@
     "id": 21,
     "name": "Mateo Álvarez",
     "email": "mateo.alvarez@example.com",
-    "passwordHash": "scrypt$5201cde96fa03d27c1d9ba98e851e253$9fdc6add71aa61197d44bb87f4c76c5b262cdf019802bd38c8614252ec960e4bd3c1af29269af37222e79b0438eca5c41306e9705ce6950f114707f1cede3544",
+    "passwordHash": "scrypt$76a90206b708526d5433c72f6b7da7ff$c1e52baaa8abc4b7392c12f14622a8332d355b9ae50a685c4f2243e4ce4cb4fb7c505d1f7eac9838d462e81c8ac5f21d969fb44f47995aa2f212a1de2663bea1",
     "role": "cliente",
     "createdAt": "2026-10-22T23:32:23.636Z"
   },
@@ -171,7 +171,7 @@
     "id": 22,
     "name": "Lucía Fernández",
     "email": "lucia.fernandez@example.com",
-    "passwordHash": "scrypt$1cf1e021f64f82899fce1082a9c78631$a70a95093667723d08824e00e55915f9cf3c1dd623c462f0c5342309d421d1fdf44bb3ebbf921067630e6f65a3ce778d535e528ff9165a2754b1c95908cc4399",
+    "passwordHash": "scrypt$8670c33ccb6ccf9ddf6aeef0c3b97d41$82de0f854dc09bd149d7cd2d4ab9c4a7ed5a303d6ffe1ce566dc028f9b147ab001b0a27cd413f36de780391da7f056d7081b85569e5467302805f27139424391",
     "role": "cliente",
     "createdAt": "2026-11-06T10:28:00.818Z"
   },
