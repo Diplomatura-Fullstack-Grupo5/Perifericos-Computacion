@@ -1,11 +1,14 @@
 import { RouterProvider } from "react-router";
 import { router } from "./router";
 import { ComparadorProvider } from "../features/comparador";
+import { CarritoProvider } from "../features/carrito";
 
 function App() {
   return (
     <ComparadorProvider>
-      <RouterProvider router={router} />
+      <CarritoProvider>
+        <RouterProvider router={router} />
+      </CarritoProvider>
     </ComparadorProvider>
   );
 }

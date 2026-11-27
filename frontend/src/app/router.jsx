@@ -39,6 +39,7 @@ const PAGINAS_EN_CONSTRUCCION = [
   "nosotros",
   "contacto",
   "carrito",
+  "finalizar-compra",
   "iniciar-sesion",
   "mis-pedidos",
 ];

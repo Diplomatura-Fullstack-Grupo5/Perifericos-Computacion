@@ -9,11 +9,17 @@ import "./Navbar.css";
  * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
  * @param {number} [props.cantidadComparar] Productos elegidos para comparar.
  * @param {() => void} [props.onVaciarComparador] Vacía el comparador (se pide confirmación antes).
+ * @param {number} [props.cantidadCarrito] Unidades en el carrito.
+ * @param {() => void} [props.onAbrirCarrito] Abre el panel del carrito.
  * @returns {JSX.Element}
  */
-export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador }) {
-  // TODO: conectar al carrito cuando exista
-  const cartCount = 0;
+export function Navbar({
+  categorias,
+  cantidadComparar = 0,
+  onVaciarComparador,
+  cantidadCarrito = 0,
+  onAbrirCarrito,
+}) {
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
 
   return (
@@ -92,7 +98,7 @@ export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador })
           </form>
 
           {/* -------------------- Comparar, carrito y sesión -------------------- */}
-          {/* TODO: hoy /carrito e /iniciar-sesion muestran "Página en construcción" */}
+          {/* TODO: hoy /iniciar-sesion muestra "Página en construcción" */}
           <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">
             <div className="btn-group btn-group-sm">
               <Link className="btn app-navbar-btn" to="/comparador">
@@ -110,13 +116,14 @@ export function Navbar({ categorias, cantidadComparar = 0, onVaciarComparador })
                 </button>
               )}
             </div>
-            <Link
+            <button
+              type="button"
               className="btn btn-sm app-navbar-btn"
-              to="/carrito"
-              aria-label={`Carrito (${cartCount})`}
+              aria-label={`Abrir carrito (${cantidadCarrito} ${cantidadCarrito === 1 ? "producto" : "productos"})`}
+              onClick={onAbrirCarrito}
             >
-              🛒 {cartCount}
-            </Link>
+              🛒 {cantidadCarrito}
+            </button>
             <span className="app-navbar-divider" aria-hidden="true"></span>
             <Link className="btn btn-sm app-navbar-btn-outline" to="/iniciar-sesion">
               Log In
