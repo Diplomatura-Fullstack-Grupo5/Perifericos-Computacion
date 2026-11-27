@@ -1,9 +1,9 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import { LayoutPublico } from "./layouts/LayoutPublico";
 import { LayoutPrivado } from "./layouts/LayoutPrivado";
 import { InicioPage } from "../features/inicio";
 import { CatalogoPage, obtenerCategorias } from "../features/catalogo";
-import { RegistroPage } from "../features/auth";
+import { InicioSesionPage, RegistroPage } from "../features/auth";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
@@ -15,6 +15,28 @@ import {
 } from "../features/productos";
 import { AdminDashboardPage } from "../features/dashboard";
 import { AdminPedidosPage } from "../features/pedidos";
+import { obtenerSesion } from "../features/auth";
+
+/**
+ * Impide abrir el panel sin sesión de administrador.
+ * @returns {null}
+ */
+function protegerRutaAdmin() {
+  const usuario = obtenerSesion();
+  if (!usuario) throw redirect("/iniciar-sesion");
+  if (usuario.role !== "administrador") throw redirect("/");
+  return null;
+}
+
+/**
+ * Evita mostrar login o registro a quien ya inició sesión.
+ * @returns {null}
+ */
+function redirigirSiHaySesion() {
+  const usuario = obtenerSesion();
+  if (usuario) throw redirect(usuario.role === "administrador" ? "/admin" : "/");
+  return null;
+}
 
 /**
  * Loader del layout público: trae las categorías una sola vez para el Navbar y las páginas hijas
@@ -39,7 +61,6 @@ const PAGINAS_EN_CONSTRUCCION = [
   "nosotros",
   "contacto",
   "carrito",
-  "iniciar-sesion",
   "mis-pedidos",
 ];
 
@@ -63,7 +84,16 @@ export const router = createBrowserRouter([
         path,
         element: <MensajeVacio>Página en construcción.</MensajeVacio>,
       })),
-      { path: "registrarse", element: <RegistroPage /> },
+      {
+        path: "iniciar-sesion",
+        element: <InicioSesionPage />,
+        loader: redirigirSiHaySesion,
+      },
+      {
+        path: "registrarse",
+        element: <RegistroPage />,
+        loader: redirigirSiHaySesion,
+      },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },
@@ -72,6 +102,7 @@ export const router = createBrowserRouter([
     // y sus páginas llevan el prefijo `Admin`.
     path: "/admin",
     element: <LayoutPrivado />,
+    loader: protegerRutaAdmin,
     children: [
       { index: true, element: <AdminDashboardPage /> },
       { path: "productos", element: <AdminProductosPage /> },

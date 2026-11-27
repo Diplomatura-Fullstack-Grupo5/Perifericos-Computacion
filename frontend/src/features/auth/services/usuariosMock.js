@@ -1,11 +1,12 @@
 import { Buffer } from "node:buffer";
-import { randomBytes, scrypt as scryptCallback } from "node:crypto";
+import {randomBytes,scrypt as scryptCallback,timingSafeEqual,} from "node:crypto";
 import fs from "node:fs";
 import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCallback);
 const MAX_BYTES_SOLICITUD = 16 * 1024;
 const RUTA_REGISTRO = "/database/usuarios/registro";
+const RUTA_INICIO_SESION = "/database/usuarios/inicio-sesion";
 
 class ErrorSolicitud extends Error {
   constructor(status, message) {
@@ -123,6 +124,91 @@ export function crearMiddlewareRegistro(archivoUsuarios) {
       res.statusCode = 500;
       return res.end(
         JSON.stringify({ message: "No se pudo completar el registro." }),
+      );
+    }
+  };
+}
+
+/**
+ * Crea el middleware local que valida las credenciales guardadas en el JSON de usuarios.
+ * @param {string} archivoUsuarios Ruta absoluta al JSON de usuarios.
+ * @returns {(req: import("node:http").IncomingMessage, res: import("node:http").ServerResponse, next: Function) => void}
+ */
+export function crearMiddlewareInicioSesion(archivoUsuarios) {
+  return async function manejarInicioSesion(req, res, next) {
+    const ruta = req.url.split("?")[0];
+    if (ruta !== RUTA_INICIO_SESION) return next();
+
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    if (req.method !== "POST") {
+      res.setHeader("Allow", "POST");
+      res.statusCode = 405;
+      return res.end(JSON.stringify({ message: "Método no permitido." }));
+    }
+
+    try {
+      const datos = await leerCuerpo(req);
+      if (!datos || typeof datos !== "object" || Array.isArray(datos)) {
+        throw new ErrorSolicitud(400, "Los datos del inicio de sesión no son válidos.");
+      }
+
+      const email =
+        typeof datos.email === "string" ? datos.email.trim().toLowerCase() : "";
+      const password = typeof datos.password === "string" ? datos.password : "";
+      if (
+        email.length > 254 ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+        password.length === 0 ||
+        password.length > 128
+      ) {
+        throw new ErrorSolicitud(400, "Ingresá un correo y una contraseña válidos.");
+      }
+
+      const usuarios = JSON.parse(fs.readFileSync(archivoUsuarios, "utf8"));
+      if (!Array.isArray(usuarios)) {
+        throw new Error("El archivo de usuarios no contiene una lista.");
+      }
+
+      const usuario = usuarios.find(
+        (registro) => registro.email?.trim().toLowerCase() === email,
+      );
+      const partesHash = usuario?.passwordHash?.match(
+        /^scrypt\$([a-f0-9]{32})\$([a-f0-9]{128})$/,
+      );
+      if (!partesHash) {
+        throw new ErrorSolicitud(401, "El correo o la contraseña son incorrectos.");
+      }
+
+      const hashIngresado = await scrypt(
+        password,
+        Buffer.from(partesHash[1], "hex"),
+        64,
+      );
+      const hashGuardado = Buffer.from(partesHash[2], "hex");
+      if (!timingSafeEqual(hashIngresado, hashGuardado)) {
+        throw new ErrorSolicitud(401, "El correo o la contraseña son incorrectos.");
+      }
+
+      res.statusCode = 200;
+      return res.end(
+        JSON.stringify({
+          id: usuario.id,
+          name: usuario.name,
+          email: usuario.email,
+          role: usuario.role,
+          createdAt: usuario.createdAt,
+        }),
+      );
+    } catch (error) {
+      if (error instanceof ErrorSolicitud) {
+        res.statusCode = error.status;
+        return res.end(JSON.stringify({ message: error.message }));
+      }
+
+      console.error("Error en el inicio de sesión simulado:", error);
+      res.statusCode = 500;
+      return res.end(
+        JSON.stringify({ message: "No se pudo completar el inicio de sesión." }),
       );
     }
   };

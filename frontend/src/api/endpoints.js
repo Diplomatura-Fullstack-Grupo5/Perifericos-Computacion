@@ -19,4 +19,5 @@ export const ENDPOINTS = {
   pedidos: "/pedidos.json",
   estadoPedido: (id) => `/pedidos/${id}/estado`,
   registrarUsuario: "/usuarios/registro",
+  iniciarSesion: "/usuarios/inicio-sesion",
 };
