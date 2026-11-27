@@ -1,8 +1,8 @@
-import { Fragment, useId, useState } from "react";
+import { Fragment, useState } from "react";
 import { DetallePedido } from "./DetallePedido";
 import { obtenerEstadosSiguientes } from "../services/pedidosService";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
-import { formatearEstadoPedido } from "../../../shared/utils/formatearEstadoPedido";
+import { formatearEstadoPedido } from "../utils/formatearEstadoPedido";
 import "./TablaPedidos.css";
 
 const formatoFecha = new Intl.DateTimeFormat("es-AR", { dateStyle: "short", timeStyle: "short" });
@@ -29,7 +29,6 @@ const COLUMNAS = 6;
  * @returns {JSX.Element}
  */
 export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
-  const idBase = useId();
   const [idExpandido, setIdExpandido] = useState(null);
 
   function alternarDetalle(id) {
@@ -40,7 +39,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
     <div className="card overflow-hidden">
       <div className="table-responsive">
         <table className="table align-middle mb-0 tabla-pedidos">
-          <thead className="table-light tabla-pedidos__encabezado">
+          <thead className="table-light tabla-panel-encabezado">
             <tr>
               <th scope="col">Pedido</th>
               <th scope="col">Cliente</th>
@@ -57,7 +56,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
           <tbody>
             {pedidos.map((pedido) => {
               const expandido = pedido.id === idExpandido;
-              const idDetalle = `${idBase}-detalle-${pedido.id}`;
+              const idDetalle = `detalle-pedido-${pedido.id}`;
               const estado = formatearEstadoPedido(pedido.status);
               const siguientes = obtenerEstadosSiguientes(pedido.status);
               const cantidadProductos = pedido.items.reduce((suma, item) => suma + item.quantity, 0);
@@ -68,7 +67,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-link p-0 text-start text-body fw-semibold text-nowrap tabla-pedidos__numero"
+                        className="btn btn-link p-0 text-start text-body fw-semibold text-nowrap tabla-pedidos-numero"
                         aria-expanded={expandido}
                         aria-controls={idDetalle}
                         onClick={() => alternarDetalle(pedido.id)}

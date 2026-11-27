@@ -1,18 +1,9 @@
-/* Encabezado: fondo gris y línea inferior marcada para separarlo de las filas. */
-.tabla-pedidos__encabezado th {
-  border-bottom: 2px solid var(--bs-border-color);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--bs-secondary-color);
-}
-
 /* Número de pedido: abre el detalle; se subraya al pasar el mouse para que se note que es un botón. */
-.tabla-pedidos__numero {
+.tabla-pedidos-numero {
   text-decoration: none;
 }
 
-.tabla-pedidos__numero:hover,
-.tabla-pedidos__numero:focus-visible {
+.tabla-pedidos-numero:hover,
+.tabla-pedidos-numero:focus-visible {
   text-decoration: underline;
 }

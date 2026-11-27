@@ -7,7 +7,7 @@
 }
 
 /* Guías horizontales (tope, mitad y cero), debajo de las columnas. */
-.grafico-evolucion__guias {
+.grafico-evolucion-guias {
   position: absolute;
   inset: 0 0 auto 0;
   height: 13rem;
@@ -17,7 +17,7 @@
   pointer-events: none;
 }
 
-.grafico-evolucion__guia {
+.grafico-evolucion-guia {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -26,18 +26,18 @@
   color: var(--bs-secondary-color);
 }
 
-.grafico-evolucion__guia span {
+.grafico-evolucion-guia span {
   width: 3rem;
   text-align: right;
 }
 
-.grafico-evolucion__guia::after {
+.grafico-evolucion-guia::after {
   content: "";
   flex-grow: 1;
   border-top: 1px solid var(--bs-border-color-translucent);
 }
 
-.grafico-evolucion__columnas {
+.grafico-evolucion-columnas {
   grid-column: 2;
   position: relative;
   display: flex;
@@ -46,7 +46,7 @@
 }
 
 /* Cada columna ocupa todo el alto: así el área para pasar el mouse es más grande que la barra. */
-.grafico-evolucion__columna {
+.grafico-evolucion-columna {
   flex: 1 1 0;
   min-width: 0;
   height: 100%;
@@ -59,16 +59,16 @@
   border-radius: 4px 4px 0 0;
 }
 
-.grafico-evolucion__columna:focus-visible {
+.grafico-evolucion-columna:focus-visible {
   outline: 2px solid var(--bs-primary);
   outline-offset: 1px;
 }
 
-.grafico-evolucion__columna.is-activa {
+.grafico-evolucion-columna-activa {
   background-color: var(--bs-tertiary-bg);
 }
 
-.grafico-evolucion__barra {
+.grafico-evolucion-barra {
   display: block;
   width: 100%;
   max-width: 2.5rem;
@@ -77,7 +77,7 @@
   border-radius: 4px 4px 0 0;
 }
 
-.grafico-evolucion__tooltip {
+.grafico-evolucion-tooltip {
   position: absolute;
   top: 0;
   z-index: 1;
@@ -91,7 +91,7 @@
   pointer-events: none;
 }
 
-.grafico-evolucion__eje-x {
+.grafico-evolucion-eje-x {
   grid-column: 2;
   display: flex;
   gap: 2px;
@@ -101,7 +101,7 @@
 }
 
 /* Cada fecha queda debajo de su columna y puede desbordar hacia la derecha. */
-.grafico-evolucion__eje-x span {
+.grafico-evolucion-eje-x span {
   flex: 1 1 0;
   min-width: 0;
   white-space: nowrap;

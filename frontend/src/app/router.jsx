@@ -17,6 +17,7 @@ import {
 } from "../features/productos";
 import { AdminDashboardPage } from "../features/dashboard";
 import { AdminPedidosPage } from "../features/pedidos";
+import { AdminUsuariosPage } from "../features/usuarios";
 import { obtenerSesion } from "../features/auth";
 
 /**
@@ -111,6 +112,7 @@ export const router = createBrowserRouter([
       { path: "productos/nuevo", element: <AdminFormularioProductoPage /> },
       { path: "productos/:id/editar", element: <AdminFormularioProductoPage /> },
       { path: "pedidos", element: <AdminPedidosPage /> },
+      { path: "usuarios", element: <AdminUsuariosPage /> },
       { path: "*", element: <MensajeVacio>Página no encontrada.</MensajeVacio> },
     ],
   },

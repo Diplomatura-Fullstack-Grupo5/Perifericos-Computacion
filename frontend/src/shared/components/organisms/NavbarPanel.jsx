@@ -4,8 +4,7 @@ import "./Navbar.css";
 
 /**
  * Barra de navegación del panel de administración. Usa el mismo estilo que la del sitio público,
- * pero con las secciones del panel y un enlace para volver a la tienda. En pantallas chicas, las
- * secciones se pliegan en un menú que se abre con el botón y se cierra al elegir una sección.
+ * con las secciones del panel y un enlace para volver a la tienda.
  * @param {object} props
  * @param {{ to: string, texto: string, end?: boolean }[]} props.secciones Secciones del panel, en
  *   orden. Con `end`, la sección se marca como actual solo en su ruta exacta.
@@ -40,13 +39,11 @@ export function NavbarPanel({ secciones, onCerrarSesion }) {
           aria-controls="navbarPanelContenido"
           aria-expanded={menuAbierto}
           aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
-          onClick={() => setMenuAbierto(!menuAbierto)}
+          onClick={() => setMenuAbierto((abierto) => !abierto)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* El menú se abre y se cierra con el estado de React (no con Bootstrap JS), así se puede
-            cerrar al navegar. */}
         <div
           className={`collapse navbar-collapse gap-3 ${menuAbierto ? "show" : ""}`}
           id="navbarPanelContenido"

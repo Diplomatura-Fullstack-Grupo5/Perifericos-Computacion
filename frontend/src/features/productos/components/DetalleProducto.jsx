@@ -11,7 +11,6 @@ import { formatearValorSpec } from "../../../shared/utils/formatearValorSpec";
 export function DetalleProducto({ producto, definiciones = {} }) {
   return (
     <div className="row g-4">
-      {/* -------------------- Datos generales -------------------- */}
       <div className="col-md-5">
         <dl className="mb-0">
           <dt className="small text-secondary fw-normal">Descripción</dt>
@@ -25,7 +24,6 @@ export function DetalleProducto({ producto, definiciones = {} }) {
         </dl>
       </div>
 
-      {/* -------------------- Especificaciones -------------------- */}
       <div className="col-md-7">
         <table className="table table-sm table-bordered bg-body mb-0">
           <caption className="caption-top pt-0 small text-secondary">
