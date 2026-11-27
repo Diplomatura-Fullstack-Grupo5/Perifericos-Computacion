@@ -1,0 +1,8 @@
+/* Encabezado: fondo gris y línea inferior marcada para separarlo de las filas (como la de pedidos). */
+.tabla-usuarios__encabezado th {
+  border-bottom: 2px solid var(--bs-border-color);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--bs-secondary-color);
+}

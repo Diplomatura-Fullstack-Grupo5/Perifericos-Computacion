@@ -9,7 +9,7 @@ import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMo
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
 /** Colecciones de /database que se pueden modificar con POST, PUT, PATCH y DELETE. */
-const COLECCIONES_EDITABLES = ['productos', 'pedidos']
+const COLECCIONES_EDITABLES = ['productos', 'pedidos', 'usuarios']
 
 /**
  * Lee el cuerpo JSON de un pedido.

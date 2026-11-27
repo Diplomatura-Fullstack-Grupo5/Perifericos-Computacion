@@ -11,6 +11,7 @@ const SECCIONES_PANEL = [
   { to: "/admin", texto: "Dashboard", end: true },
   { to: "/admin/productos", texto: "Productos" },
   { to: "/admin/pedidos", texto: "Pedidos" },
+  { to: "/admin/usuarios", texto: "Usuarios" },
 ];
 
 /**
