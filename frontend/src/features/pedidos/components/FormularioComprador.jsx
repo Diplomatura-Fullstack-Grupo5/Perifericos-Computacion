@@ -12,21 +12,19 @@ const FORMULARIO_VACIO = {
   paymentMethod: "",
 };
 
-/** Cantidad de dígitos que acepta el teléfono (sin contar espacios, `+` ni `-`). */
-const DIGITOS_TELEFONO = { min: 8, max: 15 };
-
 /**
- * Explica qué tiene de malo un teléfono, o devuelve "" si es válido.
- * @param {string} telefono
- * @returns {string}
+ * Patrones de validación (atributo `pattern`, que el navegador aplica a todo el valor).
+ * - `nombre`: letras de cualquier idioma, espacios, apóstrofos y guiones, con al menos una letra.
+ * - `texto`: al menos un carácter que no sea espacio.
+ * - `telefono`: de 8 a 15 dígitos, con un `+` opcional al principio y un espacio o guion entre dígitos.
+ * - `codigoPostal`: 4 dígitos (1425) o el formato CPA (C1425ABC).
  */
-function validarTelefono(telefono) {
-  const digitos = telefono.replace(/\D/g, "").length;
-  if (digitos < DIGITOS_TELEFONO.min || digitos > DIGITOS_TELEFONO.max) {
-    return `El teléfono tiene que tener entre ${DIGITOS_TELEFONO.min} y ${DIGITOS_TELEFONO.max} dígitos.`;
-  }
-  return "";
-}
+const PATRONES = {
+  nombre: String.raw`[\p{L}' \-]*\p{L}[\p{L}' \-]*`,
+  texto: String.raw`.*\S.*`,
+  telefono: String.raw`\+?[0-9](?:[ \-]?[0-9]){7,14}`,
+  codigoPostal: "[0-9]{4}|[A-Za-z][0-9]{4}[A-Za-z]{3}",
+};
 
 /**
  * Formulario con los datos del comprador: contacto, envío y medio de pago.
@@ -52,17 +50,12 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
   function handleChange(e) {
     const { name, value } = e.target;
     setFormulario((prev) => ({ ...prev, [name]: value }));
-    if (name === "phone") e.target.setCustomValidity(validarTelefono(value));
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const form = e.currentTarget;
-    form.elements.phone.setCustomValidity(validarTelefono(formulario.phone));
-
-    if (!form.checkValidity()) {
+    if (!e.currentTarget.checkValidity()) {
       setValidado(true);
-      form.querySelector(":invalid")?.focus();
       return;
     }
 
@@ -93,7 +86,7 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
             required
             minLength={3}
             maxLength={80}
-            pattern="[\p{L}' \-]+"
+            pattern={PATRONES.nombre}
             value={formulario.name}
             onChange={handleChange}
           />
@@ -131,14 +124,14 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
             className="form-control"
             autoComplete="tel"
             required
-            pattern="[0-9 +\-]+"
-            maxLength={20}
+            pattern={PATRONES.telefono}
+            maxLength={30}
             value={formulario.phone}
             onChange={handleChange}
           />
           <div className="invalid-feedback">
-            Ingresá un teléfono de {DIGITOS_TELEFONO.min} a {DIGITOS_TELEFONO.max} dígitos (podés
-            usar espacios, + y -).
+            Ingresá un teléfono de 8 a 15 dígitos (podés separarlos con espacios o guiones y empezar
+            con +).
           </div>
         </div>
       </fieldset>
@@ -161,6 +154,7 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
             required
             minLength={5}
             maxLength={120}
+            pattern={PATRONES.texto}
             value={formulario.address}
             onChange={handleChange}
           />
@@ -179,6 +173,7 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
             autoComplete="address-level2"
             required
             maxLength={80}
+            pattern={PATRONES.texto}
             value={formulario.city}
             onChange={handleChange}
           />
@@ -196,7 +191,7 @@ export function FormularioComprador({ usuario = null, total, enviando = false, o
             className="form-control"
             autoComplete="postal-code"
             required
-            pattern="[0-9]{4}|[A-Za-z][0-9]{4}[A-Za-z]{3}"
+            pattern={PATRONES.codigoPostal}
             maxLength={8}
             value={formulario.postalCode}
             onChange={handleChange}

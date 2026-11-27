@@ -134,7 +134,13 @@ function buscarCambios(items, productosPorId) {
  * Antes de guardar revisa los productos actuales: si alguno cambió de precio, no tiene stock
  * suficiente o ya no existe, **no guarda nada** y devuelve los cambios junto con los datos actuales,
  * para que el cliente revise el carrito y vuelva a confirmar. Si está todo bien, guarda el pedido
- * como "pendiente" con los precios actuales y descuenta el stock de cada producto.
+ * como "pendiente" con los precios actuales y descuenta el stock de cada producto. Si el pedido se
+ * guardó pero falla el descuento de stock, igual lo devuelve como confirmado y registra el error: si
+ * lo informara como fallido, el cliente reintentaría y se crearía un pedido duplicado.
+ *
+ * Validar en el navegador es una comodidad, no una medida de seguridad: el backend tiene que volver
+ * a validar los datos del comprador (obligatorios, formatos, medio de pago) y las cantidades
+ * (enteros mayores a 0), porque cualquiera puede mandar un pedido sin pasar por este formulario.
  * @param {object} comprador Datos del formulario.
  * @param {string} comprador.name
  * @param {string} comprador.email
@@ -148,7 +154,8 @@ function buscarCambios(items, productosPorId) {
  *   `userId` (para "Mis pedidos"). Sin sesión, `userId` queda en `null`. En el backend el id sale del
  *   JWT, no de lo que manda el navegador.
  * @returns {Promise<{ pedido: object } | { cambios: CambioCarrito[], productosActuales: object[] }>}
- * @throws {Error} Si el carrito está vacío, el medio de pago no es válido o falla el servidor.
+ * @throws {Error} Si el carrito está vacío, el medio de pago no es válido o el servidor falla al
+ *   leer los productos o al guardar el pedido.
  */
 export async function crearPedido(comprador, items, usuario = null) {
   if (items.length === 0) throw new Error("El carrito está vacío.");
@@ -189,15 +196,19 @@ export async function crearPedido(comprador, items, usuario = null) {
     total: itemsPedido.reduce((total, item) => total + item.price * item.quantity, 0),
   });
 
-  await Promise.all(
-    itemsPedido.map(({ productId, quantity }) =>
-      enviar(
-        ENDPOINTS.producto(productId),
-        { stock: productosPorId.get(productId).stock - quantity },
-        "PUT",
+  try {
+    await Promise.all(
+      itemsPedido.map(({ productId, quantity }) =>
+        enviar(
+          ENDPOINTS.producto(productId),
+          { stock: productosPorId.get(productId).stock - quantity },
+          "PUT",
+        ),
       ),
-    ),
-  );
+    );
+  } catch (err) {
+    console.error(`Pedido #${pedido.id} guardado, pero no se pudo descontar el stock:`, err);
+  }
 
   return { pedido };
 }

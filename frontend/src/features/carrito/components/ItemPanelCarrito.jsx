@@ -58,7 +58,7 @@ export function ItemPanelCarrito({ item, onCambiarCantidad, onQuitar, onIrAProdu
 
           <button
             type="button"
-            className="btn btn-sm btn-link text-secondary panel-carrito-quitar"
+            className="btn btn-sm btn-link panel-carrito-quitar"
             aria-label={`Quitar ${name} del carrito`}
             title="Quitar del carrito"
             onClick={() => onQuitar(id)}
