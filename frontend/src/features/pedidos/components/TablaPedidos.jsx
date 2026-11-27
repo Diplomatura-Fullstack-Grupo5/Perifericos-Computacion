@@ -40,7 +40,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
     <div className="card overflow-hidden">
       <div className="table-responsive">
         <table className="table align-middle mb-0 tabla-pedidos">
-          <thead className="table-light tabla-pedidos__encabezado">
+          <thead className="table-light tabla-panel__encabezado">
             <tr>
               <th scope="col">Pedido</th>
               <th scope="col">Cliente</th>

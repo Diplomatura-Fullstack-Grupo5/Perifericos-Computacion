@@ -7,7 +7,7 @@ export const URL_BASE = "/database";
 /**
  * Rutas de cada recurso, relativas a URL_BASE. Las de lectura apuntan a los archivos JSON; las de
  * escritura ya tienen la forma REST que tendrá la API (`/productos`, `/productos/:id`,
- * `/pedidos/:id/estado`).
+ * `/pedidos/:id/estado`, `/usuarios/:id/rol`).
  */
 export const ENDPOINTS = {
   productos: "/productos.json",
@@ -19,4 +19,5 @@ export const ENDPOINTS = {
   pedidos: "/pedidos.json",
   estadoPedido: (id) => `/pedidos/${id}/estado`,
   registrarUsuario: "/usuarios/registro",
+  rolUsuario: (id) => `/usuarios/${id}/rol`,
 };
