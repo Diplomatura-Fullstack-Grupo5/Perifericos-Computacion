@@ -144,10 +144,13 @@ function buscarCambios(items, productosPorId) {
  * @param {string} comprador.postalCode
  * @param {string} comprador.paymentMethod Uno de `MEDIOS_DE_PAGO`.
  * @param {{id: number, name: string, price: number, quantity: number}[]} items Productos del carrito.
+ * @param {{ id: number } | null} [usuario] Usuario con sesión iniciada: el pedido guarda su `id` en
+ *   `userId` (para "Mis pedidos"). Sin sesión, `userId` queda en `null`. En el backend el id sale del
+ *   JWT, no de lo que manda el navegador.
  * @returns {Promise<{ pedido: object } | { cambios: CambioCarrito[], productosActuales: object[] }>}
  * @throws {Error} Si el carrito está vacío, el medio de pago no es válido o falla el servidor.
  */
-export async function crearPedido(comprador, items) {
+export async function crearPedido(comprador, items, usuario = null) {
   if (items.length === 0) throw new Error("El carrito está vacío.");
   if (!MEDIOS_DE_PAGO.includes(comprador.paymentMethod)) {
     throw new Error("Elegí un medio de pago válido.");
@@ -170,6 +173,7 @@ export async function crearPedido(comprador, items) {
   });
 
   const pedido = await enviar(ENDPOINTS.crearPedido, {
+    userId: usuario?.id ?? null,
     customer: comprador.name,
     email: comprador.email,
     phone: comprador.phone,

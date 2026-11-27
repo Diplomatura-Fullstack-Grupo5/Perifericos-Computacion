@@ -9,8 +9,9 @@ import { cerrarSesion, obtenerSesion } from "../../features/auth";
 /**
  * Estructura común de las páginas públicas. Las categorías del Navbar vienen del loader de la ruta;
  * la cantidad de productos a comparar, del comparador; la de unidades en el carrito, del carrito, y
- * el usuario, de la sesión guardada. También monta el panel lateral del carrito, que se abre desde
- * el Navbar o al agregar un producto.
+ * el usuario, de la sesión guardada. Las páginas reciben `usuario` y `actualizarUsuario` con
+ * `useOutletContext()`. También monta el panel lateral del carrito, que se abre desde el Navbar o
+ * al agregar un producto.
  * @returns {JSX.Element}
  */
 export function LayoutPublico() {
@@ -36,7 +37,7 @@ export function LayoutPublico() {
         onCerrarSesion={manejarCerrarSesion}
       />
       <main className="flex-grow-1">
-        <Outlet context={{ actualizarUsuario }} />
+        <Outlet context={{ usuario, actualizarUsuario }} />
       </main>
       <Footer />
       <PanelCarrito />

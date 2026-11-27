@@ -5,13 +5,16 @@ import { ResumenPedido } from "./ResumenPedido";
  * Pantalla que se muestra después de guardar el pedido: número, datos de envío y pago, y resumen.
  * @param {object} props
  * @param {object} props.pedido Pedido guardado, tal como lo devuelve la API.
+ * @param {Object<number, string>} [props.imagenes] Imagen de cada producto por su id. El pedido no
+ *   guarda imágenes, así que vienen del carrito; sin imagen se muestra un ícono.
  * @returns {JSX.Element}
  */
-export function PedidoConfirmado({ pedido }) {
+export function PedidoConfirmado({ pedido, imagenes = {} }) {
   const items = pedido.items.map(({ productId, name, price, quantity }) => ({
     id: productId,
     name,
     price,
+    image: imagenes[productId],
     quantity,
   }));
 

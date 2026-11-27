@@ -1,13 +1,16 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { FormularioInicioSesion } from "./FormularioInicioSesion";
 import "./PresentacionInicioSesion.css";
 
 /**
  * Presenta el hero, el formulario de acceso y los beneficios de la página de login.
+ * El link a "Registrarse" conserva el `state` de la navegación (ej. a qué página volver después).
  * @param {{ onSubmit: (credenciales: { email: string, password: string }) => void, mensaje: { tipo: string, texto: string }|null, enviando: boolean }} props
  * @returns {JSX.Element}
  */
 export function PresentacionInicioSesion({ onSubmit, mensaje, enviando }) {
+  const { state } = useLocation();
+
   return (
     <div className="login-page">
       <section className="login-hero">
@@ -63,7 +66,7 @@ export function PresentacionInicioSesion({ onSubmit, mensaje, enviando }) {
 
           <div className="login-crear-cuenta">
             <span>¿No tenés una cuenta?</span>
-            <Link to="/registrarse" className="login-registro-boton">
+            <Link to="/registrarse" state={state} className="login-registro-boton">
               Crear cuenta
             </Link>
           </div>

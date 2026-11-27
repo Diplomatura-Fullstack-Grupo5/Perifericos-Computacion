@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
 import { useCarrito } from "../../carrito";
 import { crearPedido } from "../services/pedidosService";
 import { AvisoSesion } from "../components/AvisoSesion";
@@ -9,12 +9,14 @@ import { FormularioComprador } from "../components/FormularioComprador";
 import { PedidoConfirmado } from "../components/PedidoConfirmado";
 
 /**
- * Página para finalizar la compra: ofrece iniciar sesión, pide los datos del comprador y muestra
- * el resumen del carrito. Al confirmar guarda el pedido, vacía el carrito y muestra el número de
- * pedido. Si cambiaron precios o stock, actualiza el carrito y lo avisa sin guardar nada.
+ * Página para finalizar la compra: sin sesión, ofrece iniciarla; con sesión, completa el nombre y
+ * el email con los de la cuenta. Pide los datos del comprador y muestra el resumen del carrito. Al
+ * confirmar guarda el pedido, vacía el carrito y muestra el número de pedido. Si cambiaron precios
+ * o stock, actualiza el carrito y lo avisa sin guardar nada.
  * @returns {JSX.Element}
  */
 export function FinalizarCompraPage() {
+  const { usuario } = useOutletContext();
   const { items, subtotal, abrirPanel, actualizarProductos, vaciar } = useCarrito();
   const [enviando, setEnviando] = useState(false);
   const [cambios, setCambios] = useState([]);
@@ -27,13 +29,15 @@ export function FinalizarCompraPage() {
     setError(null);
 
     try {
-      const resultado = await crearPedido(comprador, items);
+      const resultado = await crearPedido(comprador, items, usuario);
       if (resultado.cambios) {
         actualizarProductos(resultado.productosActuales);
         setCambios(resultado.cambios);
       } else {
+        // El pedido guardado no tiene imágenes: se toman del carrito antes de vaciarlo.
+        const imagenes = Object.fromEntries(items.map((item) => [item.id, item.image]));
         vaciar();
-        setPedidoConfirmado(resultado.pedido);
+        setPedidoConfirmado({ pedido: resultado.pedido, imagenes });
       }
     } catch (err) {
       console.error("Error al confirmar el pedido:", err);
@@ -44,7 +48,11 @@ export function FinalizarCompraPage() {
     }
   }
 
-  if (pedidoConfirmado) return <PedidoConfirmado pedido={pedidoConfirmado} />;
+  if (pedidoConfirmado) {
+    return (
+      <PedidoConfirmado pedido={pedidoConfirmado.pedido} imagenes={pedidoConfirmado.imagenes} />
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -75,8 +83,13 @@ export function FinalizarCompraPage() {
       <div className="row g-4">
         {/* -------------------- Columna izquierda: Sesión y datos -------------------- */}
         <div className="col-lg-7">
-          <AvisoSesion />
-          <FormularioComprador total={subtotal} enviando={enviando} onConfirmar={confirmar} />
+          {!usuario && <AvisoSesion />}
+          <FormularioComprador
+            usuario={usuario}
+            total={subtotal}
+            enviando={enviando}
+            onConfirmar={confirmar}
+          />
         </div>
 
         {/* -------------------- Columna derecha: Resumen -------------------- */}

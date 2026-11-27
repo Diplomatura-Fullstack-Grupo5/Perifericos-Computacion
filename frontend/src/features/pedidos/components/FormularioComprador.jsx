@@ -33,14 +33,20 @@ function validarTelefono(telefono) {
  * Valida con la validación nativa del navegador y muestra los errores junto a cada campo
  * recién al intentar confirmar.
  * @param {object} props
+ * @param {{ name: string, email: string } | null} [props.usuario] Usuario con sesión iniciada: su
+ *   nombre y email completan el formulario al abrirlo (se pueden cambiar).
  * @param {number} props.total Total del pedido, para mostrar junto al botón.
  * @param {boolean} [props.enviando] Deshabilita el botón mientras se guarda el pedido.
  * @param {(datos: typeof FORMULARIO_VACIO) => void} props.onConfirmar Recibe los datos sin espacios
  *   de más.
  * @returns {JSX.Element}
  */
-export function FormularioComprador({ total, enviando = false, onConfirmar }) {
-  const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
+export function FormularioComprador({ usuario = null, total, enviando = false, onConfirmar }) {
+  const [formulario, setFormulario] = useState(() => ({
+    ...FORMULARIO_VACIO,
+    name: usuario?.name ?? "",
+    email: usuario?.email ?? "",
+  }));
   const [validado, setValidado] = useState(false);
 
   function handleChange(e) {
