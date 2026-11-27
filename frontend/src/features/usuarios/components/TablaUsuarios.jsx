@@ -1,9 +1,5 @@
-import {
-  formatearRol,
-  obtenerMotivoSinCambioDeRol,
-  obtenerRolSiguiente,
-} from "../services/usuariosService";
-import "./TablaUsuarios.css";
+import { obtenerMotivoSinCambioDeRol, obtenerRolSiguiente } from "../services/usuariosService";
+import { formatearRol } from "../utils/formatearRol";
 
 const formatoFecha = new Intl.DateTimeFormat("es-AR", { dateStyle: "medium" });
 
@@ -38,8 +34,8 @@ export function TablaUsuarios({ usuarios, administradores, idGuardando, onCambia
   return (
     <div className="card overflow-hidden">
       <div className="table-responsive">
-        <table className="table align-middle mb-0 tabla-usuarios">
-          <thead className="table-light tabla-usuarios__encabezado">
+        <table className="table align-middle mb-0">
+          <thead className="table-light tabla-panel__encabezado">
             <tr>
               <th scope="col">Usuario</th>
               <th scope="col">Registro</th>
@@ -54,7 +50,7 @@ export function TablaUsuarios({ usuarios, administradores, idGuardando, onCambia
               const rol = formatearRol(usuario.role);
               const rolSiguiente = obtenerRolSiguiente(usuario);
               const accion = ACCIONES_ROL[rolSiguiente];
-              const motivo = obtenerMotivoSinCambioDeRol(usuario, { administradores });
+              const motivo = obtenerMotivoSinCambioDeRol(usuario, administradores);
 
               return (
                 <tr key={usuario.id}>

@@ -4,21 +4,6 @@ import { ENDPOINTS } from "../../../api/endpoints";
 /** Roles que puede tener un usuario. */
 export const ROLES_USUARIO = ["cliente", "administrador"];
 
-/** Texto (en singular y plural) y color (clases de Bootstrap) de cada rol. */
-const ROLES = {
-  cliente: { texto: "Cliente", plural: "Clientes", clases: "text-bg-light border" },
-  administrador: { texto: "Administrador", plural: "Administradores", clases: "text-bg-primary" },
-};
-
-/**
- * Devuelve el texto y las clases de la etiqueta (`badge`) de un rol.
- * @param {string} rol `"cliente"` o `"administrador"`.
- * @returns {{ texto: string, plural: string, clases: string }}
- */
-export function formatearRol(rol) {
-  return ROLES[rol] ?? { texto: rol, plural: rol, clases: "text-bg-light border" };
-}
-
 /**
  * Quita de un usuario los datos que nunca deben llegar a la interfaz (el hash de la contraseña).
  * Hoy lo hace el service porque el JSON de práctica se sirve entero; la API real no los mandará.
@@ -89,19 +74,13 @@ export function obtenerRolSiguiente(usuario) {
 
 /**
  * Explica por qué no se le puede quitar el rol de administrador a un usuario: el panel siempre
- * necesita al menos un administrador, y un administrador no se quita el rol a sí mismo (para no
- * quedarse afuera del panel por error).
+ * necesita al menos un administrador.
  * @param {object} usuario
- * @param {object} contexto
- * @param {number} contexto.administradores Cuántos administradores hay en total.
- * @param {number | null} [contexto.idUsuarioActual] Usuario con la sesión iniciada. Hasta que exista
- *   el inicio de sesión no se conoce y esta regla no se aplica.
+ * @param {number} administradores Cuántos administradores hay en total.
  * @returns {string | null} El motivo, o `null` si el cambio está permitido.
  */
-export function obtenerMotivoSinCambioDeRol(usuario, { administradores, idUsuarioActual = null }) {
-  if (usuario.role !== "administrador") return null;
-  if (usuario.id === idUsuarioActual) return "No podés quitarte el rol a vos mismo.";
-  if (administradores <= 1) return "Es el único administrador.";
+export function obtenerMotivoSinCambioDeRol(usuario, administradores) {
+  if (usuario.role === "administrador" && administradores <= 1) return "Es el único administrador.";
   return null;
 }
 
@@ -111,12 +90,11 @@ export function obtenerMotivoSinCambioDeRol(usuario, { administradores, idUsuari
  * sin ninguno aunque otro administrador haya cambiado roles mientras tanto.
  * @param {object} usuario El usuario tal como se muestra (se usa su `id` y su `role` actual).
  * @param {string} rolNuevo Uno de `ROLES_USUARIO`, distinto del actual.
- * @param {number | null} [idUsuarioActual] Usuario con la sesión iniciada (ver
- *   `obtenerMotivoSinCambioDeRol`).
  * @returns {Promise<object>} El usuario actualizado.
- * @throws {Error} Si el rol no es válido, el cambio no está permitido o el servidor responde con error.
+ * @throws {Error} Si el rol no es válido, el cambio no está permitido (sin `status`, con un mensaje
+ *   para mostrar) o el servidor responde con error (con el código HTTP en `error.status`).
  */
-export async function cambiarRolUsuario(usuario, rolNuevo, idUsuarioActual = null) {
+export async function cambiarRolUsuario(usuario, rolNuevo) {
   if (!ROLES_USUARIO.includes(rolNuevo) || rolNuevo === usuario.role) {
     throw new Error(`No se puede pasar el usuario a ${rolNuevo}.`);
   }
@@ -125,10 +103,10 @@ export async function cambiarRolUsuario(usuario, rolNuevo, idUsuarioActual = nul
   const actual = data.find((registro) => registro.id === usuario.id);
   if (!actual) throw new Error("El usuario ya no existe.");
 
-  const motivo = obtenerMotivoSinCambioDeRol(actual, {
-    administradores: data.filter((registro) => registro.role === "administrador").length,
-    idUsuarioActual,
-  });
+  const motivo = obtenerMotivoSinCambioDeRol(
+    actual,
+    data.filter((registro) => registro.role === "administrador").length,
+  );
   if (motivo) throw new Error(motivo);
 
   const actualizado = await enviar(ENDPOINTS.rolUsuario(usuario.id), { role: rolNuevo }, "PATCH");

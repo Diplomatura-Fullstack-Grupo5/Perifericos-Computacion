@@ -1,11 +1,7 @@
 import { useEffect, useId, useState } from "react";
 import { useSearchParams } from "react-router";
-import {
-  cambiarRolUsuario,
-  formatearRol,
-  obtenerUsuarios,
-  ROLES_USUARIO,
-} from "../services/usuariosService";
+import { cambiarRolUsuario, obtenerUsuarios, ROLES_USUARIO } from "../services/usuariosService";
+import { formatearRol } from "../utils/formatearRol";
 import { TablaUsuarios } from "../components/TablaUsuarios";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
@@ -124,10 +120,10 @@ export function AdminUsuariosPage() {
       });
     } catch (err) {
       console.error("Error al cambiar el rol del usuario:", err);
-      setAviso({
-        tipo: "danger",
-        texto: `No se pudo cambiar el rol de ${usuario.name}. ${err.message}`,
-      });
+      // Los errores de las reglas de negocio traen un mensaje para el usuario; los del servidor
+      // (con `status`) no, así que para esos se muestra un texto genérico.
+      const detalle = err.status === undefined ? err.message : "Por favor, intentá de nuevo.";
+      setAviso({ tipo: "danger", texto: `No se pudo cambiar el rol de ${usuario.name}. ${detalle}` });
     } finally {
       setIdGuardando(null);
     }
