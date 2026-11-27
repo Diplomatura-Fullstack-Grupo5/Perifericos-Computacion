@@ -1,14 +1,15 @@
-import { Fragment, useEffect, useId, useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router";
 import { obtenerDashboard, PERIODOS } from "../services/dashboardService";
 import { TarjetaIndicador } from "../components/TarjetaIndicador";
 import { GraficoEvolucionVentas } from "../components/GraficoEvolucionVentas";
 import { GraficoBarrasHorizontales } from "../components/GraficoBarrasHorizontales";
 import { GraficoMediosDePago } from "../components/GraficoMediosDePago";
 import { ResumenEstados } from "../components/ResumenEstados";
-import { ListaProductosDashboard } from "../components/ListaProductosDashboard";
+import { FilaProductoDashboard } from "../components/FilaProductoDashboard";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
+import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 import { formatearMontoCorto, formatearPorcentaje } from "../utils/formatos";
 
@@ -35,8 +36,7 @@ function formatearFecha(dia) {
  * @returns {JSX.Element}
  */
 export function AdminDashboardPage() {
-  const idBase = useId();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { searchParams, cambiarFiltro } = useFiltrosUrl();
   const periodoUrl = Number(searchParams.get("periodo"));
   const periodo = PERIODOS.includes(periodoUrl) ? periodoUrl : PERIODO_INICIAL;
 
@@ -65,15 +65,9 @@ export function AdminDashboardPage() {
     };
   }, [periodo]);
 
-  /**
-   * Cambia el período en la URL. Reemplaza la entrada del historial, como los filtros del panel.
-   * @param {number} dias
-   */
+  /** @param {number} dias */
   function cambiarPeriodo(dias) {
-    const params = new URLSearchParams(searchParams);
-    if (dias === PERIODO_INICIAL) params.delete("periodo");
-    else params.set("periodo", String(dias));
-    setSearchParams(params, { replace: true });
+    cambiarFiltro("periodo", dias === PERIODO_INICIAL ? "" : String(dias));
   }
 
   const { dashboard, error } = resultado;
@@ -96,12 +90,12 @@ export function AdminDashboardPage() {
             <input
               type="radio"
               className="btn-check"
-              name={`${idBase}-periodo`}
-              id={`${idBase}-periodo-${dias}`}
+              name="dashboard-periodo"
+              id={`dashboard-periodo-${dias}`}
               checked={periodo === dias}
               onChange={() => cambiarPeriodo(dias)}
             />
-            <label className="btn btn-outline-primary btn-sm" htmlFor={`${idBase}-periodo-${dias}`}>
+            <label className="btn btn-outline-primary btn-sm" htmlFor={`dashboard-periodo-${dias}`}>
               {dias} días
             </label>
           </Fragment>
@@ -141,7 +135,6 @@ export function AdminDashboardPage() {
     <>
       {encabezado}
 
-      {/* -------------------- Indicadores -------------------- */}
       <div className="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 mb-4">
         <div className="col">
           <TarjetaIndicador
@@ -199,7 +192,6 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* -------------------- Evolución y medios de pago -------------------- */}
       <div className="row g-3 mb-4">
         <div className="col-lg-8">
           <section className="card h-100" aria-labelledby="dashboard-evolucion">
@@ -234,7 +226,6 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* -------------------- Categorías, estados y más vendidos -------------------- */}
       <div className="row g-3 mb-4">
         <div className="col-lg-4">
           <section className="card h-100" aria-labelledby="dashboard-categorias">
@@ -266,16 +257,17 @@ export function AdminDashboardPage() {
             {masVendidos.length === 0 ? (
               <MensajeVacio>No hubo ventas en el período.</MensajeVacio>
             ) : (
-              <ListaProductosDashboard
-                numerada
-                productos={masVendidos}
-                enlace={(producto) => `/producto/${producto.id}`}
-                dato={(producto) => (
-                  <>
+              <ol className="list-group list-group-flush">
+                {masVendidos.map((producto) => (
+                  <FilaProductoDashboard
+                    key={producto.id}
+                    producto={producto}
+                    enlace={`/producto/${producto.id}`}
+                  >
                     <strong>{producto.unidades}</strong> u.
-                  </>
-                )}
-              />
+                  </FilaProductoDashboard>
+                ))}
+              </ol>
             )}
           </section>
         </div>
@@ -294,7 +286,6 @@ export function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* -------------------- Stock bajo -------------------- */}
       <section className="card overflow-hidden" aria-labelledby="dashboard-stock">
         <div className="card-body pb-2 d-flex justify-content-between align-items-baseline gap-2">
           <h2 id="dashboard-stock" className="fs-5 mb-0">
@@ -307,17 +298,21 @@ export function AdminDashboardPage() {
         {stockBajo.length === 0 ? (
           <MensajeVacio>Todos los productos tienen stock suficiente.</MensajeVacio>
         ) : (
-          <ListaProductosDashboard
-            productos={stockBajo}
-            enlace={(producto) => `/admin/productos/${producto.id}/editar`}
-            dato={(producto) => (
-              <span
-                className={`badge ${producto.stock <= 0 ? "text-bg-danger" : "text-bg-warning"}`}
+          <ul className="list-group list-group-flush">
+            {stockBajo.map((producto) => (
+              <FilaProductoDashboard
+                key={producto.id}
+                producto={producto}
+                enlace={`/admin/productos/${producto.id}/editar`}
               >
-                {producto.stock <= 0 ? "Sin stock" : `${producto.stock} u.`}
-              </span>
-            )}
-          />
+                <span
+                  className={`badge ${producto.stock <= 0 ? "text-bg-danger" : "text-bg-warning"}`}
+                >
+                  {producto.stock <= 0 ? "Sin stock" : `${producto.stock} u.`}
+                </span>
+              </FilaProductoDashboard>
+            ))}
+          </ul>
         )}
       </section>
     </>

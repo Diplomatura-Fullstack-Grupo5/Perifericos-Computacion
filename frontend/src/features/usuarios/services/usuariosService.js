@@ -1,6 +1,9 @@
 import { enviar, pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
 
+/** Cantidad de usuarios por página del listado. */
+export const USUARIOS_POR_PAGINA = 20;
+
 /** Roles que puede tener un usuario. */
 export const ROLES_USUARIO = ["cliente", "administrador"];
 
@@ -15,49 +18,39 @@ function sinDatosPrivados({ id, name, email, role, createdAt }) {
 }
 
 /**
- * Indica si un usuario coincide con el texto buscado, por nombre o por correo.
- * @param {object} usuario
- * @param {string} texto Ya en minúsculas y sin espacios en los extremos. Vacío = coincide.
- * @returns {boolean}
- */
-function coincideBusqueda(usuario, texto) {
-  if (!texto) return true;
-  return (
-    usuario.name.toLocaleLowerCase("es").includes(texto) ||
-    usuario.email.toLocaleLowerCase("es").includes(texto)
-  );
-}
-
-/**
- * Obtiene los usuarios del panel que coinciden con la búsqueda y el rol, ordenados por nombre.
- * Simula `GET /api/usuarios?busqueda=&rol=` (admin).
+ * Obtiene una página de los usuarios que coinciden con la búsqueda y el rol, ordenados por nombre.
+ * Simula `GET /api/usuarios?busqueda=&rol=&pagina=` (admin).
  * @param {object} [filtros]
  * @param {string} [filtros.busqueda] Nombre o correo. Vacío = sin filtro.
  * @param {string} [filtros.rol] Uno de `ROLES_USUARIO`. Vacío = todos.
+ * @param {number} [filtros.pagina] Número de página, empezando en 1.
  * @returns {Promise<{ usuarios: object[], total: number, porRol: Object<string, number>,
- *   administradores: number }>} Los que coinciden, el total sin filtrar, cuántos hay de cada rol con
- *   la búsqueda elegida (sin aplicar el filtro de rol) y cuántos administradores hay en total.
+ *   administradores: number }>} Los usuarios de la página, el total que coincide con los filtros,
+ *   cuántos hay de cada rol con la búsqueda elegida (sin aplicar el filtro de rol) y cuántos
+ *   administradores hay en total.
  */
-export async function obtenerUsuarios({ busqueda = "", rol = "" } = {}) {
+export async function obtenerUsuarios({ busqueda = "", rol = "", pagina = 1 } = {}) {
   const data = (await pedir(ENDPOINTS.usuarios)).map(sinDatosPrivados);
-  const texto = busqueda.trim().toLocaleLowerCase("es");
+  const texto = busqueda.trim().toLowerCase();
 
-  const sinFiltroDeRol = data.filter((usuario) => coincideBusqueda(usuario, texto));
-
-  const porRol = Object.fromEntries(
-    ROLES_USUARIO.map((nombre) => [
-      nombre,
-      sinFiltroDeRol.filter((usuario) => usuario.role === nombre).length,
-    ]),
+  const sinFiltroDeRol = data.filter(
+    (usuario) =>
+      usuario.name.toLowerCase().includes(texto) || usuario.email.toLowerCase().includes(texto),
   );
 
-  const usuarios = sinFiltroDeRol
+  const porRol = {};
+  ROLES_USUARIO.forEach((nombre) => {
+    porRol[nombre] = sinFiltroDeRol.filter((usuario) => usuario.role === nombre).length;
+  });
+
+  const filtrados = sinFiltroDeRol
     .filter((usuario) => !rol || usuario.role === rol)
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
 
+  const inicio = (pagina - 1) * USUARIOS_POR_PAGINA;
   return {
-    usuarios,
-    total: data.length,
+    usuarios: filtrados.slice(inicio, inicio + USUARIOS_POR_PAGINA),
+    total: filtrados.length,
     porRol,
     administradores: data.filter((usuario) => usuario.role === "administrador").length,
   };

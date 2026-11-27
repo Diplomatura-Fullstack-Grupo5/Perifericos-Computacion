@@ -1,4 +1,4 @@
-import { formatearEstadoPedido } from "../../../shared/utils/formatearEstadoPedido";
+import { formatearEstadoPedido } from "../../pedidos";
 import { formatearPorcentaje } from "../utils/formatos";
 
 /**

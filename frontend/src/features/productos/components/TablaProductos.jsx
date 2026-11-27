@@ -1,11 +1,9 @@
-import { Fragment, useId, useState } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router";
 import { DetalleProducto } from "./DetalleProducto";
+import { LIMITE_STOCK_BAJO } from "../services/productosService";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 import "./TablaProductos.css";
-
-/** Con esta cantidad de unidades o menos, el stock se resalta como bajo. */
-const LIMITE_STOCK_BAJO = 5;
 
 /**
  * Devuelve las clases del indicador de stock: rojo si no hay, amarillo si queda poco.
@@ -41,7 +39,6 @@ const INDICADOR_ORDEN = {
  * @returns {JSX.Element}
  */
 export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEliminar }) {
-  const idBase = useId();
   const [idExpandido, setIdExpandido] = useState(null);
   const indicador = INDICADOR_ORDEN[orden] ?? INDICADOR_ORDEN[""];
 
@@ -52,107 +49,107 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
   return (
     <div className="card overflow-hidden">
       <div className="table-responsive">
-      <table className="table align-middle mb-0 tabla-productos-admin">
-        <thead className="table-light tabla-panel__encabezado">
-          <tr>
-            <th scope="col">Producto</th>
-            <th scope="col">Categoría</th>
-            <th scope="col" className="text-end">
-              Precio
-            </th>
-            <th scope="col" className="text-end" aria-sort={indicador.ariaSort}>
-              <button
-                type="button"
-                className="btn btn-link p-0 text-reset text-decoration-none text-nowrap tabla-productos-admin__ordenar"
-                title={indicador.texto}
-                onClick={() => onOrdenar(SIGUIENTE_ORDEN[orden] ?? "stock_asc")}
-              >
-                Stock
-                <i
-                  className={`bi ${indicador.icono} ms-1 ${orden ? "text-primary" : "text-secondary"}`}
-                  aria-hidden="true"
-                />
-              </button>
-            </th>
-            <th scope="col">
-              <span className="visually-hidden">Acciones</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((producto) => {
-            const expandido = producto.id === idExpandido;
-            const idDetalle = `${idBase}-detalle-${producto.id}`;
-
-            return (
-            <Fragment key={producto.id}>
-            <tr className={expandido ? "table-active" : undefined}>
-              <td>
-                <div className="d-flex align-items-center gap-3">
-                  <img
-                    src={producto.image}
-                    alt=""
-                    className="tabla-productos-admin__imagen"
-                    loading="lazy"
-                  />
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-link p-0 text-start text-body fw-semibold tabla-productos-admin__nombre"
-                      aria-expanded={expandido}
-                      aria-controls={idDetalle}
-                      onClick={() => alternarDetalle(producto.id)}
-                    >
-                      {producto.name}
-                      <i
-                        className={`bi ${expandido ? "bi-chevron-up" : "bi-chevron-down"} ms-2 small text-secondary`}
-                        aria-hidden="true"
-                      />
-                    </button>
-                    <div className="small text-secondary">{producto.brand}</div>
-                  </div>
-                </div>
-              </td>
-              <td>{producto.category}</td>
-              <td className="text-end text-nowrap">{formatearPrecio(producto.price)}</td>
-              <td className="text-end">
-                <span className={`badge ${clasesStock(producto.stock)}`}>{producto.stock}</span>
-              </td>
-              <td className="text-end text-nowrap">
-                <Link
-                  to={`/admin/productos/${producto.id}/editar`}
-                  className="btn btn-sm btn-link tabla-productos-admin__accion"
-                  title="Editar"
-                  aria-label={`Editar ${producto.name}`}
-                >
-                  <i className="bi bi-pencil" aria-hidden="true" />
-                </Link>
+        <table className="table align-middle mb-0 tabla-productos-admin">
+          <thead className="table-light tabla-panel-encabezado">
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Categoría</th>
+              <th scope="col" className="text-end">
+                Precio
+              </th>
+              <th scope="col" className="text-end" aria-sort={indicador.ariaSort}>
                 <button
                   type="button"
-                  className="btn btn-sm btn-link tabla-productos-admin__accion tabla-productos-admin__accion--eliminar"
-                  title="Eliminar"
-                  aria-label={`Eliminar ${producto.name}`}
-                  onClick={() => onEliminar(producto)}
+                  className="btn btn-link p-0 text-reset text-decoration-none text-nowrap tabla-productos-admin-ordenar"
+                  title={indicador.texto}
+                  onClick={() => onOrdenar(SIGUIENTE_ORDEN[orden] ?? "stock_asc")}
                 >
-                  <i className="bi bi-trash" aria-hidden="true" />
-                </button>
-              </td>
-            </tr>
-            {expandido && (
-              <tr id={idDetalle}>
-                <td colSpan={5} className="bg-body-tertiary px-4 py-3">
-                  <DetalleProducto
-                    producto={producto}
-                    definiciones={definiciones[producto.category]}
+                  Stock
+                  <i
+                    className={`bi ${indicador.icono} ms-1 ${orden ? "text-primary" : "text-secondary"}`}
+                    aria-hidden="true"
                   />
-                </td>
-              </tr>
-            )}
-            </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+                </button>
+              </th>
+              <th scope="col">
+                <span className="visually-hidden">Acciones</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {productos.map((producto) => {
+              const expandido = producto.id === idExpandido;
+              const idDetalle = `detalle-producto-${producto.id}`;
+
+              return (
+                <Fragment key={producto.id}>
+                  <tr className={expandido ? "table-active" : undefined}>
+                    <td>
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={producto.image}
+                          alt=""
+                          className="tabla-productos-admin-imagen"
+                          loading="lazy"
+                        />
+                        <div>
+                          <button
+                            type="button"
+                            className="btn btn-link p-0 text-start text-body fw-semibold tabla-productos-admin-nombre"
+                            aria-expanded={expandido}
+                            aria-controls={idDetalle}
+                            onClick={() => alternarDetalle(producto.id)}
+                          >
+                            {producto.name}
+                            <i
+                              className={`bi ${expandido ? "bi-chevron-up" : "bi-chevron-down"} ms-2 small text-secondary`}
+                              aria-hidden="true"
+                            />
+                          </button>
+                          <div className="small text-secondary">{producto.brand}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{producto.category}</td>
+                    <td className="text-end text-nowrap">{formatearPrecio(producto.price)}</td>
+                    <td className="text-end">
+                      <span className={`badge ${clasesStock(producto.stock)}`}>{producto.stock}</span>
+                    </td>
+                    <td className="text-end text-nowrap">
+                      <Link
+                        to={`/admin/productos/${producto.id}/editar`}
+                        className="btn btn-sm btn-link tabla-productos-admin-accion"
+                        title="Editar"
+                        aria-label={`Editar ${producto.name}`}
+                      >
+                        <i className="bi bi-pencil" aria-hidden="true" />
+                      </Link>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-link tabla-productos-admin-accion tabla-productos-admin-accion-eliminar"
+                        title="Eliminar"
+                        aria-label={`Eliminar ${producto.name}`}
+                        onClick={() => onEliminar(producto)}
+                      >
+                        <i className="bi bi-trash" aria-hidden="true" />
+                      </button>
+                    </td>
+                  </tr>
+                  {expandido && (
+                    <tr id={idDetalle}>
+                      <td colSpan={5} className="bg-body-tertiary px-4 py-3">
+                        <DetalleProducto
+                          producto={producto}
+                          definiciones={definiciones[producto.category]}
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

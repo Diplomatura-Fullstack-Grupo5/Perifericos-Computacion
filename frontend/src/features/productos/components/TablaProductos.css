@@ -1,4 +1,4 @@
-.tabla-productos-admin__imagen {
+.tabla-productos-admin-imagen {
   width: 3rem;
   height: 3rem;
   flex-shrink: 0;
@@ -8,31 +8,31 @@
 }
 
 /* Acciones de cada fila: solo el ícono, gris en reposo y con color al pasar el mouse. */
-.tabla-productos-admin__accion {
+.tabla-productos-admin-accion {
   --bs-btn-padding-x: 0.375rem;
   --bs-btn-color: var(--bs-secondary-color);
   --bs-btn-hover-color: var(--bs-primary);
   --bs-btn-active-color: var(--bs-primary);
 }
 
-.tabla-productos-admin__accion--eliminar {
+.tabla-productos-admin-accion-eliminar {
   --bs-btn-hover-color: var(--bs-danger);
   --bs-btn-active-color: var(--bs-danger);
 }
 
 /* El botón de ordenar se ve igual que el resto del encabezado. */
-.tabla-productos-admin__ordenar {
+.tabla-productos-admin-ordenar {
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
 }
 
 /* Nombre del producto: abre el detalle; se subraya al pasar el mouse para que se note que es un botón. */
-.tabla-productos-admin__nombre {
+.tabla-productos-admin-nombre {
   text-decoration: none;
 }
 
-.tabla-productos-admin__nombre:hover,
-.tabla-productos-admin__nombre:focus-visible {
+.tabla-productos-admin-nombre:hover,
+.tabla-productos-admin-nombre:focus-visible {
   text-decoration: underline;
 }

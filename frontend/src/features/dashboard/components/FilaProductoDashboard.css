@@ -1,5 +1,5 @@
 /* Miniatura de producto en las listas del dashboard (más vendidos y stock bajo). */
-.lista-productos-dashboard__imagen {
+.fila-producto-dashboard-imagen {
   width: 2.5rem;
   height: 2.5rem;
   flex-shrink: 0;
@@ -9,6 +9,6 @@
 }
 
 /* Permite que el nombre se corte con "…" en vez de ensanchar la fila. */
-.lista-productos-dashboard__texto {
+.fila-producto-dashboard-texto {
   min-width: 0;
 }
