@@ -21,4 +21,5 @@ export const ENDPOINTS = {
   estadoPedido: (id) => `/pedidos/${id}/estado`,
   registrarUsuario: "/usuarios/registro",
   rolUsuario: (id) => `/usuarios/${id}/rol`,
+  iniciarSesion: "/usuarios/inicio-sesion",
 };

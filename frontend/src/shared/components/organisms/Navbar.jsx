@@ -11,6 +11,8 @@ import "./Navbar.css";
  * @param {() => void} [props.onVaciarComparador] Vacía el comparador (se pide confirmación antes).
  * @param {number} [props.cantidadCarrito] Unidades en el carrito.
  * @param {() => void} [props.onAbrirCarrito] Abre el panel del carrito.
+ * @param {{ name: string }|null} [props.usuario] Usuario con sesión iniciada.
+ * @param {() => void} [props.onCerrarSesion] Cierra la sesión actual.
  * @returns {JSX.Element}
  */
 export function Navbar({
@@ -19,6 +21,8 @@ export function Navbar({
   onVaciarComparador,
   cantidadCarrito = 0,
   onAbrirCarrito,
+  usuario = null,
+  onCerrarSesion,
 }) {
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
 
@@ -97,7 +101,6 @@ export function Navbar({
           </form>
 
           {/* -------------------- Comparar, carrito y sesión -------------------- */}
-          {/* TODO: hoy /iniciar-sesion muestra "Página en construcción" */}
           <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">
             <div className="btn-group btn-group-sm">
               <Link className="btn app-navbar-btn" to="/comparador">
@@ -124,9 +127,22 @@ export function Navbar({
               🛒 {cantidadCarrito}
             </button>
             <span className="app-navbar-divider" aria-hidden="true"></span>
-            <Link className="btn btn-sm app-navbar-btn-outline" to="/iniciar-sesion">
-              Log In
-            </Link>
+            {usuario ? (
+              <>
+                <span className="text-white small">Hola, {usuario.name}</span>
+                <button
+                  type="button"
+                  className="btn btn-sm app-navbar-btn-outline"
+                  onClick={onCerrarSesion}
+                >
+                  Salir
+                </button>
+              </>
+            ) : (
+              <Link className="btn btn-sm app-navbar-btn-outline" to="/iniciar-sesion">
+                Iniciar sesión
+              </Link>
+            )}
           </div>
         </div>
       </div>
