@@ -9,7 +9,7 @@ import { crearMiddlewareRegistro } from './src/features/auth/services/usuariosMo
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
 /** Colecciones de /database que se pueden modificar con POST, PUT, PATCH y DELETE. */
-const COLECCIONES_EDITABLES = ['productos', 'pedidos']
+const COLECCIONES_EDITABLES = ['productos', 'pedidos', 'usuarios']
 
 /**
  * Lee el cuerpo JSON de un pedido.
@@ -47,33 +47,6 @@ function responder(res, status, datos) {
 }
 
 /**
- * Convierte una colección en texto con el mismo formato que los JSON de /database: un objeto por
- * bloque, los objetos anidados (como `specs`) en una sola línea y las listas de objetos (como los
- * `items` de un pedido) con un objeto por línea.
- * @param {object[]} items
- * @returns {string}
- */
-function formatearColeccion(items) {
-  const esObjeto = (valor) => valor !== null && typeof valor === 'object' && !Array.isArray(valor)
-  const valorEnLinea = (valor) =>
-    esObjeto(valor)
-      ? `{ ${Object.entries(valor).map(([clave, v]) => `${JSON.stringify(clave)}: ${JSON.stringify(v)}`).join(', ')} }`
-      : JSON.stringify(valor)
-  const valorDeCampo = (valor) =>
-    Array.isArray(valor) && valor.length > 0 && valor.every(esObjeto)
-      ? `[\n${valor.map((v) => `      ${valorEnLinea(v)}`).join(',\n')}\n    ]`
-      : valorEnLinea(valor)
-
-  const objetos = items.map(
-    (item) =>
-      `  {\n${Object.entries(item)
-        .map(([clave, valor]) => `    ${JSON.stringify(clave)}: ${valorDeCampo(valor)}`)
-        .join(',\n')}\n  }`,
-  )
-  return `[\n${objetos.join(',\n')}\n]\n`
-}
-
-/**
  * Simula las escrituras de la API sobre una colección de /database, guardando en su archivo JSON:
  * `POST /database/<coleccion>` agrega (con el id siguiente), `PUT /database/<coleccion>/:id` reemplaza
  * los campos enviados y `DELETE /database/<coleccion>/:id` borra.
@@ -102,7 +75,7 @@ async function escribirColeccion(req, res) {
     return responder(res, 400, { message: 'El cuerpo no es un JSON válido' })
   }
 
-  const guardar = () => fs.writeFileSync(archivo, formatearColeccion(items))
+  const guardar = () => fs.writeFileSync(archivo, `${JSON.stringify(items, null, 2)}\n`)
   const cuerpoEsObjeto = cuerpo !== null && typeof cuerpo === 'object' && !Array.isArray(cuerpo)
 
   if (req.method === 'POST' && idTexto === undefined) {

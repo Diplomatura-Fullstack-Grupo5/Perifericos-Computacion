@@ -4,14 +4,20 @@
  * @param {number} props.paginaActual Página actual, empezando en 1.
  * @param {number} props.totalPaginas
  * @param {(pagina: number) => void} props.onChange Se llama con la página elegida.
+ * @param {string} [props.etiqueta] Nombre de la navegación para lectores de pantalla.
  */
-export function Paginacion({ paginaActual, totalPaginas, onChange }) {
+export function Paginacion({
+  paginaActual,
+  totalPaginas,
+  onChange,
+  etiqueta = "Páginas de productos",
+}) {
   if (totalPaginas <= 1) return null;
 
   const paginas = Array.from({ length: totalPaginas }, (_, i) => i + 1);
 
   return (
-    <nav aria-label="Páginas de productos" className="mt-4">
+    <nav aria-label={etiqueta} className="mt-4">
       <ul className="pagination pagination-sm justify-content-center mb-0">
         <li className={`page-item ${paginaActual === 1 ? "disabled" : ""}`}>
           <button

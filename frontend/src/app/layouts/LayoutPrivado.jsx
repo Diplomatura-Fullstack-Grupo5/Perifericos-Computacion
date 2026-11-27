@@ -3,14 +3,14 @@ import { Footer } from "../../shared/components/organisms/Footer";
 import { NavbarPanel } from "../../shared/components/organisms/NavbarPanel";
 
 /**
- * Secciones del panel que aparecen en la barra. Cada issue de admin suma la suya.
- * `end` marca la sección como actual solo en su ruta exacta (el dashboard es `/admin`, que si no
- * quedaría marcado en todas las secciones).
+ * Secciones de la barra del panel. `end` marca el dashboard (`/admin`) como actual solo en su ruta
+ * exacta; si no, quedaría marcado en todas las secciones.
  */
 const SECCIONES_PANEL = [
   { to: "/admin", texto: "Dashboard", end: true },
   { to: "/admin/productos", texto: "Productos" },
   { to: "/admin/pedidos", texto: "Pedidos" },
+  { to: "/admin/usuarios", texto: "Usuarios" },
 ];
 
 /**

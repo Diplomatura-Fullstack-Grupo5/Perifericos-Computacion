@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TarjetaProducto } from "../components/TarjetaProducto";
 import { FiltrosCatalogo } from "../components/FiltrosCatalogo";
 import { SelectorOrden } from "../components/SelectorOrden";
-import { Paginacion } from "../components/Paginacion";
+import { Paginacion } from "../../../shared/components/molecules/Paginacion";
 import {
   PRODUCTOS_POR_PAGINA,
   obtenerProductos,

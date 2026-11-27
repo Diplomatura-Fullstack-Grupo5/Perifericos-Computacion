@@ -70,7 +70,6 @@ export function Navbar({
                 ))}
               </ul>
             </li>
-            {/* TODO: reemplazar el mensaje de /nosotros y /contacto por las páginas reales cuando existan */}
             <li className="nav-item">
               <Link className="nav-link" to="/nosotros">
                 Nosotros

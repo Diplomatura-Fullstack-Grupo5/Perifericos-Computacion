@@ -1,26 +1,35 @@
 import { enviar, pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
 
+/** Cantidad de productos por página del listado del panel. */
+export const PRODUCTOS_POR_PAGINA_PANEL = 20;
+
+/** Con esta cantidad de unidades o menos, el stock de un producto se considera bajo. */
+export const LIMITE_STOCK_BAJO = 5;
+
 /**
- * Obtiene los productos del panel que coinciden con la búsqueda (por nombre o marca) y la categoría,
- * en el orden pedido. Simula `GET /api/productos?busqueda=&categoria=&orden=` (admin).
+ * Obtiene una página de los productos del panel que coinciden con la búsqueda (por nombre o marca)
+ * y la categoría, en el orden pedido. Simula `GET /api/productos?busqueda=&categoria=&orden=&pagina=`
+ * (admin).
  * @param {object} [filtros]
  * @param {string} [filtros.busqueda] Texto a buscar. Vacío = sin filtro.
  * @param {string} [filtros.category] Categoría. Vacío = todas.
  * @param {"stock_asc" | "stock_desc" | ""} [filtros.sort] Orden por stock. Vacío = el orden guardado.
- * @returns {Promise<{ products: object[], total: number }>} Los que coinciden y el total sin filtrar.
+ * @param {number} [filtros.page] Número de página, empezando en 1.
+ * @returns {Promise<{ products: object[], total: number }>} Los productos de la página y el total
+ *   que coincide con los filtros.
  */
-export async function obtenerProductos({ busqueda = "", category = "", sort = "" } = {}) {
+export async function obtenerProductos({ busqueda = "", category = "", sort = "", page = 1 } = {}) {
   const data = await pedir(ENDPOINTS.productos);
-  const texto = busqueda.trim().toLocaleLowerCase("es");
+  const texto = busqueda.trim().toLowerCase();
 
-  const products = data
+  const filtrados = data
     .filter((product) => !category || product.category === category)
     .filter(
       (product) =>
         !texto ||
-        product.name.toLocaleLowerCase("es").includes(texto) ||
-        product.brand.toLocaleLowerCase("es").includes(texto),
+        product.name.toLowerCase().includes(texto) ||
+        product.brand.toLowerCase().includes(texto),
     )
     .sort((a, b) => {
       if (sort === "stock_asc") return a.stock - b.stock;
@@ -28,7 +37,11 @@ export async function obtenerProductos({ busqueda = "", category = "", sort = ""
       return 0;
     });
 
-  return { products, total: data.length };
+  const inicio = (page - 1) * PRODUCTOS_POR_PAGINA_PANEL;
+  return {
+    products: filtrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA_PANEL),
+    total: filtrados.length,
+  };
 }
 
 /**
@@ -69,22 +82,16 @@ export async function obtenerValoresSpecs() {
   const data = await pedir(ENDPOINTS.productos);
   const valores = {};
 
-  data.forEach((product) => {
-    Object.entries(product.specs).forEach(([key, value]) => {
-      if (typeof value !== "string") return;
-      valores[product.category] ??= {};
-      valores[product.category][key] ??= [];
-      if (!valores[product.category][key].includes(value)) {
-        valores[product.category][key].push(value);
+  data.forEach(({ category, specs }) => {
+    const deLaCategoria = valores[category] ?? {};
+    Object.entries(specs).forEach(([clave, valor]) => {
+      const lista = deLaCategoria[clave] ?? [];
+      if (typeof valor === "string" && !lista.includes(valor)) {
+        deLaCategoria[clave] = [...lista, valor].sort((a, b) => a.localeCompare(b, "es"));
       }
     });
+    valores[category] = deLaCategoria;
   });
-
-  Object.values(valores).forEach((specs) =>
-    Object.values(specs).forEach((lista) =>
-      lista.sort((a, b) => a.localeCompare(b, "es", { numeric: true })),
-    ),
-  );
 
   return valores;
 }
@@ -144,8 +151,7 @@ async function validarProducto(producto) {
  */
 export async function crearProducto(producto) {
   await validarProducto(producto);
-  const { image, specs, ...datos } = producto;
-  return enviar(ENDPOINTS.crearProducto, { ...datos, sold: 0, image, specs });
+  return enviar(ENDPOINTS.crearProducto, { ...producto, sold: 0 });
 }
 
 /**
