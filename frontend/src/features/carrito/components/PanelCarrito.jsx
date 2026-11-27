@@ -116,19 +116,14 @@ export function PanelCarrito() {
               <span className="text-secondary">Subtotal</span>
               <span className="fs-5 fw-bold">{formatearPrecio(subtotal)}</span>
             </div>
-            {/* TODO: hoy /finalizar-compra y /carrito muestran "Página en construcción" */}
-            <div className="d-grid gap-2">
-              <Link
-                to="/finalizar-compra"
-                className="btn btn-primary fw-semibold"
-                onClick={cerrarPanel}
-              >
-                Finalizar compra
-              </Link>
-              <Link to="/carrito" className="btn btn-outline-primary" onClick={cerrarPanel}>
-                Ver carrito
-              </Link>
-            </div>
+            {/* TODO: hoy /finalizar-compra muestra "Página en construcción" */}
+            <Link
+              to="/finalizar-compra"
+              className="btn btn-primary fw-semibold w-100"
+              onClick={cerrarPanel}
+            >
+              Finalizar compra
+            </Link>
           </div>
         )}
       </aside>

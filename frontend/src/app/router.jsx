@@ -39,7 +39,6 @@ async function cargarLayoutPublico() {
  * Al crear la página real, quitarla de esta lista y agregar su ruta abajo.
  */
 const PAGINAS_EN_CONSTRUCCION = [
-  "carrito",
   "finalizar-compra",
   "iniciar-sesion",
   "mis-pedidos",
