@@ -9,9 +9,10 @@ import "./Navbar.css";
  * @param {object} props
  * @param {{ to: string, texto: string, end?: boolean }[]} props.secciones Secciones del panel, en
  *   orden. Con `end`, la sección se marca como actual solo en su ruta exacta.
+ * @param {() => void} props.onCerrarSesion Cierra la sesión actual.
  * @returns {JSX.Element}
  */
-export function NavbarPanel({ secciones }) {
+export function NavbarPanel({ secciones, onCerrarSesion }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   /**
@@ -65,6 +66,13 @@ export function NavbarPanel({ secciones }) {
             <i className="bi bi-shop me-1" aria-hidden="true" />
             Ver tienda
           </Link>
+          <button
+            className="btn btn-sm app-navbar-btn-outline text-nowrap my-2 my-md-0"
+            type="button"
+            onClick={onCerrarSesion}
+          >
+            Salir
+          </button>
         </div>
       </div>
     </nav>
