@@ -39,7 +39,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
     <div className="card overflow-hidden">
       <div className="table-responsive">
         <table className="table align-middle mb-0 tabla-pedidos">
-          <thead className="table-light tabla-panel__encabezado">
+          <thead className="table-light tabla-panel-encabezado">
             <tr>
               <th scope="col">Pedido</th>
               <th scope="col">Cliente</th>
@@ -67,7 +67,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-link p-0 text-start text-body fw-semibold text-nowrap tabla-pedidos__numero"
+                        className="btn btn-link p-0 text-start text-body fw-semibold text-nowrap tabla-pedidos-numero"
                         aria-expanded={expandido}
                         aria-controls={idDetalle}
                         onClick={() => alternarDetalle(pedido.id)}

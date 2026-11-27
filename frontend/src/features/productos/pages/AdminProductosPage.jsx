@@ -4,29 +4,31 @@ import {
   eliminarProducto,
   obtenerDefinicionesSpecs,
   obtenerProductos,
+  PRODUCTOS_POR_PAGINA_PANEL,
 } from "../services/productosService";
 import { TablaProductos } from "../components/TablaProductos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
+import { Paginacion } from "../../../shared/components/molecules/Paginacion";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
 import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 
 /**
  * Listado de productos del panel de administración: búsqueda, filtro por categoría y orden por stock
- * (en la URL: `?busqueda=&categoria=&orden=`) y acceso a crear, editar y eliminar (con confirmación).
+ * (en la URL: `?busqueda=&categoria=&orden=&pagina=`) y acceso a crear, editar y eliminar (con confirmación).
  * @returns {JSX.Element}
  */
 export function AdminProductosPage() {
   const location = useLocation();
-  const [searchParams, cambiarFiltro] = useFiltrosUrl();
+  const { searchParams, consulta, cambiarFiltro, cambiarPagina } = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const categoria = searchParams.get("categoria") ?? "";
   const orden = searchParams.get("orden") ?? "";
-  const clave = searchParams.toString();
+  const pagina = Math.max(1, Number(searchParams.get("pagina")) || 1);
 
   const [resultado, setResultado] = useState({
-    clave: null,
+    consulta: null,
     productos: [],
     total: 0,
     error: null,
@@ -36,7 +38,7 @@ export function AdminProductosPage() {
   const [aEliminar, setAEliminar] = useState(null);
   const [aviso, setAviso] = useState(location.state?.aviso ?? null);
 
-  const cargando = resultado.clave !== clave;
+  const cargando = resultado.consulta !== consulta;
   const { productos, total, error } = resultado;
 
   useEffect(() => {
@@ -55,37 +57,44 @@ export function AdminProductosPage() {
 
   useEffect(() => {
     let ignoreResponse = false;
-
-    obtenerProductos({ busqueda, category: categoria, sort: orden })
-      .then(({ products, total }) => {
-        if (!ignoreResponse) setResultado({ clave, productos: products, total, error: null });
-      })
-      .catch((err) => {
-        if (ignoreResponse) return;
-        console.error("Error al obtener los productos:", err);
-        setResultado({
-          clave,
-          productos: [],
-          total: 0,
-          error: "No se pudieron cargar los productos. Por favor, intentá de nuevo.",
+    const timer = setTimeout(() => {
+      obtenerProductos({ busqueda, category: categoria, sort: orden, page: pagina })
+        .then(({ products, total }) => {
+          if (!ignoreResponse) setResultado({ consulta, productos: products, total, error: null });
+        })
+        .catch((err) => {
+          if (ignoreResponse) return;
+          console.error("Error al obtener los productos:", err);
+          setResultado({
+            consulta,
+            productos: [],
+            total: 0,
+            error: "No se pudieron cargar los productos. Por favor, intentá de nuevo.",
+          });
         });
-      });
+    }, 300);
 
     return () => {
       ignoreResponse = true;
+      clearTimeout(timer);
     };
-  }, [clave, busqueda, categoria, orden]);
+  }, [consulta, busqueda, categoria, orden, pagina]);
+
+  function irAPagina(numero) {
+    cambiarPagina(numero);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   async function handleConfirmarEliminar() {
     const producto = aEliminar;
     setAEliminar(null);
     try {
       await eliminarProducto(producto.id);
-      setResultado({
-        ...resultado,
-        productos: productos.filter(({ id }) => id !== producto.id),
-        total: total - 1,
-      });
+      setResultado((prev) => ({
+        ...prev,
+        productos: prev.productos.filter(({ id }) => id !== producto.id),
+        total: prev.total - 1,
+      }));
       setAviso({ tipo: "success", texto: `Se eliminó "${producto.name}".` });
     } catch (err) {
       console.error("Error al eliminar el producto:", err);
@@ -157,7 +166,7 @@ export function AdminProductosPage() {
       {!cargando && !error && (
         <>
           <p className="text-secondary small">
-            {productos.length} de {total} productos
+            {total} {total === 1 ? "producto" : "productos"}
           </p>
           {productos.length === 0 ? (
             <MensajeVacio>No hay productos que coincidan con la búsqueda.</MensajeVacio>
@@ -170,6 +179,11 @@ export function AdminProductosPage() {
               onEliminar={setAEliminar}
             />
           )}
+          <Paginacion
+            paginaActual={pagina}
+            totalPaginas={Math.ceil(total / PRODUCTOS_POR_PAGINA_PANEL)}
+            onChange={irAPagina}
+          />
         </>
       )}
 

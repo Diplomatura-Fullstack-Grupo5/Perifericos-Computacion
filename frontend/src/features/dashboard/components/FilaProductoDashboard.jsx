@@ -14,11 +14,11 @@ export function FilaProductoDashboard({ producto, enlace, children }) {
   return (
     <li className="list-group-item d-flex align-items-center gap-3">
       {producto.image ? (
-        <img src={producto.image} alt="" className="fila-producto-dashboard__imagen" />
+        <img src={producto.image} alt="" className="fila-producto-dashboard-imagen" />
       ) : (
-        <span className="fila-producto-dashboard__imagen" aria-hidden="true" />
+        <span className="fila-producto-dashboard-imagen" aria-hidden="true" />
       )}
-      <div className="flex-grow-1 fila-producto-dashboard__texto">
+      <div className="flex-grow-1 fila-producto-dashboard-texto">
         <Link
           to={enlace}
           className="d-block text-truncate link-body-emphasis link-underline-opacity-0 link-underline-opacity-100-hover"

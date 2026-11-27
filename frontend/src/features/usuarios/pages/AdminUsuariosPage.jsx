@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { cambiarRolUsuario, obtenerUsuarios, ROLES_USUARIO } from "../services/usuariosService";
+import {
+  cambiarRolUsuario,
+  obtenerUsuarios,
+  ROLES_USUARIO,
+  USUARIOS_POR_PAGINA,
+} from "../services/usuariosService";
 import { formatearRol } from "../utils/formatearRol";
 import { TablaUsuarios } from "../components/TablaUsuarios";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
+import { Paginacion } from "../../../shared/components/molecules/Paginacion";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
 import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
-
-/** Cantidad de usuarios que se muestran al principio y que se suman con "Mostrar más". */
-const USUARIOS_POR_TANDA = 20;
 
 /** Textos del modal que confirma cada cambio de rol, según el rol nuevo. */
 const CONFIRMACIONES = {
@@ -29,65 +32,61 @@ const CONFIRMACIONES = {
 
 /**
  * Gestión de usuarios y roles del panel de administración: búsqueda por nombre o correo, filtro por
- * rol (en la URL: `?busqueda=&rol=`) y cambio de rol cliente ↔ administrador con confirmación. Al
+ * rol (en la URL: `?busqueda=&rol=&pagina=`) y cambio de rol cliente ↔ administrador con confirmación. Al
  * último administrador no se le puede quitar el rol.
  * @returns {JSX.Element}
  */
 export function AdminUsuariosPage() {
-  const [searchParams, cambiarFiltroUrl] = useFiltrosUrl();
+  const { searchParams, consulta, cambiarFiltro, cambiarPagina } = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const rol = searchParams.get("rol") ?? "";
-  const clave = searchParams.toString();
+  const pagina = Math.max(1, Number(searchParams.get("pagina")) || 1);
 
   const [resultado, setResultado] = useState({
-    clave: null,
+    consulta: null,
     usuarios: [],
     total: 0,
     porRol: {},
     administradores: 0,
     error: null,
   });
-  const [cantidadVisible, setCantidadVisible] = useState(USUARIOS_POR_TANDA);
   const [cambio, setCambio] = useState(null);
   const [idGuardando, setIdGuardando] = useState(null);
   const [aviso, setAviso] = useState(null);
 
-  const cargando = resultado.clave !== clave;
+  const cargando = resultado.consulta !== consulta;
   const { usuarios, total, porRol, administradores, error } = resultado;
 
   useEffect(() => {
     let ignoreResponse = false;
-
-    obtenerUsuarios({ busqueda, rol })
-      .then((datos) => {
-        if (!ignoreResponse) setResultado({ clave, ...datos, error: null });
-      })
-      .catch((err) => {
-        if (ignoreResponse) return;
-        console.error("Error al obtener los usuarios:", err);
-        setResultado({
-          clave,
-          usuarios: [],
-          total: 0,
-          porRol: {},
-          administradores: 0,
-          error: "No se pudieron cargar los usuarios. Por favor, intentá de nuevo.",
+    const timer = setTimeout(() => {
+      obtenerUsuarios({ busqueda, rol, pagina })
+        .then((datos) => {
+          if (!ignoreResponse) setResultado({ consulta, ...datos, error: null });
+        })
+        .catch((err) => {
+          if (ignoreResponse) return;
+          console.error("Error al obtener los usuarios:", err);
+          setResultado({
+            consulta,
+            usuarios: [],
+            total: 0,
+            porRol: {},
+            administradores: 0,
+            error: "No se pudieron cargar los usuarios. Por favor, intentá de nuevo.",
+          });
         });
-      });
+    }, 300);
 
     return () => {
       ignoreResponse = true;
+      clearTimeout(timer);
     };
-  }, [clave, busqueda, rol]);
+  }, [consulta, busqueda, rol, pagina]);
 
-  /**
-   * Cambia un filtro y vuelve a mostrar la primera tanda de usuarios.
-   * @param {string} nombre
-   * @param {string} valor
-   */
-  function cambiarFiltro(nombre, valor) {
-    cambiarFiltroUrl(nombre, valor);
-    setCantidadVisible(USUARIOS_POR_TANDA);
+  function irAPagina(numero) {
+    cambiarPagina(numero);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   /**
@@ -100,16 +99,16 @@ export function AdminUsuariosPage() {
     setIdGuardando(usuario.id);
     try {
       const actualizado = await cambiarRolUsuario(usuario, rolNuevo);
-      setResultado({
-        ...resultado,
-        usuarios: usuarios.map((u) => (u.id === actualizado.id ? actualizado : u)),
+      setResultado((prev) => ({
+        ...prev,
+        usuarios: prev.usuarios.map((u) => (u.id === actualizado.id ? actualizado : u)),
         porRol: {
-          ...porRol,
-          [usuario.role]: porRol[usuario.role] - 1,
-          [rolNuevo]: porRol[rolNuevo] + 1,
+          ...prev.porRol,
+          [usuario.role]: prev.porRol[usuario.role] - 1,
+          [rolNuevo]: prev.porRol[rolNuevo] + 1,
         },
-        administradores: administradores + (rolNuevo === "administrador" ? 1 : -1),
-      });
+        administradores: prev.administradores + (rolNuevo === "administrador" ? 1 : -1),
+      }));
       setAviso({
         tipo: "success",
         texto: `${usuario.name} ahora es ${formatearRol(rolNuevo).texto.toLowerCase()}.`,
@@ -182,29 +181,24 @@ export function AdminUsuariosPage() {
       {!cargando && !error && (
         <>
           <p className="text-secondary small">
-            {usuarios.length} de {total} usuarios
+            {total} {total === 1 ? "usuario" : "usuarios"}
           </p>
           {usuarios.length === 0 ? (
             <MensajeVacio>No hay usuarios que coincidan con la búsqueda.</MensajeVacio>
           ) : (
             <>
               <TablaUsuarios
-                usuarios={usuarios.slice(0, cantidadVisible)}
+                usuarios={usuarios}
                 administradores={administradores}
                 idGuardando={idGuardando}
                 onCambiarRol={(usuario, rolNuevo) => setCambio({ usuario, rol: rolNuevo })}
               />
-              {cantidadVisible < usuarios.length && (
-                <div className="text-center mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={() => setCantidadVisible(cantidadVisible + USUARIOS_POR_TANDA)}
-                  >
-                    Mostrar más ({usuarios.length - cantidadVisible} restantes)
-                  </button>
-                </div>
-              )}
+              <Paginacion
+                paginaActual={pagina}
+                totalPaginas={Math.ceil(total / USUARIOS_POR_PAGINA)}
+                onChange={irAPagina}
+                etiqueta="Páginas de usuarios"
+              />
             </>
           )}
         </>

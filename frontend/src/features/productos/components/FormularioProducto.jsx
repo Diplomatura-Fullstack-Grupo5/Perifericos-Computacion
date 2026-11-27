@@ -39,21 +39,21 @@ export function FormularioProducto({
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setFormulario({ ...formulario, [name]: value });
+    setFormulario((prev) => ({ ...prev, [name]: value }));
   }
 
   function handleCambiarCategoria(e) {
     const category = e.target.value;
-    setFormulario({
-      ...formulario,
+    setFormulario((prev) => ({
+      ...prev,
       category,
       brand: "",
       specs: armarSpecsVacias(definiciones[category]),
-    });
+    }));
   }
 
   function handleCambiarSpec(clave, value) {
-    setFormulario({ ...formulario, specs: { ...formulario.specs, [clave]: value } });
+    setFormulario((prev) => ({ ...prev, specs: { ...prev.specs, [clave]: value } }));
   }
 
   function handleSubmit(e) {
@@ -257,10 +257,7 @@ export function FormularioProducto({
           Cancelar
         </Link>
         <button type="submit" className="btn btn-primary" disabled={guardando}>
-          {guardando && (
-            <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
-          )}
-          Guardar producto
+          {guardando ? "Guardando..." : "Guardar producto"}
         </button>
       </div>
     </form>

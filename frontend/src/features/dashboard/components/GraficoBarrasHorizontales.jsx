@@ -14,7 +14,7 @@ export function GraficoBarrasHorizontales({ filas }) {
   return (
     <ul className="list-unstyled mb-0">
       {filas.map((fila) => (
-        <li key={fila.clave} className="barras-horizontales__fila">
+        <li key={fila.clave} className="barras-horizontales-fila">
           <div className="d-flex justify-content-between gap-2 small mb-1">
             <span>{fila.etiqueta}</span>
             <span className="text-nowrap">
@@ -22,9 +22,9 @@ export function GraficoBarrasHorizontales({ filas }) {
               {fila.detalle && <span className="text-secondary"> · {fila.detalle}</span>}
             </span>
           </div>
-          <span className="barras-horizontales__pista" aria-hidden="true">
+          <span className="barras-horizontales-pista" aria-hidden="true">
             <span
-              className="barras-horizontales__barra"
+              className="barras-horizontales-barra"
               style={{ width: `${(fila.valor / maximo) * 100}%` }}
             />
           </span>

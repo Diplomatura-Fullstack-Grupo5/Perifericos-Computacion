@@ -35,7 +35,7 @@ export function TablaUsuarios({ usuarios, administradores, idGuardando, onCambia
     <div className="card overflow-hidden">
       <div className="table-responsive">
         <table className="table align-middle mb-0">
-          <thead className="table-light tabla-panel__encabezado">
+          <thead className="table-light tabla-panel-encabezado">
             <tr>
               <th scope="col">Usuario</th>
               <th scope="col">Registro</th>

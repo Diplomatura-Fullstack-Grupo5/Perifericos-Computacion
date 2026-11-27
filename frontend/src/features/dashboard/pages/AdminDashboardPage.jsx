@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 import { obtenerDashboard, PERIODOS } from "../services/dashboardService";
 import { TarjetaIndicador } from "../components/TarjetaIndicador";
 import { GraficoEvolucionVentas } from "../components/GraficoEvolucionVentas";
@@ -9,6 +9,7 @@ import { ResumenEstados } from "../components/ResumenEstados";
 import { FilaProductoDashboard } from "../components/FilaProductoDashboard";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
+import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 import { formatearMontoCorto, formatearPorcentaje } from "../utils/formatos";
 
@@ -35,7 +36,7 @@ function formatearFecha(dia) {
  * @returns {JSX.Element}
  */
 export function AdminDashboardPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { searchParams, cambiarFiltro } = useFiltrosUrl();
   const periodoUrl = Number(searchParams.get("periodo"));
   const periodo = PERIODOS.includes(periodoUrl) ? periodoUrl : PERIODO_INICIAL;
 
@@ -64,15 +65,9 @@ export function AdminDashboardPage() {
     };
   }, [periodo]);
 
-  /**
-   * Cambia el período en la URL. Reemplaza la entrada del historial, como los filtros del panel.
-   * @param {number} dias
-   */
+  /** @param {number} dias */
   function cambiarPeriodo(dias) {
-    const params = new URLSearchParams(searchParams);
-    if (dias === PERIODO_INICIAL) params.delete("periodo");
-    else params.set("periodo", String(dias));
-    setSearchParams(params, { replace: true });
+    cambiarFiltro("periodo", dias === PERIODO_INICIAL ? "" : String(dias));
   }
 
   const { dashboard, error } = resultado;

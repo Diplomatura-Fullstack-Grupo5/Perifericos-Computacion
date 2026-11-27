@@ -13,13 +13,13 @@ import "./GraficoMediosDePago.css";
 export function GraficoMediosDePago({ medios }) {
   return (
     <>
-      <div className="medios-pago__barra mb-3" aria-hidden="true">
+      <div className="medios-pago-barra mb-3" aria-hidden="true">
         {medios.map(
           (medio, indice) =>
             medio.porcentaje > 0 && (
               <span
                 key={medio.medio}
-                className={`medios-pago__segmento medios-pago--serie-${indice + 1}`}
+                className={`medios-pago-segmento medios-pago-serie-${indice + 1}`}
                 style={{ width: `${medio.porcentaje}%` }}
               />
             ),
@@ -30,7 +30,7 @@ export function GraficoMediosDePago({ medios }) {
         {medios.map((medio, indice) => (
           <li key={medio.medio} className="d-flex align-items-start gap-2 small py-1">
             <span
-              className={`medios-pago__muestra medios-pago--serie-${indice + 1}`}
+              className={`medios-pago-muestra medios-pago-serie-${indice + 1}`}
               aria-hidden="true"
             />
             <span className="flex-grow-1">

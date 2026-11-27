@@ -1,9 +1,9 @@
 /* Número de pedido: abre el detalle; se subraya al pasar el mouse para que se note que es un botón. */
-.tabla-pedidos__numero {
+.tabla-pedidos-numero {
   text-decoration: none;
 }
 
-.tabla-pedidos__numero:hover,
-.tabla-pedidos__numero:focus-visible {
+.tabla-pedidos-numero:hover,
+.tabla-pedidos-numero:focus-visible {
   text-decoration: underline;
 }

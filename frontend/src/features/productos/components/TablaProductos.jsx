@@ -50,7 +50,7 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
     <div className="card overflow-hidden">
       <div className="table-responsive">
         <table className="table align-middle mb-0 tabla-productos-admin">
-          <thead className="table-light tabla-panel__encabezado">
+          <thead className="table-light tabla-panel-encabezado">
             <tr>
               <th scope="col">Producto</th>
               <th scope="col">Categoría</th>
@@ -60,7 +60,7 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
               <th scope="col" className="text-end" aria-sort={indicador.ariaSort}>
                 <button
                   type="button"
-                  className="btn btn-link p-0 text-reset text-decoration-none text-nowrap tabla-productos-admin__ordenar"
+                  className="btn btn-link p-0 text-reset text-decoration-none text-nowrap tabla-productos-admin-ordenar"
                   title={indicador.texto}
                   onClick={() => onOrdenar(SIGUIENTE_ORDEN[orden] ?? "stock_asc")}
                 >
@@ -89,13 +89,13 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
                         <img
                           src={producto.image}
                           alt=""
-                          className="tabla-productos-admin__imagen"
+                          className="tabla-productos-admin-imagen"
                           loading="lazy"
                         />
                         <div>
                           <button
                             type="button"
-                            className="btn btn-link p-0 text-start text-body fw-semibold tabla-productos-admin__nombre"
+                            className="btn btn-link p-0 text-start text-body fw-semibold tabla-productos-admin-nombre"
                             aria-expanded={expandido}
                             aria-controls={idDetalle}
                             onClick={() => alternarDetalle(producto.id)}
@@ -118,7 +118,7 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
                     <td className="text-end text-nowrap">
                       <Link
                         to={`/admin/productos/${producto.id}/editar`}
-                        className="btn btn-sm btn-link tabla-productos-admin__accion"
+                        className="btn btn-sm btn-link tabla-productos-admin-accion"
                         title="Editar"
                         aria-label={`Editar ${producto.name}`}
                       >
@@ -126,7 +126,7 @@ export function TablaProductos({ productos, definiciones, orden, onOrdenar, onEl
                       </Link>
                       <button
                         type="button"
-                        className="btn btn-sm btn-link tabla-productos-admin__accion tabla-productos-admin__accion--eliminar"
+                        className="btn btn-sm btn-link tabla-productos-admin-accion tabla-productos-admin-accion-eliminar"
                         title="Eliminar"
                         aria-label={`Eliminar ${producto.name}`}
                         onClick={() => onEliminar(producto)}

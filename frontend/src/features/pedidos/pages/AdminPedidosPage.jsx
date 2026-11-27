@@ -4,17 +4,16 @@ import {
   ESTADOS_PEDIDO,
   MEDIOS_DE_PAGO,
   obtenerPedidos,
+  PEDIDOS_POR_PAGINA,
 } from "../services/pedidosService";
 import { formatearEstadoPedido } from "../utils/formatearEstadoPedido";
 import { TablaPedidos } from "../components/TablaPedidos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
 import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
+import { Paginacion } from "../../../shared/components/molecules/Paginacion";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
 import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
-
-/** Cantidad de pedidos que se muestran al principio y que se suman con "Mostrar más". */
-const PEDIDOS_POR_TANDA = 20;
 
 /** Textos y color del botón del modal que confirma cada cambio de estado. */
 const CONFIRMACIONES = {
@@ -25,64 +24,60 @@ const CONFIRMACIONES = {
 
 /**
  * Gestión de pedidos del panel: búsqueda por cliente o número, filtros por estado y medio de pago
- * (en la URL: `?busqueda=&estado=&pago=`), detalle de cada pedido y cambio de estado con
+ * (en la URL: `?busqueda=&estado=&pago=&pagina=`), detalle de cada pedido y cambio de estado con
  * confirmación, porque un pedido no vuelve a un estado anterior.
  * @returns {JSX.Element}
  */
 export function AdminPedidosPage() {
-  const [searchParams, cambiarFiltroUrl] = useFiltrosUrl();
+  const { searchParams, consulta, cambiarFiltro, cambiarPagina } = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const estado = searchParams.get("estado") ?? "";
   const pago = searchParams.get("pago") ?? "";
-  const clave = searchParams.toString();
+  const pagina = Math.max(1, Number(searchParams.get("pagina")) || 1);
 
   const [resultado, setResultado] = useState({
-    clave: null,
+    consulta: null,
     pedidos: [],
     total: 0,
     porEstado: {},
     error: null,
   });
-  const [cantidadVisible, setCantidadVisible] = useState(PEDIDOS_POR_TANDA);
   const [cambio, setCambio] = useState(null);
   const [idGuardando, setIdGuardando] = useState(null);
   const [aviso, setAviso] = useState(null);
 
-  const cargando = resultado.clave !== clave;
+  const cargando = resultado.consulta !== consulta;
   const { pedidos, total, porEstado, error } = resultado;
 
   useEffect(() => {
     let ignoreResponse = false;
-
-    obtenerPedidos({ busqueda, estado, pago })
-      .then((datos) => {
-        if (!ignoreResponse) setResultado({ clave, ...datos, error: null });
-      })
-      .catch((err) => {
-        if (ignoreResponse) return;
-        console.error("Error al obtener los pedidos:", err);
-        setResultado({
-          clave,
-          pedidos: [],
-          total: 0,
-          porEstado: {},
-          error: "No se pudieron cargar los pedidos. Por favor, intentá de nuevo.",
+    const timer = setTimeout(() => {
+      obtenerPedidos({ busqueda, estado, pago, pagina })
+        .then((datos) => {
+          if (!ignoreResponse) setResultado({ consulta, ...datos, error: null });
+        })
+        .catch((err) => {
+          if (ignoreResponse) return;
+          console.error("Error al obtener los pedidos:", err);
+          setResultado({
+            consulta,
+            pedidos: [],
+            total: 0,
+            porEstado: {},
+            error: "No se pudieron cargar los pedidos. Por favor, intentá de nuevo.",
+          });
         });
-      });
+    }, 300);
 
     return () => {
       ignoreResponse = true;
+      clearTimeout(timer);
     };
-  }, [clave, busqueda, estado, pago]);
+  }, [consulta, busqueda, estado, pago, pagina]);
 
-  /**
-   * Cambia un filtro y vuelve a mostrar la primera tanda de pedidos.
-   * @param {string} nombre
-   * @param {string} valor
-   */
-  function cambiarFiltro(nombre, valor) {
-    cambiarFiltroUrl(nombre, valor);
-    setCantidadVisible(PEDIDOS_POR_TANDA);
+  function irAPagina(numero) {
+    cambiarPagina(numero);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   /**
@@ -95,15 +90,15 @@ export function AdminPedidosPage() {
     setIdGuardando(pedido.id);
     try {
       const actualizado = await cambiarEstadoPedido(pedido, estadoNuevo);
-      setResultado({
-        ...resultado,
-        pedidos: pedidos.map((p) => (p.id === actualizado.id ? actualizado : p)),
+      setResultado((prev) => ({
+        ...prev,
+        pedidos: prev.pedidos.map((p) => (p.id === actualizado.id ? actualizado : p)),
         porEstado: {
-          ...porEstado,
-          [pedido.status]: porEstado[pedido.status] - 1,
-          [estadoNuevo]: porEstado[estadoNuevo] + 1,
+          ...prev.porEstado,
+          [pedido.status]: prev.porEstado[pedido.status] - 1,
+          [estadoNuevo]: prev.porEstado[estadoNuevo] + 1,
         },
-      });
+      }));
       setAviso({
         tipo: "success",
         texto: `El pedido #${pedido.id} quedó ${formatearEstadoPedido(estadoNuevo).texto.toLowerCase()}.`,
@@ -195,28 +190,23 @@ export function AdminPedidosPage() {
       {!cargando && !error && (
         <>
           <p className="text-secondary small">
-            {pedidos.length} de {total} pedidos
+            {total} {total === 1 ? "pedido" : "pedidos"}
           </p>
           {pedidos.length === 0 ? (
             <MensajeVacio>No hay pedidos que coincidan con la búsqueda.</MensajeVacio>
           ) : (
             <>
               <TablaPedidos
-                pedidos={pedidos.slice(0, cantidadVisible)}
+                pedidos={pedidos}
                 idGuardando={idGuardando}
                 onCambiarEstado={(pedido, estadoNuevo) => setCambio({ pedido, estado: estadoNuevo })}
               />
-              {cantidadVisible < pedidos.length && (
-                <div className="text-center mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={() => setCantidadVisible(cantidadVisible + PEDIDOS_POR_TANDA)}
-                  >
-                    Mostrar más ({pedidos.length - cantidadVisible} restantes)
-                  </button>
-                </div>
-              )}
+              <Paginacion
+                paginaActual={pagina}
+                totalPaginas={Math.ceil(total / PEDIDOS_POR_PAGINA)}
+                onChange={irAPagina}
+                etiqueta="Páginas de pedidos"
+              />
             </>
           )}
         </>
