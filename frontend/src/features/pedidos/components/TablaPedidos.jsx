@@ -1,8 +1,8 @@
-import { Fragment, useId, useState } from "react";
+import { Fragment, useState } from "react";
 import { DetallePedido } from "./DetallePedido";
 import { obtenerEstadosSiguientes } from "../services/pedidosService";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
-import { formatearEstadoPedido } from "../../../shared/utils/formatearEstadoPedido";
+import { formatearEstadoPedido } from "../utils/formatearEstadoPedido";
 import "./TablaPedidos.css";
 
 const formatoFecha = new Intl.DateTimeFormat("es-AR", { dateStyle: "short", timeStyle: "short" });
@@ -29,7 +29,6 @@ const COLUMNAS = 6;
  * @returns {JSX.Element}
  */
 export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
-  const idBase = useId();
   const [idExpandido, setIdExpandido] = useState(null);
 
   function alternarDetalle(id) {
@@ -57,7 +56,7 @@ export function TablaPedidos({ pedidos, idGuardando, onCambiarEstado }) {
           <tbody>
             {pedidos.map((pedido) => {
               const expandido = pedido.id === idExpandido;
-              const idDetalle = `${idBase}-detalle-${pedido.id}`;
+              const idDetalle = `detalle-pedido-${pedido.id}`;
               const estado = formatearEstadoPedido(pedido.status);
               const siguientes = obtenerEstadosSiguientes(pedido.status);
               const cantidadProductos = pedido.items.reduce((suma, item) => suma + item.quantity, 0);

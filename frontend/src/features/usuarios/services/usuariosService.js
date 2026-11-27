@@ -15,20 +15,6 @@ function sinDatosPrivados({ id, name, email, role, createdAt }) {
 }
 
 /**
- * Indica si un usuario coincide con el texto buscado, por nombre o por correo.
- * @param {object} usuario
- * @param {string} texto Ya en minúsculas y sin espacios en los extremos. Vacío = coincide.
- * @returns {boolean}
- */
-function coincideBusqueda(usuario, texto) {
-  if (!texto) return true;
-  return (
-    usuario.name.toLocaleLowerCase("es").includes(texto) ||
-    usuario.email.toLocaleLowerCase("es").includes(texto)
-  );
-}
-
-/**
  * Obtiene los usuarios del panel que coinciden con la búsqueda y el rol, ordenados por nombre.
  * Simula `GET /api/usuarios?busqueda=&rol=` (admin).
  * @param {object} [filtros]
@@ -40,16 +26,17 @@ function coincideBusqueda(usuario, texto) {
  */
 export async function obtenerUsuarios({ busqueda = "", rol = "" } = {}) {
   const data = (await pedir(ENDPOINTS.usuarios)).map(sinDatosPrivados);
-  const texto = busqueda.trim().toLocaleLowerCase("es");
+  const texto = busqueda.trim().toLowerCase();
 
-  const sinFiltroDeRol = data.filter((usuario) => coincideBusqueda(usuario, texto));
-
-  const porRol = Object.fromEntries(
-    ROLES_USUARIO.map((nombre) => [
-      nombre,
-      sinFiltroDeRol.filter((usuario) => usuario.role === nombre).length,
-    ]),
+  const sinFiltroDeRol = data.filter(
+    (usuario) =>
+      usuario.name.toLowerCase().includes(texto) || usuario.email.toLowerCase().includes(texto),
   );
+
+  const porRol = {};
+  ROLES_USUARIO.forEach((nombre) => {
+    porRol[nombre] = sinFiltroDeRol.filter((usuario) => usuario.role === nombre).length;
+  });
 
   const usuarios = sinFiltroDeRol
     .filter((usuario) => !rol || usuario.role === rol)

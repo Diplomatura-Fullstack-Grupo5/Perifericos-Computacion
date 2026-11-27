@@ -1,5 +1,5 @@
-import { useEffect, useId, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router";
 import {
   eliminarProducto,
   obtenerDefinicionesSpecs,
@@ -7,8 +7,10 @@ import {
 } from "../services/productosService";
 import { TablaProductos } from "../components/TablaProductos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
+import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
+import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 
 /**
  * Listado de productos del panel de administración: búsqueda, filtro por categoría y orden por stock
@@ -16,9 +18,8 @@ import { ModalConfirmacion } from "../../../shared/components/molecules/ModalCon
  * @returns {JSX.Element}
  */
 export function AdminProductosPage() {
-  const idBase = useId();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, cambiarFiltro] = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const categoria = searchParams.get("categoria") ?? "";
   const orden = searchParams.get("orden") ?? "";
@@ -75,19 +76,6 @@ export function AdminProductosPage() {
     };
   }, [clave, busqueda, categoria, orden]);
 
-  /**
-   * Cambia un filtro en la URL. Sin valor, lo quita. Reemplaza la entrada del historial para no
-   * llenarlo con cada letra de la búsqueda.
-   * @param {string} nombre
-   * @param {string} valor
-   */
-  function cambiarFiltro(nombre, valor) {
-    const params = new URLSearchParams(searchParams);
-    if (valor) params.set(nombre, valor);
-    else params.delete(nombre);
-    setSearchParams(params, { replace: true });
-  }
-
   async function handleConfirmarEliminar() {
     const producto = aEliminar;
     setAEliminar(null);
@@ -119,25 +107,18 @@ export function AdminProductosPage() {
       </div>
 
       {aviso && (
-        <div className={`alert alert-${aviso.tipo} d-flex align-items-start`} role="status">
-          <span className="flex-grow-1">{aviso.texto}</span>
-          <button
-            type="button"
-            className="btn-close"
-            aria-label="Cerrar aviso"
-            onClick={() => setAviso(null)}
-          />
-        </div>
+        <Aviso tipo={aviso.tipo} onCerrar={() => setAviso(null)}>
+          {aviso.texto}
+        </Aviso>
       )}
 
-      {/* -------------------- Búsqueda y filtro -------------------- */}
       <div className="row g-2 mb-3">
         <div className="col-md-8">
-          <label htmlFor={`${idBase}-busqueda`} className="visually-hidden">
+          <label htmlFor="productos-busqueda" className="visually-hidden">
             Buscar por nombre o marca
           </label>
           <input
-            id={`${idBase}-busqueda`}
+            id="productos-busqueda"
             type="search"
             className="form-control"
             placeholder="Buscar por nombre o marca"
@@ -146,11 +127,11 @@ export function AdminProductosPage() {
           />
         </div>
         <div className="col-md-4">
-          <label htmlFor={`${idBase}-categoria`} className="visually-hidden">
+          <label htmlFor="productos-categoria" className="visually-hidden">
             Categoría
           </label>
           <select
-            id={`${idBase}-categoria`}
+            id="productos-categoria"
             className="form-select"
             value={categoria}
             onChange={(e) => cambiarFiltro("categoria", e.target.value)}
@@ -165,7 +146,6 @@ export function AdminProductosPage() {
         </div>
       </div>
 
-      {/* -------------------- Resultados -------------------- */}
       {cargando && <Spinner />}
 
       {!cargando && error && (

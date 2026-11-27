@@ -14,15 +14,16 @@ export function GraficoMediosDePago({ medios }) {
   return (
     <>
       <div className="medios-pago__barra mb-3" aria-hidden="true">
-        {medios
-          .filter((medio) => medio.porcentaje > 0)
-          .map((medio) => (
-            <span
-              key={medio.medio}
-              className={`medios-pago__segmento medios-pago--serie-${medios.indexOf(medio) + 1}`}
-              style={{ width: `${medio.porcentaje}%` }}
-            />
-          ))}
+        {medios.map(
+          (medio, indice) =>
+            medio.porcentaje > 0 && (
+              <span
+                key={medio.medio}
+                className={`medios-pago__segmento medios-pago--serie-${indice + 1}`}
+                style={{ width: `${medio.porcentaje}%` }}
+              />
+            ),
+        )}
       </div>
 
       <ul className="list-unstyled mb-0">

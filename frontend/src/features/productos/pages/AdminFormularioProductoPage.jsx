@@ -49,13 +49,13 @@ export function AdminFormularioProductoPage() {
 
     cargarFormulario(id)
       .then((datos) => {
-        if (!ignoreResponse) setResultado({ clave: id ?? "nuevo", datos, error: null });
+        if (!ignoreResponse) setResultado({ clave, datos, error: null });
       })
       .catch((err) => {
         if (ignoreResponse) return;
         console.error("Error al cargar el formulario:", err);
         setResultado({
-          clave: id ?? "nuevo",
+          clave,
           datos: null,
           error: "No se pudieron cargar los datos del formulario. Por favor, intentá de nuevo.",
         });
@@ -64,7 +64,7 @@ export function AdminFormularioProductoPage() {
     return () => {
       ignoreResponse = true;
     };
-  }, [id]);
+  }, [clave, id]);
 
   async function handleGuardar(producto) {
     setGuardando(true);

@@ -1,11 +1,12 @@
-import { useEffect, useId, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
 import { cambiarRolUsuario, obtenerUsuarios, ROLES_USUARIO } from "../services/usuariosService";
 import { formatearRol } from "../utils/formatearRol";
 import { TablaUsuarios } from "../components/TablaUsuarios";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
+import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
+import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 
 /** Cantidad de usuarios que se muestran al principio y que se suman con "Mostrar más". */
 const USUARIOS_POR_TANDA = 20;
@@ -33,8 +34,7 @@ const CONFIRMACIONES = {
  * @returns {JSX.Element}
  */
 export function AdminUsuariosPage() {
-  const idBase = useId();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, cambiarFiltroUrl] = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const rol = searchParams.get("rol") ?? "";
   const clave = searchParams.toString();
@@ -81,16 +81,12 @@ export function AdminUsuariosPage() {
   }, [clave, busqueda, rol]);
 
   /**
-   * Cambia un filtro en la URL y vuelve a mostrar la primera tanda de usuarios. Sin valor, quita el
-   * filtro. Reemplaza la entrada del historial para no llenarlo con cada letra de la búsqueda.
+   * Cambia un filtro y vuelve a mostrar la primera tanda de usuarios.
    * @param {string} nombre
    * @param {string} valor
    */
   function cambiarFiltro(nombre, valor) {
-    const params = new URLSearchParams(searchParams);
-    if (valor) params.set(nombre, valor);
-    else params.delete(nombre);
-    setSearchParams(params, { replace: true });
+    cambiarFiltroUrl(nombre, valor);
     setCantidadVisible(USUARIOS_POR_TANDA);
   }
 
@@ -120,8 +116,7 @@ export function AdminUsuariosPage() {
       });
     } catch (err) {
       console.error("Error al cambiar el rol del usuario:", err);
-      // Los errores de las reglas de negocio traen un mensaje para el usuario; los del servidor
-      // (con `status`) no, así que para esos se muestra un texto genérico.
+      // Solo los errores de las reglas de negocio (sin `status` HTTP) traen un mensaje para el usuario.
       const detalle = err.status === undefined ? err.message : "Por favor, intentá de nuevo.";
       setAviso({ tipo: "danger", texto: `No se pudo cambiar el rol de ${usuario.name}. ${detalle}` });
     } finally {
@@ -136,25 +131,18 @@ export function AdminUsuariosPage() {
       <h1 className="fs-3 mb-3">Usuarios</h1>
 
       {aviso && (
-        <div className={`alert alert-${aviso.tipo} d-flex align-items-start`} role="status">
-          <span className="flex-grow-1">{aviso.texto}</span>
-          <button
-            type="button"
-            className="btn-close"
-            aria-label="Cerrar aviso"
-            onClick={() => setAviso(null)}
-          />
-        </div>
+        <Aviso tipo={aviso.tipo} onCerrar={() => setAviso(null)}>
+          {aviso.texto}
+        </Aviso>
       )}
 
-      {/* -------------------- Búsqueda y filtros -------------------- */}
       <div className="row g-2 mb-3">
         <div className="col-md-8">
-          <label htmlFor={`${idBase}-busqueda`} className="visually-hidden">
+          <label htmlFor="usuarios-busqueda" className="visually-hidden">
             Buscar por nombre o correo
           </label>
           <input
-            id={`${idBase}-busqueda`}
+            id="usuarios-busqueda"
             type="search"
             className="form-control"
             placeholder="Buscar por nombre o correo"
@@ -163,11 +151,11 @@ export function AdminUsuariosPage() {
           />
         </div>
         <div className="col-md-4">
-          <label htmlFor={`${idBase}-rol`} className="visually-hidden">
+          <label htmlFor="usuarios-rol" className="visually-hidden">
             Rol
           </label>
           <select
-            id={`${idBase}-rol`}
+            id="usuarios-rol"
             className="form-select"
             value={rol}
             onChange={(e) => cambiarFiltro("rol", e.target.value)}
@@ -183,7 +171,6 @@ export function AdminUsuariosPage() {
         </div>
       </div>
 
-      {/* -------------------- Resultados -------------------- */}
       {cargando && <Spinner />}
 
       {!cargando && error && (

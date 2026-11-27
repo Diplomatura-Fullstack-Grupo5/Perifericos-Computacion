@@ -1,48 +1,36 @@
-import { useEffect, useId, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
 import {
   cambiarEstadoPedido,
   ESTADOS_PEDIDO,
   MEDIOS_DE_PAGO,
   obtenerPedidos,
 } from "../services/pedidosService";
+import { formatearEstadoPedido } from "../utils/formatearEstadoPedido";
 import { TablaPedidos } from "../components/TablaPedidos";
 import { Spinner } from "../../../shared/components/atoms/Spinner";
+import { Aviso } from "../../../shared/components/molecules/Aviso";
 import { MensajeVacio } from "../../../shared/components/molecules/MensajeVacio";
 import { ModalConfirmacion } from "../../../shared/components/molecules/ModalConfirmacion";
-import { formatearEstadoPedido } from "../../../shared/utils/formatearEstadoPedido";
+import { useFiltrosUrl } from "../../../shared/hooks/useFiltrosUrl";
 
 /** Cantidad de pedidos que se muestran al principio y que se suman con "Mostrar más". */
 const PEDIDOS_POR_TANDA = 20;
 
-/** Textos del modal que confirma cada cambio de estado. */
+/** Textos y color del botón del modal que confirma cada cambio de estado. */
 const CONFIRMACIONES = {
-  enviado: {
-    titulo: "Marcar como enviado",
-    textoConfirmar: "Marcar enviado",
-    claseConfirmar: "btn-primary",
-  },
-  entregado: {
-    titulo: "Marcar como entregado",
-    textoConfirmar: "Marcar entregado",
-    claseConfirmar: "btn-success",
-  },
-  cancelado: {
-    titulo: "Cancelar pedido",
-    textoConfirmar: "Cancelar pedido",
-    claseConfirmar: "btn-danger",
-  },
+  enviado: { titulo: "Marcar como enviado", boton: "Marcar enviado", clase: "btn-primary" },
+  entregado: { titulo: "Marcar como entregado", boton: "Marcar entregado", clase: "btn-success" },
+  cancelado: { titulo: "Cancelar pedido", boton: "Cancelar pedido", clase: "btn-danger" },
 };
 
 /**
- * Gestión de pedidos del panel de administración: búsqueda por cliente o número, filtros por estado
- * y medio de pago (en la URL: `?busqueda=&estado=&pago=`), detalle de cada pedido y cambio de estado
- * (con confirmación, porque un pedido no vuelve a un estado anterior).
+ * Gestión de pedidos del panel: búsqueda por cliente o número, filtros por estado y medio de pago
+ * (en la URL: `?busqueda=&estado=&pago=`), detalle de cada pedido y cambio de estado con
+ * confirmación, porque un pedido no vuelve a un estado anterior.
  * @returns {JSX.Element}
  */
 export function AdminPedidosPage() {
-  const idBase = useId();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, cambiarFiltroUrl] = useFiltrosUrl();
   const busqueda = searchParams.get("busqueda") ?? "";
   const estado = searchParams.get("estado") ?? "";
   const pago = searchParams.get("pago") ?? "";
@@ -67,8 +55,8 @@ export function AdminPedidosPage() {
     let ignoreResponse = false;
 
     obtenerPedidos({ busqueda, estado, pago })
-      .then(({ pedidos, total, porEstado }) => {
-        if (!ignoreResponse) setResultado({ clave, pedidos, total, porEstado, error: null });
+      .then((datos) => {
+        if (!ignoreResponse) setResultado({ clave, ...datos, error: null });
       })
       .catch((err) => {
         if (ignoreResponse) return;
@@ -88,22 +76,18 @@ export function AdminPedidosPage() {
   }, [clave, busqueda, estado, pago]);
 
   /**
-   * Cambia un filtro en la URL y vuelve a mostrar la primera tanda de pedidos. Sin valor, quita el
-   * filtro. Reemplaza la entrada del historial para no llenarlo con cada letra de la búsqueda.
+   * Cambia un filtro y vuelve a mostrar la primera tanda de pedidos.
    * @param {string} nombre
    * @param {string} valor
    */
   function cambiarFiltro(nombre, valor) {
-    const params = new URLSearchParams(searchParams);
-    if (valor) params.set(nombre, valor);
-    else params.delete(nombre);
-    setSearchParams(params, { replace: true });
+    cambiarFiltroUrl(nombre, valor);
     setCantidadVisible(PEDIDOS_POR_TANDA);
   }
 
   /**
-   * Guarda el cambio de estado confirmado en el modal y actualiza la fila y los contadores sin volver
-   * a pedir la lista (el pedido queda visible aunque ya no coincida con el filtro de estado).
+   * Guarda el cambio de estado confirmado y actualiza la fila y los contadores sin volver a pedir la
+   * lista (el pedido queda visible aunque ya no coincida con el filtro de estado).
    */
   async function handleConfirmarCambio() {
     const { pedido, estado: estadoNuevo } = cambio;
@@ -142,25 +126,18 @@ export function AdminPedidosPage() {
       <h1 className="fs-3 mb-3">Pedidos</h1>
 
       {aviso && (
-        <div className={`alert alert-${aviso.tipo} d-flex align-items-start`} role="status">
-          <span className="flex-grow-1">{aviso.texto}</span>
-          <button
-            type="button"
-            className="btn-close"
-            aria-label="Cerrar aviso"
-            onClick={() => setAviso(null)}
-          />
-        </div>
+        <Aviso tipo={aviso.tipo} onCerrar={() => setAviso(null)}>
+          {aviso.texto}
+        </Aviso>
       )}
 
-      {/* -------------------- Búsqueda y filtros -------------------- */}
       <div className="row g-2 mb-3">
         <div className="col-md-6">
-          <label htmlFor={`${idBase}-busqueda`} className="visually-hidden">
+          <label htmlFor="pedidos-busqueda" className="visually-hidden">
             Buscar por cliente o número de pedido
           </label>
           <input
-            id={`${idBase}-busqueda`}
+            id="pedidos-busqueda"
             type="search"
             className="form-control"
             placeholder="Buscar por cliente o número de pedido"
@@ -169,11 +146,11 @@ export function AdminPedidosPage() {
           />
         </div>
         <div className="col-sm-6 col-md-3">
-          <label htmlFor={`${idBase}-estado`} className="visually-hidden">
+          <label htmlFor="pedidos-estado" className="visually-hidden">
             Estado
           </label>
           <select
-            id={`${idBase}-estado`}
+            id="pedidos-estado"
             className="form-select"
             value={estado}
             onChange={(e) => cambiarFiltro("estado", e.target.value)}
@@ -188,11 +165,11 @@ export function AdminPedidosPage() {
           </select>
         </div>
         <div className="col-sm-6 col-md-3">
-          <label htmlFor={`${idBase}-pago`} className="visually-hidden">
+          <label htmlFor="pedidos-pago" className="visually-hidden">
             Medio de pago
           </label>
           <select
-            id={`${idBase}-pago`}
+            id="pedidos-pago"
             className="form-select"
             value={pago}
             onChange={(e) => cambiarFiltro("pago", e.target.value)}
@@ -207,7 +184,6 @@ export function AdminPedidosPage() {
         </div>
       </div>
 
-      {/* -------------------- Resultados -------------------- */}
       {cargando && <Spinner />}
 
       {!cargando && error && (
@@ -249,8 +225,8 @@ export function AdminPedidosPage() {
       <ModalConfirmacion
         abierto={cambio !== null}
         titulo={confirmacion?.titulo ?? ""}
-        textoConfirmar={confirmacion?.textoConfirmar}
-        claseConfirmar={confirmacion?.claseConfirmar}
+        textoConfirmar={confirmacion?.boton}
+        claseConfirmar={confirmacion?.clase}
         textoCancelar="Volver"
         onConfirmar={handleConfirmarCambio}
         onCancelar={() => setCambio(null)}
