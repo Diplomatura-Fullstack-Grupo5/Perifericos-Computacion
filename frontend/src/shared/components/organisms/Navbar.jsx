@@ -9,6 +9,8 @@ import "./Navbar.css";
  * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
  * @param {number} [props.cantidadComparar] Productos elegidos para comparar.
  * @param {() => void} [props.onVaciarComparador] Vacía el comparador (se pide confirmación antes).
+ * @param {number} [props.cantidadCarrito] Unidades en el carrito.
+ * @param {() => void} [props.onAbrirCarrito] Abre el panel del carrito.
  * @param {{ name: string }|null} [props.usuario] Usuario con sesión iniciada.
  * @param {() => void} [props.onCerrarSesion] Cierra la sesión actual.
  * @returns {JSX.Element}
@@ -17,11 +19,11 @@ export function Navbar({
   categorias,
   cantidadComparar = 0,
   onVaciarComparador,
+  cantidadCarrito = 0,
+  onAbrirCarrito,
   usuario = null,
   onCerrarSesion,
 }) {
-  // TODO: conectar al carrito cuando exista
-  const cartCount = 0;
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
 
   return (
@@ -116,13 +118,14 @@ export function Navbar({
                 </button>
               )}
             </div>
-            <Link
+            <button
+              type="button"
               className="btn btn-sm app-navbar-btn"
-              to="/carrito"
-              aria-label={`Carrito (${cartCount})`}
+              aria-label={`Abrir carrito (${cantidadCarrito} ${cantidadCarrito === 1 ? "producto" : "productos"})`}
+              onClick={onAbrirCarrito}
             >
-              🛒 {cartCount}
-            </Link>
+              🛒 {cantidadCarrito}
+            </button>
             <span className="app-navbar-divider" aria-hidden="true"></span>
             {usuario ? (
               <>

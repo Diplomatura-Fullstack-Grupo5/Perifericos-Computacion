@@ -17,6 +17,7 @@ export const ENDPOINTS = {
   categorias: "/categorias.json",
   usuarios: "/usuarios.json",
   pedidos: "/pedidos.json",
+  crearPedido: "/pedidos",
   estadoPedido: (id) => `/pedidos/${id}/estado`,
   registrarUsuario: "/usuarios/registro",
   rolUsuario: (id) => `/usuarios/${id}/rol`,

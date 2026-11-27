@@ -16,7 +16,7 @@ import {
   AdminFormularioProductoPage,
 } from "../features/productos";
 import { AdminDashboardPage } from "../features/dashboard";
-import { AdminPedidosPage } from "../features/pedidos";
+import { AdminPedidosPage, FinalizarCompraPage } from "../features/pedidos";
 import { AdminUsuariosPage } from "../features/usuarios";
 import { obtenerSesion } from "../features/auth";
 
@@ -60,10 +60,7 @@ async function cargarLayoutPublico() {
  * Rutas que todavía no tienen página: muestran "Página en construcción".
  * Al crear la página real, quitarla de esta lista y agregar su ruta abajo.
  */
-const PAGINAS_EN_CONSTRUCCION = [
-  "carrito",
-  "mis-pedidos",
-];
+const PAGINAS_EN_CONSTRUCCION = ["mis-pedidos"];
 
 /** Rutas de la aplicación. Cada página de una feature se agrega como hija del layout que le corresponde. */
 export const router = createBrowserRouter([
@@ -80,6 +77,7 @@ export const router = createBrowserRouter([
       { path: "catalogo", element: <CatalogoPage /> },
       { path: "producto/:id", element: <ProductoPage /> },
       { path: "comparador", element: <ComparadorPage /> },
+      { path: "finalizar-compra", element: <FinalizarCompraPage /> },
       { path: "legales", element: <Legales /> },
       { path: "nosotros", element: <NosotrosPage /> },
       { path: "contacto", element: <ContactoPage /> },

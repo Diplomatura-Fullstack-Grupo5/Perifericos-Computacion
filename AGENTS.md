@@ -162,7 +162,13 @@ que se cargan probando no se commitean: descartarlos con `git checkout database/
 - `pedidos.json`: pedidos con `customer`, `createdAt` (ISO), `status` (`"pendiente"` / `"enviado"`
   / `"entregado"` / `"cancelado"`), `paymentMethod` (`"Tarjeta de crédito"` / `"Mercado Pago"` /
   `"Tarjeta de débito"` / `"Transferencia"`), `items` (`productId`, `name`, `price`, `quantity`: copia del
-  producto al momento de la compra) y `total`. Los cancelados no suman ventas.
+  producto al momento de la compra) y `total`. Los cancelados no suman ventas. Los pedidos hechos
+  desde "Finalizar compra" agregan `email`, `phone`, `shipping` (`address`, `city`, `postalCode`) y
+  `userId` (el `id` de `usuarios.json` si se compró con sesión iniciada; `null` si se compró sin
+  cuenta). Es el dato para listar "Mis pedidos" de cada usuario; en el backend se toma del JWT, no
+  de lo que manda el navegador. Los pedidos más viejos no tienen estos campos, así que hay que
+  tratarlos como opcionales. Al crear un pedido, el service revisa precio y stock actuales y
+  descuenta el stock de cada producto.
 - `marcas.json`: marcas por categoría. Se mantiene a mano: una marca nueva en `productos.json`
   también va aquí.
 - Las imágenes de producto están en `frontend/public/images/products/`, en `.webp`. Deben tener
