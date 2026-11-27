@@ -1,0 +1,19 @@
+.encabezado-pagina {
+  background: linear-gradient(180deg, #e8efff 0%, #f5f7fb 100%);
+}
+
+.encabezado-pagina-titulo {
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.encabezado-pagina-intro {
+  max-width: 48rem;
+  color: var(--bs-secondary-color);
+  font-size: 1.1rem;
+}
+
+.encabezado-pagina-intro p:last-child {
+  margin-bottom: 0;
+}
