@@ -1,17 +1,19 @@
 
 import { useState } from "react";
-import { registrarUsuario } from "../services/authService";
 
-export function FormularioRegistro() {
+/**
+ * Formulario de registro con validación de datos ingresados por el usuario.
+ * @param {{ onSubmit: (usuario: { name: string, email: string, password: string }) => Promise<boolean>, mensaje: { tipo: string, texto: string }|null, enviando: boolean }} props
+ * @returns {JSX.Element}
+ */
+export function FormularioRegistro({ onSubmit, mensaje, enviando }) {
   const [formulario, setFormulario] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
-  const [mensaje, setMensaje] = useState(null);
-  const [enviando, setEnviando] = useState(false);
+  const [errorValidacion, setErrorValidacion] = useState(null);
 
   function manejarCambio(event) {
     const { name, value } = event.target;
@@ -20,51 +22,31 @@ export function FormularioRegistro() {
       ...actual,
       [name]: value,
     }));
-
-    setMensaje(null);
+    setErrorValidacion(null);
   }
 
   async function manejarEnvio(event) {
     event.preventDefault();
 
     if (formulario.password !== formulario.confirmPassword) {
-      setMensaje({
-        tipo: "danger",
-        texto: "Las contraseñas no coinciden.",
-      });
+      setErrorValidacion("Las contraseñas no coinciden.");
       return;
     }
 
-    setEnviando(true);
-    setMensaje(null);
+    setErrorValidacion(null);
+    const registrado = await onSubmit({
+      name: formulario.name.trim(),
+      email: formulario.email.trim(),
+      password: formulario.password,
+    });
 
-    try {
-      const usuario = await registrarUsuario({
-        name: formulario.name.trim(),
-        email: formulario.email.trim(),
-        password: formulario.password,
-      });
-
-      setMensaje({
-        tipo: "success",
-        texto: `¡Cuenta creada correctamente para ${usuario.email}!`,
-      });
+    if (registrado) {
       setFormulario({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
       });
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
-      setMensaje({
-        tipo: "danger",
-        texto: error.status
-          ? error.message
-          : "No se pudo conectar con el servicio de registro. Intentá nuevamente.",
-      });
-    } finally {
-      setEnviando(false);
     }
   }
 
@@ -155,6 +137,11 @@ export function FormularioRegistro() {
           aria-live="polite"
         >
           {mensaje.texto}
+        </div>
+      )}
+      {errorValidacion && (
+        <div className="registro-mensaje registro-mensaje-danger" role="alert">
+          {errorValidacion}
         </div>
       )}
 
