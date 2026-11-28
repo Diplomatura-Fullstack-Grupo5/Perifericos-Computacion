@@ -1,0 +1,59 @@
+/* El formulario es la referencia para ubicar la lista justo debajo del campo. */
+.buscador {
+  position: relative;
+}
+
+.buscador-lista {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  /* Mismo valor que los desplegables de Bootstrap (su variable solo existe dentro de .dropdown-menu). */
+  z-index: 1000;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+
+.buscador-mensaje {
+  margin: 0;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+}
+
+.buscador-sugerencia {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: var(--bs-border-radius);
+  color: var(--bs-body-color);
+  cursor: pointer;
+}
+
+/* La sugerencia marcada (con el mouse o con las flechas) se resalta con un borde azul a la izquierda,
+   para que se distinga aunque no se vea bien el cambio de fondo. */
+.buscador-sugerencia-activa {
+  background-color: var(--bs-tertiary-bg);
+  box-shadow: inset 3px 0 0 var(--bs-primary);
+}
+
+.buscador-miniatura {
+  flex: 0 0 2.75rem;
+  height: 2.75rem;
+  padding: 0.2rem;
+  border-radius: var(--bs-border-radius);
+  background-color: var(--bs-tertiary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buscador-miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Funde el fondo blanco de la foto con el recuadro. */
+  mix-blend-mode: multiply;
+}

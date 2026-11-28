@@ -1,5 +1,6 @@
 import { pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
+import { esRangoInvalido } from "../utils/esRangoInvalido";
 
 export const OPCIONES_ORDEN = [
   { value: "price_asc", label: "Menor precio" },
@@ -13,11 +14,14 @@ export const PRODUCTOS_POR_PAGINA = 12;
 /**
  * Indica si un valor está dentro del rango. Un límite en null no restringe.
  * Si el valor es null (ej. batería de un auricular con cable), solo pasa cuando no hay límites.
+ * Un rango inválido (mínimo mayor que el máximo) no se aplica: el usuario lo está corrigiendo y
+ * se le avisa junto al filtro, así que se siguen mostrando los productos en lugar de 0 resultados.
  * @param {number | null} value
  * @param {{ min?: number | null, max?: number | null }} [range]
  * @returns {boolean}
  */
 function isInRange(value, { min = null, max = null } = {}) {
+  if (esRangoInvalido({ min, max })) return true;
   if (value === null || value === undefined) return min === null && max === null;
   return (min === null || value >= min) && (max === null || value <= max);
 }
