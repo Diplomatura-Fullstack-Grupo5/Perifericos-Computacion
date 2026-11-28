@@ -14,7 +14,7 @@ export function normalizarTexto(texto) {
   return texto
     .toLowerCase()
     .normalize("NFD")
-    .replace(/([aeiou])[́̈]/g, "$1")
+    .replace(/([aeiou])[\u0301\u0308]/g, "$1")
     .normalize("NFC");
 }
 
