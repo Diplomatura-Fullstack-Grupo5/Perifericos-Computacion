@@ -3,7 +3,7 @@ import { LayoutPublico } from "./layouts/LayoutPublico";
 import { LayoutPrivado } from "./layouts/LayoutPrivado";
 import { InicioPage } from "../features/inicio";
 import { CatalogoPage, obtenerCategorias } from "../features/catalogo";
-import { InicioSesionPage, RegistroPage } from "../features/auth";
+import { InicioSesionPage, MiCuentaPage, RegistroPage } from "../features/auth";
 import { MensajeVacio } from "../shared/components/molecules/MensajeVacio";
 import { Spinner } from "../shared/components/atoms/Spinner";
 import { Legales } from "../features/legal";
@@ -28,6 +28,17 @@ function protegerRutaAdmin() {
   const usuario = obtenerSesion();
   if (!usuario) throw redirect("/iniciar-sesion");
   if (usuario.role !== "administrador") throw redirect("/");
+  return null;
+}
+
+/**
+ * Limita la página de cuenta a usuarios con rol cliente.
+ * @returns {null}
+ */
+function protegerCuentaCliente() {
+  const usuario = obtenerSesion();
+  if (!usuario) throw redirect("/iniciar-sesion");
+  if (usuario.role !== "cliente") throw redirect("/admin");
   return null;
 }
 
@@ -81,6 +92,11 @@ export const router = createBrowserRouter([
       { path: "legales", element: <Legales /> },
       { path: "nosotros", element: <NosotrosPage /> },
       { path: "contacto", element: <ContactoPage /> },
+      {
+        path: "mi-cuenta",
+        element: <MiCuentaPage />,
+        loader: protegerCuentaCliente,
+      },
       ...PAGINAS_EN_CONSTRUCCION.map((path) => ({
         path,
         element: <MensajeVacio>Página en construcción.</MensajeVacio>,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet, useLoaderData, useNavigate } from "react-router";
 import { Footer } from "../../shared/components/organisms/Footer";
 import { Navbar } from "../../shared/components/organisms/Navbar";
 import { useComparador } from "../../features/comparador";
@@ -19,10 +19,12 @@ export function LayoutPublico() {
   const comparador = useComparador();
   const carrito = useCarrito();
   const [usuario, actualizarUsuario] = useState(() => obtenerSesion());
+  const navegar = useNavigate();
 
   function manejarCerrarSesion() {
     cerrarSesion();
     actualizarUsuario(null);
+    navegar("/", { replace: true });
   }
 
   return (

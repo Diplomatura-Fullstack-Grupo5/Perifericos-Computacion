@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { esNombreValido } from "../utils/validarNombre";
 
 /**
  * Formulario de registro con validación de datos ingresados por el usuario.
@@ -18,15 +19,27 @@ export function FormularioRegistro({ onSubmit, mensaje, enviando }) {
   function manejarCambio(event) {
     const { name, value } = event.target;
 
+    if (name === "name" && value && !esNombreValido(value)) {
+      setErrorValidacion("El nombre completo solo puede contener letras.");
+    } else {
+      setErrorValidacion(null);
+    }
+
     setFormulario((actual) => ({
       ...actual,
-      [name]: value,
+      [name]: name === "name"
+        ? value.replace(/[^\p{L} '-]/gu, "")
+        : value,
     }));
-    setErrorValidacion(null);
   }
 
   async function manejarEnvio(event) {
     event.preventDefault();
+
+    if (!esNombreValido(formulario.name)) {
+      setErrorValidacion("El nombre completo solo puede contener letras.");
+      return;
+    }
 
     if (formulario.password !== formulario.confirmPassword) {
       setErrorValidacion("Las contraseñas no coinciden.");
