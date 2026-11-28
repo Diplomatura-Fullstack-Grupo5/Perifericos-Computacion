@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { ModalConfirmacion } from "../molecules/ModalConfirmacion";
 import "./Navbar.css";
 
 /**
  * Barra de navegación superior del sitio público.
+ *
+ * En pantallas chicas, el menú ☰ lo abre y cierra React (no el JS de Bootstrap): se guarda en qué
+ * página se abrió y, si se navega a otra (una categoría, una sugerencia del buscador, el logo…), se
+ * considera cerrado. Así se cierra solo al cambiar de página, sin un `useEffect`.
  * @param {object} props
  * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
  * @param {import("react").ReactNode} [props.buscador] Buscador que se muestra en el centro de la
@@ -28,6 +32,9 @@ export function Navbar({
   onCerrarSesion,
 }) {
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
+  const { key: paginaActual } = useLocation();
+  const [menuAbiertoEn, setMenuAbiertoEn] = useState(null);
+  const menuAbierto = menuAbiertoEn === paginaActual;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
@@ -40,16 +47,18 @@ export function Navbar({
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarContenido"
           aria-controls="navbarContenido"
-          aria-expanded="false"
-          aria-label="Abrir menú"
+          aria-expanded={menuAbierto}
+          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          onClick={() => setMenuAbiertoEn(menuAbierto ? null : paginaActual)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse gap-3" id="navbarContenido">
+        <div
+          className={`collapse navbar-collapse gap-3 ${menuAbierto ? "show" : ""}`}
+          id="navbarContenido"
+        >
           {/* -------------------- Links -------------------- */}
           <ul className="navbar-nav">
             <li className="nav-item dropdown">
