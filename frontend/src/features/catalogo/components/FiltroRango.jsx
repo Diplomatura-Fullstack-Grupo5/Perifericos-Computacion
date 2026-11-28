@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { esRangoInvalido } from "../services/catalogoService";
+import { esRangoInvalido } from "../utils/esRangoInvalido";
 import "./FiltroRango.css";
 
 const TECLAS_BLOQUEADAS = ["-", "+", "e", "E"];
