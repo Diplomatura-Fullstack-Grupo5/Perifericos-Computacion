@@ -7,6 +7,8 @@ import "./Navbar.css";
  * Barra de navegación superior del sitio público.
  * @param {object} props
  * @param {string[]} props.categorias Nombres de las categorías del menú "Catálogo".
+ * @param {import("react").ReactNode} [props.buscador] Buscador que se muestra en el centro de la
+ *   barra (lo arma quien usa el Navbar, porque necesita datos de una feature).
  * @param {number} [props.cantidadComparar] Productos elegidos para comparar.
  * @param {() => void} [props.onVaciarComparador] Vacía el comparador (se pide confirmación antes).
  * @param {number} [props.cantidadCarrito] Unidades en el carrito.
@@ -17,6 +19,7 @@ import "./Navbar.css";
  */
 export function Navbar({
   categorias,
+  buscador,
   cantidadComparar = 0,
   onVaciarComparador,
   cantidadCarrito = 0,
@@ -86,19 +89,8 @@ export function Navbar({
             </li>
           </ul>
 
-          {/* -------------------- Buscador (solo visual) -------------------- */}
-          <form
-            className="flex-grow-1 my-2 my-lg-0"
-            role="search"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="search"
-              className="form-control form-control-sm"
-              placeholder="Buscar periféricos..."
-              aria-label="Buscar periféricos"
-            />
-          </form>
+          {/* -------------------- Buscador -------------------- */}
+          {buscador ?? <div className="flex-grow-1" />}
 
           {/* -------------------- Comparar, carrito y sesión -------------------- */}
           <div className="d-flex align-items-center gap-2 flex-shrink-0 text-nowrap">

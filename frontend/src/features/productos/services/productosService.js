@@ -1,5 +1,10 @@
 import { enviar, pedir } from "../../../api/cliente";
 import { ENDPOINTS } from "../../../api/endpoints";
+import {
+  LIMITE_SUGERENCIAS,
+  MINIMO_LETRAS_BUSQUEDA,
+  buscarSugerencias,
+} from "../utils/buscarSugerencias";
 
 /** Cantidad de productos por página del listado del panel. */
 export const PRODUCTOS_POR_PAGINA_PANEL = 20;
@@ -42,6 +47,20 @@ export async function obtenerProductos({ busqueda = "", category = "", sort = ""
     products: filtrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA_PANEL),
     total: filtrados.length,
   };
+}
+
+/**
+ * Obtiene las sugerencias del buscador del Navbar: productos cuyo nombre, marca o categoría
+ * coinciden con lo escrito, sin importar mayúsculas ni tildes. Simula `GET /api/productos?busqueda=&limite=`.
+ * Con menos de `MINIMO_LETRAS_BUSQUEDA` letras no pide nada y devuelve una lista vacía.
+ * @param {string} busqueda Texto escrito por el usuario.
+ * @param {number} [limite] Cantidad máxima de sugerencias.
+ * @returns {Promise<{ id: number, name: string, brand: string, price: number, image?: string }[]>}
+ */
+export async function obtenerSugerencias(busqueda, limite = LIMITE_SUGERENCIAS) {
+  if (busqueda.trim().length < MINIMO_LETRAS_BUSQUEDA) return [];
+  const data = await pedir(ENDPOINTS.productos);
+  return buscarSugerencias(data, busqueda, limite);
 }
 
 /**
