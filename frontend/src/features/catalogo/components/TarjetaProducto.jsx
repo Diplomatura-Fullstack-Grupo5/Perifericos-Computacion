@@ -4,10 +4,11 @@ import "./TarjetaProducto.css";
 import { formatearValorSpec } from "../../../shared/utils/formatearValorSpec";
 import { formatearPrecio } from "../../../shared/utils/formatearPrecio";
 import { AvisoBloqueoComparador, useComparador } from "../../comparador";
+import { useCarrito } from "../../carrito";
 
 /**
- * Tarjeta de un producto en la grilla del catálogo. La imagen y el nombre llevan a su ficha, y el
- * checkbox "Comparar" lo agrega o quita del comparador.
+ * Tarjeta de un producto en la grilla del catálogo. La imagen y el nombre llevan a su ficha, el
+ * checkbox "Comparar" lo agrega o quita del comparador y "Agregar" lo suma al carrito.
  * @param {object} props
  * @param {number} props.id Id del producto, para el link a `/producto/:id`.
  * @param {string} props.category Categoría, para el comparador (solo compara una categoría a la vez).
@@ -37,6 +38,7 @@ export function TarjetaProducto({
   const comparando = estaSeleccionado(id);
   const bloqueoComparar = motivoBloqueo({ id, category });
   const [avisoAbierto, setAvisoAbierto] = useState(false);
+  const { agregar } = useCarrito();
 
   function alternarComparar() {
     if (bloqueoComparar) setAvisoAbierto(true);
@@ -121,6 +123,7 @@ export function TarjetaProducto({
             type="button"
             className={`btn btn-sm px-3 fw-semibold ${sinStock ? "btn-outline-secondary" : "btn-primary"}`}
             disabled={sinStock}
+            onClick={() => agregar({ id, name, price, image, stock })}
           >
             {sinStock ? "Sin stock" : "Agregar"}
           </button>

@@ -98,6 +98,9 @@ export function ProductoPage() {
           <AccionesProducto
             id={producto.id}
             category={producto.category}
+            name={producto.name}
+            price={producto.price}
+            image={producto.image}
             stock={producto.stock}
           />
           <TablaSpecs specs={producto.specs} specsDefinitions={specsDefinitions} />

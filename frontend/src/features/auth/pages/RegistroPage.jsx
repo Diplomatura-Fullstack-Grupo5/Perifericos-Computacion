@@ -1,15 +1,17 @@
 
 import { FormularioRegistro } from "../components/FormularioRegistro";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { registrarUsuario } from "../services/authService";
 import "../components/FormularioRegistro.css";
 
 /**
- * Coordina el registro y presenta sus estados de carga y resultado.
+ * Coordina el registro y presenta sus estados de carga y resultado. El link a "Iniciar sesión"
+ * conserva el `state` de la navegación (ej. a qué página volver después de entrar).
  * @returns {JSX.Element}
  */
 export function RegistroPage() {
+  const { state } = useLocation();
   const [mensaje, setMensaje] = useState(null);
   const [enviando, setEnviando] = useState(false);
 
@@ -86,7 +88,9 @@ export function RegistroPage() {
 
           <p className="registro-login">
             ¿Ya tenés una cuenta?{" "}
-            <Link to="/iniciar-sesion">Iniciar sesión</Link>
+            <Link to="/iniciar-sesion" state={state}>
+              Iniciar sesión
+            </Link>
           </p>
         </section>
 
