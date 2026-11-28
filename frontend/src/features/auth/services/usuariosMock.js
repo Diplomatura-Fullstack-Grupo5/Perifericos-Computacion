@@ -2,6 +2,7 @@ import { Buffer } from "node:buffer";
 import {randomBytes,scrypt as scryptCallback,timingSafeEqual,} from "node:crypto";
 import fs from "node:fs";
 import { promisify } from "node:util";
+import { esNombreValido } from "../utils/validarNombre.js";
 
 const scrypt = promisify(scryptCallback);
 const MAX_BYTES_SOLICITUD = 16 * 1024;
@@ -47,6 +48,12 @@ export function crearMiddlewareRegistro(archivoUsuarios) {
         throw new ErrorSolicitud(
           400,
           "Ingresá un nombre de hasta 100 caracteres.",
+        );
+      }
+      if (!esNombreValido(name)) {
+        throw new ErrorSolicitud(
+          400,
+          "El nombre completo solo puede contener letras.",
         );
       }
 
@@ -95,6 +102,13 @@ export function crearMiddlewareRegistro(archivoUsuarios) {
         email,
         passwordHash,
         role: "cliente",
+        phone: "",
+        shippingAddress: {
+          street: "",
+          city: "",
+          province: "",
+          postalCode: "",
+        },
         createdAt: new Date().toISOString(),
       };
 
@@ -110,6 +124,8 @@ export function crearMiddlewareRegistro(archivoUsuarios) {
           id: usuario.id,
           name: usuario.name,
           email: usuario.email,
+          phone: usuario.phone,
+          shippingAddress: usuario.shippingAddress,
           role: usuario.role,
           createdAt: usuario.createdAt,
         }),
@@ -195,6 +211,13 @@ export function crearMiddlewareInicioSesion(archivoUsuarios) {
           id: usuario.id,
           name: usuario.name,
           email: usuario.email,
+          phone: usuario.phone ?? "",
+          shippingAddress: usuario.shippingAddress ?? {
+            street: "",
+            city: "",
+            province: "",
+            postalCode: "",
+          },
           role: usuario.role,
           createdAt: usuario.createdAt,
         }),

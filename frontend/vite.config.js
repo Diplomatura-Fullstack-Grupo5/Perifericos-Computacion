@@ -5,6 +5,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
 import {crearMiddlewareInicioSesion, crearMiddlewareRegistro,} from './src/features/auth/services/usuariosMock.js'
+import { esNombreValido } from './src/features/auth/utils/validarNombre.js'
 
 const carpetaDatabase = fileURLToPath(new URL('../database', import.meta.url))
 
@@ -58,7 +59,7 @@ function responder(res, status, datos) {
  */
 async function escribirColeccion(req, res) {
   const [, coleccion, idTexto, accion] = req.url.split('?')[0].split('/')
-  const accionValida = req.method === 'PATCH' ? Boolean(accion) : accion === undefined
+  const accionValida = accion === undefined || Boolean(accion)
   if (!COLECCIONES_EDITABLES.includes(coleccion) || !accionValida) {
     return responder(res, 404, { message: 'Colección no encontrada' })
   }
@@ -90,8 +91,44 @@ async function escribirColeccion(req, res) {
 
   if (req.method === 'PUT' || req.method === 'PATCH') {
     if (!cuerpoEsObjeto) return responder(res, 400, { message: 'Faltan los datos' })
+    if (coleccion === 'usuarios') {
+      const nombre = cuerpo.name ?? items[indice].name
+      const telefono = cuerpo.phone ?? items[indice].phone ?? ''
+      const ciudad = cuerpo.shippingAddress?.city ?? items[indice].shippingAddress?.city ?? ''
+      const provincia = cuerpo.shippingAddress?.province ?? items[indice].shippingAddress?.province ?? ''
+      if (!esNombreValido(nombre)) {
+        return responder(res, 400, { message: 'El nombre completo solo puede contener letras.' })
+      }
+      if (typeof telefono !== 'string' || (telefono && !/^\d+$/.test(telefono))) {
+        return responder(res, 400, { message: 'El teléfono solo puede contener números.' })
+      }
+      if (ciudad && !esNombreValido(ciudad)) {
+        return responder(res, 400, { message: 'La ciudad solo puede contener letras.' })
+      }
+      if (provincia && !esNombreValido(provincia)) {
+        return responder(res, 400, { message: 'La provincia solo puede contener letras.' })
+      }
+    }
     items[indice] = { ...items[indice], ...cuerpo, id }
     guardar()
+    if (coleccion === 'usuarios') {
+      const usuario = items[indice]
+      const usuarioPublico = {
+        id: usuario.id,
+        name: usuario.name,
+        email: usuario.email,
+        phone: usuario.phone ?? '',
+        shippingAddress: usuario.shippingAddress ?? {
+          street: '',
+          city: '',
+          province: '',
+          postalCode: '',
+        },
+        role: usuario.role,
+        createdAt: usuario.createdAt,
+      }
+      return responder(res, 200, usuarioPublico)
+    }
     return responder(res, 200, items[indice])
   }
 

@@ -79,6 +79,18 @@ export async function obtenerPedidos({ busqueda = "", estado = "", pago = "", pa
 }
 
 /**
+ * Obtiene los pedidos asociados al id de un usuario.
+ * @param {number} userId
+ * @returns {Promise<object[]>}
+ */
+export async function obtenerPedidosUsuario(userId) {
+  const data = await pedir(ENDPOINTS.pedidos);
+  return data
+    .filter((pedido) => pedido.userId === userId)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+/**
  * Cambia el estado de un pedido. Simula `PATCH /api/pedidos/:id/estado` (admin). Solo permite los
  * pasos de `TRANSICIONES` (ej. no se puede reabrir un pedido cancelado), como hará el backend.
  * @param {object} pedido Se usa su `id` y su `status` actual.
