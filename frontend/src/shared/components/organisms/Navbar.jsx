@@ -126,7 +126,14 @@ export function Navbar({
             <span className="app-navbar-divider" aria-hidden="true"></span>
             {usuario ? (
               <>
-                <span className="text-white small">Hola, {usuario.name}</span>
+                {usuario.role === "cliente" && (
+                  <Link
+                    className="btn btn-sm app-navbar-btn-outline"
+                    to="/mi-cuenta"
+                  >
+                    Mi cuenta
+                  </Link>
+                )}
                 <button
                   type="button"
                   className="btn btn-sm app-navbar-btn-outline"
